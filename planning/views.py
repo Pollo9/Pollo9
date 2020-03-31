@@ -197,12 +197,12 @@ def utilisateurs(request):
 @login_required
 def profil_utilisateur(request,datapk):
 
-	consultant = User.objects.get(id=datapk)
+	utilisateur = User.objects.get(id=datapk)
 	themes = Theme.objects.all()
-	list_competence = consultant.competence_set.all().order_by("-note")
-	list_mission_week = consultant.mission_set.filter(jour_de_mission__gte = past)
-	list_mission_month = consultant.mission_set.filter(jour_de_mission__gte = mois)
-	list_mission_all = consultant.mission_set.all()
+	list_competence = utilisateur.competence_set.all().order_by("-note")
+	list_mission_week = utilisateur.mission_set.filter(jour_de_mission__gte = past)
+	list_mission_month = utilisateur.mission_set.filter(jour_de_mission__gte = mois)
+	list_mission_all = utilisateur.mission_set.all()
 
 	for i in list_competence:
 		if (i.nom in themes):
@@ -211,7 +211,7 @@ def profil_utilisateur(request,datapk):
 	response_data = {}
 
 	if (request.POST.get('action') == "supprimer_competence"):
-		the_competence = consultant.competence_set.get(id=request.POST.get('id_competence'))
+		the_competence = utilisateur.competence_set.get(id=request.POST.get('id_competence'))
 		
 		response_data['id_competence'] = the_competence.id
 		the_theme = Theme.objects.get(nom=the_competence.nom)
@@ -239,7 +239,7 @@ def profil_utilisateur(request,datapk):
 
 
 	if (request.POST.get("action") == "ajouter_competence"):
-		comp = Competence.objects.create(nom = Theme.objects.get(id=request.POST.get("nom_competence")),consultant=consultant,note=request.POST.get("note_competence"))
+		comp = Competence.objects.create(nom = Theme.objects.get(id=request.POST.get("nom_competence")),consultant=utilisateur,note=request.POST.get("note_competence"))
 		comp.save()
 		response_data['id_competence'] = comp.id
 		response_data['nom_competence'] = comp.nom.nom
@@ -250,46 +250,45 @@ def profil_utilisateur(request,datapk):
 
 		return JsonResponse(response_data)
 
-	if (request.POST.get("action") == "editer_consultant"):
-		form = ProfileForm(request.POST, request.FILES,instance=consultant.profile)
+	if (request.POST.get("action") == "editer_utilisateur"):
+		form = ProfileForm(request.POST, request.FILES,instance=utilisateur.profile)
 		if form.is_valid():
-			avatar_act = request.POST.get("avatar_act")
-			if 'avatar' in request.FILES:
-				if avatar_act != 'avatar/default.png':
-					os.remove(os.path.join(settings.MEDIA_ROOT, avatar_act))
 			profile_for_avatar = form.save(commit=False)
 			profile_for_avatar.save()
 
-		profile_consultant = consultant.profile
-		consultant.first_name = request.POST.get("consultant_prenom")
-		consultant.last_name = request.POST.get("consultant_nom")
-		profile_consultant.diminutif = request.POST.get("consultant_diminutif")
-		profile_consultant.telephone = request.POST.get("consultant_telephone")
-		consultant.email = request.POST.get("consultant_email")
-		profile_consultant.ville = request.POST.get("consultant_ville")
-		profile_consultant.code_postal = request.POST.get("consultant_code_postal")
-		profile_consultant.adresse = request.POST.get("consultant_adresse")
-		consultant.is_active = (request.POST.get("consultant_activer") == "true")
+		profile_utilisateur = utilisateur.profile
+		utilisateur.first_name = request.POST.get("utilisateur_prenom")
+		utilisateur.last_name = request.POST.get("utilisateur_nom")
+		profile_utilisateur.diminutif = request.POST.get("utilisateur_diminutif")
+		profile_utilisateur.telephone = request.POST.get("utilisateur_telephone")
+		utilisateur.email = request.POST.get("utilisateur_email")
+		profile_utilisateur.ville = request.POST.get("utilisateur_ville")
+		profile_utilisateur.code_postal = request.POST.get("utilisateur_code_postal")
+		profile_utilisateur.adresse = request.POST.get("utilisateur_adresse")
+		utilisateur.is_active = (request.POST.get("utilisateur_activer") == "true")
 
-		profile_consultant.save()
-		consultant.save()
+		profile_utilisateur.save()
+		utilisateur.save()
 
-		response_data['consultant_prenom'] = consultant.first_name
-		response_data['consultant_nom'] = consultant.last_name
-		response_data['consultant_diminutif'] = profile_consultant.diminutif
-		response_data['consultant_telephone'] = profile_consultant.telephone
-		response_data['consultant_email'] = consultant.email
-		response_data['consultant_activer'] = consultant.is_active
-		response_data['consultant_ville'] = profile_consultant.ville
-		response_data['consultant_code_postal'] = profile_consultant.code_postal
-		response_data['consultant_adresse'] = profile_consultant.adresse
-		response_data['avatar_consultant'] = profile_consultant.avatar.url
-		response_data['message'] = "Le consultant a bien été modifié."
+		response_data['utilisateur_prenom'] = utilisateur.first_name
+		response_data['utilisateur_nom'] = utilisateur.last_name
+		response_data['utilisateur_diminutif'] = profile_utilisateur.diminutif
+		response_data['utilisateur_telephone'] = profile_utilisateur.telephone
+		response_data['utilisateur_email'] = utilisateur.email
+		response_data['utilisateur_activer'] = utilisateur.is_active
+		response_data['utilisateur_ville'] = profile_utilisateur.ville
+		response_data['utilisateur_code_postal'] = profile_utilisateur.code_postal
+		response_data['utilisateur_adresse'] = profile_utilisateur.adresse
+		try:
+			response_data['avatar_utilisateur'] = profile_utilisateur.avatar.url
+		except:
+			response_data['avatar_utilisateur'] = ""
+		response_data['message'] = "L'utilisateur a bien été modifié."
 
 		return JsonResponse(response_data)
 	
 	else:
-		form = ProfileForm(instance=consultant.profile)
+		form = ProfileForm(instance=utilisateur.profile)
 
 
 	context = locals()

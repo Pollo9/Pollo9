@@ -17,7 +17,7 @@
 		display: flex!important;
 	}
 </style>
-<input type="hidden" name="consultant_id" id="consultant_id" value="{{consultant.id}}">
+<input type="hidden" name="utilisateur_id" id="utilisateur_id" value="{{utilisateur.id}}">
 <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" style="margin-top: 25px;">			
 	<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
 		<div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
@@ -33,22 +33,22 @@
 				        <!--begin::Widget -->
 				        <div class="kt-widget kt-widget--user-profile-1">
 				            <div class="kt-widget__head" style="align-items: center;">
-				                {% if consultant.profile.avatar.url != None %}
+				                {% if utilisateur.profile.avatar.url != None %}
 				                <div class="kt-widget__media">
-				                	<img id="avatar_left" src="{{ consultant.profile.avatar.url }}">
+				                	<img id="avatar_left" src="{{ utilisateur.profile.avatar.url }}">
 				                </div>
 				                {% else %}
-				                <div class="kt-widget__media" style="background-color:{{consultant.profile.couleur_rdm}}30;width: 90px;max-width: 100%;border-radius: 8px;height: 90px;display: flex;align-items: center;justify-content: center;">
-                                    <span class="kt-widget__img kt-hidden-" style="color:{{consultant.profile.couleur_rdm}};font-size: 25px;font-weight:bold;">{{consultant.profile.diminutif}}</span>
+				                <div class="kt-widget__media" style="background-color:{{utilisateur.profile.couleur_rdm}}30;width: 90px;max-width: 100%;border-radius: 8px;height: 90px;display: flex;align-items: center;justify-content: center;">
+                                    <span class="kt-widget__img kt-hidden-" id="diminutif_consultant_left" style="color:{{utilisateur.profile.couleur_rdm}};font-size: 25px;font-weight:bold;">{{utilisateur.profile.diminutif}}</span>
                                 </div>
 				                {% endif %}
 				                <div class="kt-widget__content">
 				                    <div class="kt-widget__section">
 				                        <a href="#" id="left_prenom" class="kt-widget__username">
-				                            {{consultant.first_name}}
+				                            {{utilisateur.first_name}}
 				                        </a>
 				                        <span id="left_nom" class="kt-widget__subtitle">
-				                            {{consultant.last_name}}
+				                            {{utilisateur.last_name}}
 				                        </span>
 				                    </div>
 					            </div>
@@ -57,11 +57,11 @@
 				                <div class="kt-widget__content">
 				                    <div class="kt-widget__info">
 				                        <span class="kt-widget__label">Email:</span>
-				                        <a href="mailto:{{consultant.email}}" subject="subject text" id="left_email" class="kt-widget__data">{{consultant.email}}</a>
+				                        <a href="mailto:{{utilisateur.email}}" subject="subject text" id="left_email" class="kt-widget__data">{{utilisateur.email}}</a>
 				                    </div>
 				                    <div class="kt-widget__info">
 				                        <span class="kt-widget__label">Téléphone:</span>
-				                        <a href="tel:{{consultant.profile.telephone}}" id="left_tel" class="kt-widget__data">{{consultant.profile.telephone}}</a>
+				                        <a href="tel:{{utilisateur.profile.telephone}}" id="left_tel" class="kt-widget__data">{{utilisateur.profile.telephone}}</a>
 				                    </div>
 				                </div>
 				                <div class="kt-widget__items">
@@ -162,7 +162,7 @@
 		                            <h3 class="kt-portlet__head-title">Profil <small>Mettre à jour les informations</small></h3>
 		                        </div>
 		                    </div>
-		                    <form class="kt-form kt-form--label-right" method="POST" id="edit_consultant" enctype="multipart/form-data" data-consultant-url="{% url 'profil_utilisateur' consultant.id %}">{% csrf_token %}
+		                    <form class="kt-form kt-form--label-right" method="POST" id="edit_utilisateur" enctype="multipart/form-data" data-utilisateur-url="{% url 'profil_utilisateur' utilisateur.id %}">{% csrf_token %}
 		                        <div class="kt-portlet__body">
 		                            <div class="kt-section kt-section--first">
 		                                <div class="kt-section__body">
@@ -172,14 +172,14 @@
 		                                            <h3 class="kt-section__title kt-section__title-sm">Information utilisateur :</h3>
 		                                        </div>
 		                                    </div>
-		                                    <input type="hidden" name="avatar_act" value="{{consultant.profile.avatar}}">
+		                                    <input type="hidden" name="avatar_act" value="{{utilisateur.profile.avatar}}">
 		                                    <div class="form-group row">
 		                                        <label class="col-xl-3 col-lg-3 col-form-label">Avatar</label>
 		                                        <div class="col-lg-9 col-xl-6">
 		                                            <div class="kt-avatar kt-avatar--outline" id="kt_user_avatar">
 			                                        	<div class="kt-avatar kt-avatar--outline" id="kt_user_avatar">
-			                                        		{% if consultant.profile.avatar.url != None %}
-			                                                <div id="imgaaaa" class="kt-avatar__holder" style="background-image: url('{{ consultant.profile.avatar.url }}')"></div>
+			                                        		{% if utilisateur.profile.avatar.url != None %}
+			                                                <div id="imgaaaa" class="kt-avatar__holder" style="background-image: url('{{ utilisateur.profile.avatar.url }}')"></div>
 			                                                {% else %}
 			                                                <div id="imgaaaa" class="kt-avatar__holder" style=""></div>
 							                				{% endif %}
@@ -200,19 +200,19 @@
 		                                    <div class="form-group row">
 		                                        <label class="col-xl-3 col-lg-3 col-form-label">Prénom</label>
 		                                        <div class="col-lg-9 col-xl-6">
-		                                            <input class="form-control" name="consultant_prenom" type="text" id="consultant_prenom" value="{{consultant.first_name}}" autocomplete="off">
+		                                            <input class="form-control" name="utilisateur_prenom" type="text" id="utilisateur_prenom" value="{{utilisateur.first_name}}" autocomplete="off">
 		                                        </div>
 		                                    </div>
 		                                    <div class="form-group row">
 		                                        <label class="col-xl-3 col-lg-3 col-form-label">Nom</label>
 		                                        <div class="col-lg-9 col-xl-6">
-		                                            <input class="form-control" type="text" name="consultant_nom" id="consultant_nom" value="{{consultant.last_name}}" autocomplete="off">
+		                                            <input class="form-control" type="text" name="utilisateur_nom" id="utilisateur_nom" value="{{utilisateur.last_name}}" autocomplete="off">
 		                                        </div>
 		                                    </div>
 		                                    <div class="form-group row">
 		                                        <label class="col-xl-3 col-lg-3 col-form-label">Diminutif</label>
 		                                        <div class="col-lg-9 col-xl-6">
-		                                            <input class="form-control" type="text" name="consultant_diminutif" id="consultant_diminutif" value="{{consultant.profile.diminutif}}" autocomplete="off">
+		                                            <input class="form-control" type="text" name="utilisateur_diminutif" id="utilisateur_diminutif" value="{{utilisateur.profile.diminutif}}" autocomplete="off">
 		                                        </div>
 		                                    </div>
 		                                    <div class="row">
@@ -226,7 +226,7 @@
 		                                        <div class="col-lg-9 col-xl-6">
 		                                            <div class="input-group">
 		                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-call-end"></i></span></div>
-		                                                <input id="consultant_telephone" type="text" name="consultant_telephone" class="form-control" value="{{consultant.profile.telephone}}" placeholder="Phone" aria-describedby="basic-addon1" autocomplete="off">
+		                                                <input id="utilisateur_telephone" type="text" name="utilisateur_telephone" class="form-control" value="{{utilisateur.profile.telephone}}" placeholder="Phone" aria-describedby="basic-addon1" autocomplete="off">
 		                                            </div>
 		                                        </div>
 		                                    </div>
@@ -235,26 +235,26 @@
 		                                        <div class="col-lg-9 col-xl-6">
 		                                            <div class="input-group">
 		                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-envelope-open"></i></span></div>
-		                                                <input id="consultant_email" type="text" name="consultant_email" class="form-control" value="{{consultant.email}}" placeholder="Email" aria-describedby="basic-addon1" autocomplete="off">
+		                                                <input id="utilisateur_email" type="text" name="utilisateur_email" class="form-control" value="{{utilisateur.email}}" placeholder="Email" aria-describedby="basic-addon1" autocomplete="off">
 		                                            </div>
 		                                        </div>
 		                                    </div>
 		                                    <div class="form-group row">
 		                                        <label class="col-xl-3 col-lg-3 col-form-label">Ville</label>
 		                                        <div class="col-lg-9 col-xl-6">
-		                                            <input id="consultant_ville" class="form-control" type="text" name="consultant_ville" value="{{consultant.profile.ville}}" autocomplete="off">
+		                                            <input id="utilisateur_ville" class="form-control" type="text" name="utilisateur_ville" value="{{utilisateur.profile.ville}}" autocomplete="off">
 		                                        </div>
 		                                    </div>
 		                                    <div class="form-group row">
 		                                        <label class="col-xl-3 col-lg-3 col-form-label">Code postal</label>
 		                                        <div class="col-lg-9 col-xl-6">
-		                                            <input id="consultant_code_postal" class="form-control" type="text" name="consultant_code_postal" value="{{consultant.profile.code_postal}}" autocomplete="off">
+		                                            <input id="utilisateur_code_postal" class="form-control" type="text" name="utilisateur_code_postal" value="{{utilisateur.profile.code_postal}}" autocomplete="off">
 		                                        </div>
 		                                    </div>
 		                                    <div class="form-group row">
 		                                        <label class="col-xl-3 col-lg-3 col-form-label">Adresse</label>
 		                                        <div class="col-lg-9 col-xl-6">
-		                                            <input id="consultant_adresse" class="form-control" type="text" name="consultant_adresse" value="{{consultant.profile.adresse}}" autocomplete="off">
+		                                            <input id="utilisateur_adresse" class="form-control" type="text" name="utilisateur_adresse" value="{{utilisateur.profile.adresse}}" autocomplete="off">
 		                                        </div>
 		                                    </div>
 		                                    <div class="form-group row">
@@ -263,10 +263,10 @@
 		                                            <div class="input-group">
 		                                                <div class="input-group-prepend">
 		                                                	<span class="input-group-text">
-		                                                		<input onclick="if_check(this)" id="consultant_activer" name="consultant_activer" type="checkbox" {% if consultant.is_active %} checked="" {% endif %}>
+		                                                		<input onclick="if_check(this)" id="utilisateur_activer" name="utilisateur_activer" type="checkbox" {% if utilisateur.is_active %} checked="" {% endif %}>
 		                                                	</span>
 		                                                </div>
-		                                                {% if consultant.is_active %}
+		                                                {% if utilisateur.is_active %}
 		                                                <div class="form-control" id="value_checkbox">Actif</div>
 		                                                {% else %}
 		                                                <div class="form-control" id="value_checkbox">Inactif</div>
@@ -283,7 +283,7 @@
 		                                    <div class="col-lg-3 col-xl-3">
 		                                    </div>
 		                                    <div class="col-lg-9 col-xl-9">
-		                                        <button type="submit" name="modifier_consultant" value="modifier_consultant" class="btn btn-success">Modifier</button>&nbsp;
+		                                        <button type="submit" name="modifier_utilisateur" value="modifier_utilisateur" class="btn btn-success">Modifier</button>&nbsp;
 		                                        <button type="reset" class="btn btn-secondary">Annuler</button>
 		                                    </div>
 		                                </div>
@@ -524,7 +524,7 @@
                 <button type="button" class="close" id="close_modal" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form class="kt-form kt-form--label-right" method="POST" id="ajouter_competence" action='' data-consultant-url="{% url 'profil_utilisateur' consultant.id %}">{% csrf_token %}
+                <form class="kt-form kt-form--label-right" method="POST" id="ajouter_competence" action='' data-utilisateur-url="{% url 'profil_utilisateur' utilisateur.id %}">{% csrf_token %}
                     <div class="kt-portlet__body">
                         <div class="kt-section kt-section--first">
                             <div class="kt-section__body">
@@ -571,7 +571,7 @@
     </div>
 </div>
 
-<div id="edit_competence" class="modal fade show" data-consultant-url="{% url 'profil_utilisateur' consultant.id %}" role="dialog">
+<div id="edit_competence" class="modal fade show" data-utilisateur-url="{% url 'profil_utilisateur' utilisateur.id %}" role="dialog">
 	<form class="kt-form kt-form--label-right" method="POST" id="form_modif_competence" action=''>{% csrf_token %}
 	</form>
 </div>
@@ -585,9 +585,9 @@
                 Etes-vous sûr de vouloir supprimer cet élément ?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="close_modal_delete_consultant" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-secondary" id="close_modal_delete_utilisateur" data-dismiss="modal">Annuler</button>
                 <form id='form_delete_competence' class="" method="post">{% csrf_token %}
-                    <button type="submit" class="btn btn-primary" id="id_competence_to_delete" name="id_consultant_to_delete" value="" alt="Supprimer">Supprimer</button>
+                    <button type="submit" class="btn btn-primary" id="id_competence_to_delete" name="id_utilisateur_to_delete" value="" alt="Supprimer">Supprimer</button>
                 </form>
             </div>
         </div>
@@ -667,11 +667,11 @@ function select_image_modif_competence(nbr_etoile)
 			document.getElementById("value_checkbox").innerHTML = "Inactif";
 		}
 	}
-	var id_consultant = document.getElementById("consultant_id").value;
+	var id_utilisateur = document.getElementById("utilisateur_id").value;
 	
 	$(document).on('submit', '#form_modif_competence',function(e)
     {
-    	var url = $("#edit_competence").attr("data-consultant-url");
+    	var url = $("#edit_competence").attr("data-utilisateur-url");
         e.preventDefault();
         $.ajax(
         {
@@ -732,45 +732,65 @@ function select_image_modif_competence(nbr_etoile)
         });
     });
 
-	$(document).on('submit', '#edit_consultant',function(e)
+	$(document).on('submit', '#edit_utilisateur',function(e)
     {
-    	var url = $("#edit_consultant").attr("data-consultant-url");
+    	var url = $("#edit_utilisateur").attr("data-utilisateur-url");
+    	var utilisateur_nom = $('#utilisateur_nom').val();
+        var utilisateur_prenom = $('#utilisateur_prenom').val();
+        var utilisateur_email = $('#utilisateur_email').val();
+        var utilisateur_diminutif = $('#utilisateur_diminutif').val();
+        var utilisateur_telephone = $('#utilisateur_telephone').val();
+        var utilisateur_ville = $('#utilisateur_ville').val();
+        var utilisateur_code_postal = $('#utilisateur_code_postal').val();
+        var utilisateur_adresse = $('#utilisateur_adresse').val();
+        var utilisateur_activer = $('#utilisateur_activer').prop("checked");
+        var utilisateur_avatar = $('#id_avatar').prop('files')[0];
+    	var form_data = new FormData($('#edit_utilisateur').get(0));
+    	form_data.append('utilisateur_nom', utilisateur_nom);
+    	form_data.append('utilisateur_prenom', utilisateur_prenom);
+    	form_data.append('utilisateur_email', utilisateur_email);
+    	form_data.append('utilisateur_diminutif', utilisateur_diminutif);
+    	form_data.append('utilisateur_telephone', utilisateur_telephone);
+    	form_data.append('utilisateur_ville', utilisateur_ville);
+    	form_data.append('utilisateur_code_postal', utilisateur_code_postal);
+    	form_data.append('utilisateur_adresse', utilisateur_adresse);
+    	form_data.append('utilisateur_activer', utilisateur_activer);
+    	form_data.append('utilisateur_avatar', utilisateur_avatar);
+    	form_data.append('action', 'editer_utilisateur');
+        var token = '{{csrf_token}}';  
         e.preventDefault();
         $.ajax(
         {
             type:'POST',
-            url: url,    
-            data:
-            {
-                consultant_prenom:$('#consultant_prenom').val(),
-                consultant_nom:$('#consultant_nom').val(),
-                consultant_diminutif:$('#consultant_diminutif').val(),
-                consultant_telephone:$('#consultant_telephone').val(),
-                consultant_email:$('#consultant_email').val(),
-                consultant_ville:$('#consultant_ville').val(),
-                consultant_code_postal:$('#consultant_code_postal').val(),
-                consultant_adresse:$('#consultant_adresse').val(),
-                consultant_activer:$('#consultant_activer').prop("checked"),
-                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-                action: 'editer_consultant'
-            },
+            url:url,  
+           	headers: { "X-CSRFToken": token },
+	    	cache: false,
+	    	contentType: false,
+	     	processData: false,
+	        method:'post',
+	        type:'POST',
+            data:form_data,
             success:function(json)
             {
-            	document.getElementById("edit_consultant").reset();
-            	document.getElementById("consultant_prenom").value = json.consultant_prenom;
-            	document.getElementById("consultant_nom").value = json.consultant_nom;
-            	document.getElementById("consultant_diminutif").value = json.consultant_diminutif;
-            	document.getElementById("consultant_telephone").value = json.consultant_telephone;
-            	document.getElementById("consultant_email").value = json.consultant_email;
-            	document.getElementById("consultant_ville").value = json.consultant_ville;
-            	document.getElementById("consultant_code_postal").value = json.consultant_code_postal;
-            	document.getElementById("consultant_adresse").value = json.consultant_adresse;
-            	document.getElementById("left_nom").innerHTML = json.consultant_nom;
-            	document.getElementById("left_prenom").innerHTML = json.consultant_prenom;
-            	document.getElementById("left_email").innerHTML = json.consultant_email;
-            	document.getElementById("left_tel").innerHTML = json.consultant_telephone;
+            	document.getElementById("edit_utilisateur").reset();
+            	document.getElementById("utilisateur_prenom").value = json.utilisateur_prenom;
+            	document.getElementById("utilisateur_nom").value = json.utilisateur_nom;
+            	document.getElementById("utilisateur_diminutif").value = json.utilisateur_diminutif;
+            	document.getElementById("utilisateur_telephone").value = json.utilisateur_telephone;
+            	document.getElementById("utilisateur_email").value = json.utilisateur_email;
+            	document.getElementById("utilisateur_ville").value = json.utilisateur_ville;
+            	document.getElementById("utilisateur_code_postal").value = json.utilisateur_code_postal;
+            	document.getElementById("utilisateur_adresse").value = json.utilisateur_adresse;
+            	document.getElementById("left_nom").innerHTML = json.utilisateur_nom;
+            	document.getElementById("left_prenom").innerHTML = json.utilisateur_prenom;
+            	document.getElementById("left_email").innerHTML = json.utilisateur_email;
+            	document.getElementById("left_tel").innerHTML = json.utilisateur_telephone;
+            	if (json.avatar_utilisateur == "")
+            	{
+            		document.getElementById("diminutif_consultant_left").innerHTML = json.utilisateur_diminutif;
+            	}
             	
-            	$("#consultant_activer").prop('checked',json.consultant_activer)
+            	$("#utilisateur_activer").prop('checked',json.utilisateur_activer)
             	toastr.options = {
 	                "closeButton": false,
 	                "debug": false,
@@ -804,7 +824,7 @@ function select_image_modif_competence(nbr_etoile)
 
     $(document).on('submit', '#ajouter_competence',function(e)
     {
-    	var url = $("#ajouter_competence").attr("data-consultant-url");
+    	var url = $("#ajouter_competence").attr("data-utilisateur-url");
         e.preventDefault();
         $.ajax(
         {
@@ -894,7 +914,7 @@ function select_image_modif_competence(nbr_etoile)
         $.ajax(
         {
             type:'POST',
-            url:'{% url "profil_utilisateur" consultant.id %}',
+            url:'{% url "profil_utilisateur" utilisateur.id %}',
             data:
             {
                 id_competence:$('#id_competence_to_delete').val(),
@@ -906,7 +926,7 @@ function select_image_modif_competence(nbr_etoile)
                 document.getElementById("form_delete_competence").reset();
                 $("#to_remove_competence_"+json.id_competence).parent().remove();
                 document.getElementById("nom_competence").innerHTML += (`<option value="` + json.id_theme + `" id="option_` + json.id_theme + `">` + json.nom_theme + `</option>`);
-                $('#close_modal_delete_consultant').click();
+                $('#close_modal_delete_utilisateur').click();
                 toastr.options = {
 	                "closeButton": false,
 	                "debug": false,
