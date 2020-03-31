@@ -1,0 +1,1720 @@
+{% extends 'base_planning.html' %} {% load staticfiles %}
+{% block link %}
+	<link href="{% static 'call_center/css/todo.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+
+{% block content %}
+<style type="text/css">
+	.hover_icon_star:hover .simple_icon_star
+	{
+		cursor: pointer;
+		fill: #fbd058!important;
+	}
+	.icon_competence
+	{
+		display: none;
+	}
+
+	.display_icon_competence:hover .icon_competence
+	{
+		display: flex!important;
+	}
+	.custom-file-label:after
+	{
+		content: "Parcourir";
+	}
+</style>
+<input type="hidden" name="client_id" id="client_id" value="{{client.id}}">
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" style="margin-top: 25px;">			
+	<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+		<div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
+		    <div class="kt-grid__item kt-app__toggle kt-app__aside" id="kt_user_profile_aside">
+				<div class="kt-portlet ">
+				    <div class="kt-portlet__head  kt-portlet__head--noborder">
+				        <div class="kt-portlet__head-label">
+				            <h3 class="kt-portlet__head-title">
+				            </h3>
+				        </div>
+				    </div>
+				    <div class="kt-portlet__body kt-portlet__body--fit-y">
+				        <!--begin::Widget -->
+				        <div class="kt-widget kt-widget--user-profile-1">
+				            <div class="kt-widget__head" style="align-items: center;">
+				            	{% if client.avatar.url != None %}
+				                <div class="kt-widget__media">
+				                	<img id="avatar_left" src="{{ client.avatar.url }}">
+				                </div>
+				                {% else %}
+				                <div class="kt-widget__media" style="background-color:{{client.couleur_rdm}}30;">
+                                    <span class="kt-widget__img kt-hidden-" style="color:{{client.couleur_rdm}};font-weight:bold;">{{client.diminutif}}</span>
+                                </div>
+				                {% endif %}
+				                <div class="kt-widget__content">
+				                    <div class="kt-widget__section">
+				                        <a href="#" class="kt-widget__username" id="nom_client_left">
+				                            {{client.nom}}
+				                        </a>
+				                    </div>
+					            </div>
+				            </div>
+				            <div class="kt-widget__body">
+				                <div class="kt-widget__content">
+				                	<div class="kt-widget__info">
+				                        <span class="kt-widget__label">Email:</span>
+				                        <a href="mailto:{{client.email}}" subject="subject text" id="left_email" class="kt-widget__data">{{client.email}}</a>
+				                    </div>
+				                    <div class="kt-widget__info">
+				                        <span class="kt-widget__label">Téléphone:</span>
+				                        <a href="tel:{{client.telephone}}" id="left_tel" class="kt-widget__data">{{client.telephone}}</a>
+				                    </div>
+				                    <hr>
+				                    <div class="kt-widget__info">
+				                        <span class="kt-widget__label">Site web:</span>
+				                        <a href="{{client.site_web}}" id="left_web" class="kt-widget__data">{{client.site_web}}</a>
+				                    </div>
+				                </div>
+				                <div class="kt-widget__items">
+				                	<div onclick="display_onglet('onglet1');" id="onglet1" class="kt-widget__item kt-widget__item--active onglet">
+				                        <span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												        <polygon points="0 0 24 0 24 24 0 24"></polygon>
+												        <path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
+												        <path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"></path>
+												    </g>
+												</svg>                               
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Informations
+				                            </span>
+				                        </span>
+				                    </div>
+				                    <div onclick="display_onglet('onglet2');" id="onglet2" class="kt-widget__item kt-widget__item onglet">
+				                    	<span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												        <rect x="0" y="0" width="24" height="24"/>
+												        <path d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z" fill="#000000" fill-rule="nonzero"/>
+												    </g>
+												</svg>                             
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Adresse
+				                            </span>
+				                        </span>
+				                    </div>
+				                    <div onclick="display_onglet('onglet3');" id="onglet3" class="kt-widget__item kt-widget__item onglet">
+				                    	<span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												        <polygon points="0 0 24 0 24 24 0 24"/>
+												        <path d="M4.85714286,1 L11.7364114,1 C12.0910962,1 12.4343066,1.12568431 12.7051108,1.35473959 L17.4686994,5.3839416 C17.8056532,5.66894833 18,6.08787823 18,6.52920201 L18,19.0833333 C18,20.8738751 17.9795521,21 16.1428571,21 L4.85714286,21 C3.02044787,21 3,20.8738751 3,19.0833333 L3,2.91666667 C3,1.12612489 3.02044787,1 4.85714286,1 Z M8,12 C7.44771525,12 7,12.4477153 7,13 C7,13.5522847 7.44771525,14 8,14 L15,14 C15.5522847,14 16,13.5522847 16,13 C16,12.4477153 15.5522847,12 15,12 L8,12 Z M8,16 C7.44771525,16 7,16.4477153 7,17 C7,17.5522847 7.44771525,18 8,18 L11,18 C11.5522847,18 12,17.5522847 12,17 C12,16.4477153 11.5522847,16 11,16 L8,16 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+												        <path d="M6.85714286,3 L14.7364114,3 C15.0910962,3 15.4343066,3.12568431 15.7051108,3.35473959 L20.4686994,7.3839416 C20.8056532,7.66894833 21,8.08787823 21,8.52920201 L21,21.0833333 C21,22.8738751 20.9795521,23 19.1428571,23 L6.85714286,23 C5.02044787,23 5,22.8738751 5,21.0833333 L5,4.91666667 C5,3.12612489 5.02044787,3 6.85714286,3 Z M8,12 C7.44771525,12 7,12.4477153 7,13 C7,13.5522847 7.44771525,14 8,14 L15,14 C15.5522847,14 16,13.5522847 16,13 C16,12.4477153 15.5522847,12 15,12 L8,12 Z M8,16 C7.44771525,16 7,16.4477153 7,17 C7,17.5522847 7.44771525,18 8,18 L11,18 C11.5522847,18 12,17.5522847 12,17 C12,16.4477153 11.5522847,16 11,16 L8,16 Z" fill="#000000" fill-rule="nonzero"/>
+												    </g>
+												</svg>
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Pièce jointe
+				                            </span>
+				                        </span>
+				                    </div>
+				                    <div onclick="display_onglet('onglet4');" id="onglet4" class="kt-widget__item kt-widget__item onglet">
+				                    	<span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												        <rect x="0" y="0" width="24" height="24"/>
+												        <path d="M4.5,3 L19.5,3 C20.3284271,3 21,3.67157288 21,4.5 L21,19.5 C21,20.3284271 20.3284271,21 19.5,21 L4.5,21 C3.67157288,21 3,20.3284271 3,19.5 L3,4.5 C3,3.67157288 3.67157288,3 4.5,3 Z M8,5 C7.44771525,5 7,5.44771525 7,6 C7,6.55228475 7.44771525,7 8,7 L16,7 C16.5522847,7 17,6.55228475 17,6 C17,5.44771525 16.5522847,5 16,5 L8,5 Z" fill="#000000"/>
+												    </g>
+												</svg>                            
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Mission type
+				                            </span>
+				                        </span>
+				                    </div>
+				                    <div onclick="display_onglet('onglet5');" id="onglet5" class="kt-widget__item kt-widget__item onglet">
+				                    	<span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												        <rect x="0" y="0" width="24" height="24"/>
+												        <path d="M8,3 L8,3.5 C8,4.32842712 8.67157288,5 9.5,5 L14.5,5 C15.3284271,5 16,4.32842712 16,3.5 L16,3 L18,3 C19.1045695,3 20,3.8954305 20,5 L20,21 C20,22.1045695 19.1045695,23 18,23 L6,23 C4.8954305,23 4,22.1045695 4,21 L4,5 C4,3.8954305 4.8954305,3 6,3 L8,3 Z" fill="#000000" opacity="0.3"/>
+												        <path d="M11,2 C11,1.44771525 11.4477153,1 12,1 C12.5522847,1 13,1.44771525 13,2 L14.5,2 C14.7761424,2 15,2.22385763 15,2.5 L15,3.5 C15,3.77614237 14.7761424,4 14.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 L9,2.5 C9,2.22385763 9.22385763,2 9.5,2 L11,2 Z" fill="#000000"/>
+												        <rect fill="#000000" opacity="0.3" x="7" y="10" width="5" height="2" rx="1"/>
+												        <rect fill="#000000" opacity="0.3" x="7" y="14" width="9" height="2" rx="1"/>
+												    </g>
+												</svg>                            
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Mission
+				                            </span>
+				                        </span>
+				                    </div>
+				                    <div onclick="display_onglet('onglet6');" id="onglet6" class="kt-widget__item kt-widget__item onglet">
+				                    	<span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												        <rect x="0" y="0" width="24" height="24"/>
+												        <path d="M18,2 L20,2 C21.6568542,2 23,3.34314575 23,5 L23,19 C23,20.6568542 21.6568542,22 20,22 L18,22 L18,2 Z" fill="#000000" opacity="0.3"/>
+												        <path d="M5,2 L17,2 C18.6568542,2 20,3.34314575 20,5 L20,19 C20,20.6568542 18.6568542,22 17,22 L5,22 C4.44771525,22 4,21.5522847 4,21 L4,3 C4,2.44771525 4.44771525,2 5,2 Z M12,11 C13.1045695,11 14,10.1045695 14,9 C14,7.8954305 13.1045695,7 12,7 C10.8954305,7 10,7.8954305 10,9 C10,10.1045695 10.8954305,11 12,11 Z M7.00036205,16.4995035 C6.98863236,16.6619875 7.26484009,17 7.4041679,17 C11.463736,17 14.5228466,17 16.5815,17 C16.9988413,17 17.0053266,16.6221713 16.9988413,16.5 C16.8360465,13.4332455 14.6506758,12 11.9907452,12 C9.36772908,12 7.21569918,13.5165724 7.00036205,16.4995035 Z" fill="#000000"/>
+												    </g>
+												</svg>                           
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Consultant
+				                            </span>
+				                        </span>
+				                    </div>
+				                    <div onclick="display_onglet('onglet7');" id="onglet7" class="kt-widget__item kt-widget__item onglet">
+				                    	<span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												        <rect x="0" y="0" width="24" height="24"/>
+												        <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000"/>
+												        <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519) " x="16.3255682" y="2.94551858" width="3" height="18" rx="1"/>
+												    </g>
+												</svg>                         
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Logs
+				                            </span>
+				                        </span>
+				                    </div>
+				                    <a href="{% url 'client' %}" class="kt-widget__item kt-widget__item">
+				                    	<span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												        <rect x="0" y="0" width="24" height="24"/>
+												        <path d="M8.42034438,20 L21,20 C22.1045695,20 23,19.1045695 23,18 L23,6 C23,4.8954305 22.1045695,4 21,4 L8.42034438,4 C8.15668432,4 7.90369297,4.10412727 7.71642146,4.28972363 L0.653241109,11.2897236 C0.260966303,11.6784895 0.25812177,12.3116481 0.646887666,12.7039229 C0.648995955,12.7060502 0.651113791,12.7081681 0.653241109,12.7102764 L7.71642146,19.7102764 C7.90369297,19.8958727 8.15668432,20 8.42034438,20 Z" fill="#000000" opacity="0.3"/>
+												        <path d="M12.5857864,12 L11.1715729,10.5857864 C10.7810486,10.1952621 10.7810486,9.56209717 11.1715729,9.17157288 C11.5620972,8.78104858 12.1952621,8.78104858 12.5857864,9.17157288 L14,10.5857864 L15.4142136,9.17157288 C15.8047379,8.78104858 16.4379028,8.78104858 16.8284271,9.17157288 C17.2189514,9.56209717 17.2189514,10.1952621 16.8284271,10.5857864 L15.4142136,12 L16.8284271,13.4142136 C17.2189514,13.8047379 17.2189514,14.4379028 16.8284271,14.8284271 C16.4379028,15.2189514 15.8047379,15.2189514 15.4142136,14.8284271 L14,13.4142136 L12.5857864,14.8284271 C12.1952621,15.2189514 11.5620972,15.2189514 11.1715729,14.8284271 C10.7810486,14.4379028 10.7810486,13.8047379 11.1715729,13.4142136 L12.5857864,12 Z" fill="#000000"/>
+												    </g>
+												</svg>                             
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Retour
+				                            </span>
+				                        </span>
+				                    </a>
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+		    </div>
+
+	    <div class="kt-grid__item kt-grid__item--fluid kt-app__content onglet_content" id="kt_todo_content_onglet1">
+	        <div class="row">
+	            <div class="col-xl-12">
+	                <div class="kt-portlet">
+	                    <div class="kt-portlet__head">
+	                        <div class="kt-portlet__head-label">
+	                            <h3 class="kt-portlet__head-title">Client <small>Mettre à jour les informations</small></h3>
+	                        </div>
+	                    </div>
+	                    <form class="kt-form kt-form--label-right" method="POST" id="edit_client" enctype="multipart/form-data">{% csrf_token %}
+	                        <div class="kt-portlet__body">
+	                            <div class="kt-section kt-section--first">
+	                                <div class="kt-section__body">
+	                                    <div class="row">
+	                                        <label class="col-xl-3"></label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <h3 class="kt-section__title kt-section__title-sm">Information client :</h3>
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label class="col-xl-3 col-lg-3 col-form-label">Avatar</label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                        	{% if client.avatar.url != None %}
+	                                        	<div class="kt-avatar kt-avatar--outline" id="kt_user_avatar">
+	                                                <div id="imgaaaa" class="kt-avatar__holder" style="background-image: url('{{ client.avatar.url }}')"></div>
+	                                                <label class="kt-avatar__upload" data-toggle="kt-tooltip" title="" data-original-title="Change avatar">
+	                                                    <i class="icon-pencil"></i>
+                                                		{% for field in form %}
+                                                    		<input type="file" name="{{field.name}}" id="id_avatar" accept=".png, .jpg, .jpeg" onchange="readURL(this)">
+	                                                    {% endfor %}
+	                                                </label>
+	                                                <span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="" data-original-title="Cancel avatar">
+	                                                    <i class="fa fa-times"></i>
+	                                                </span>
+	                                            </div>
+								                {% else %}
+								                <div class="kt-widget__media" style="background-color:{{client.couleur_rdm}}30;">
+				                                    <span class="kt-widget__img kt-hidden-" style="color:{{client.couleur_rdm}};font-weight:bold;">{{client.diminutif}}</span>
+				                                </div>
+				                				{% endif %}
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label class="col-xl-3 col-lg-3 col-form-label">Nom</label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <input class="form-control" type="text" name="client_nom" id="client_nom" value="{{client.nom}}" autocomplete="off">
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label class="col-xl-3 col-lg-3 col-form-label">Code couleur</label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <input class="form-control" type="color" name="client_couleur" id="client_couleur" value="{{client.code_couleur}}" autocomplete="off">
+	                                        </div>
+	                                    </div>
+	                                    <div class="row">
+	                                        <label class="col-xl-3"></label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <h3 class="kt-section__title kt-section__title-sm">Contact :</h3>
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label class="col-xl-3 col-lg-3 col-form-label">Téléphone</label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <div class="input-group">
+	                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-call-end"></i></span></div>
+	                                                <input id="client_telephone" type="text" name="client_telephone" class="form-control" value="{{client.telephone}}" placeholder="Phone" aria-describedby="basic-addon1" autocomplete="off">
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label class="col-xl-3 col-lg-3 col-form-label">Email</label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <div class="input-group">
+	                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-envelope-open"></i></span></div>
+	                                                <input id="client_email" type="text" name="client_email" class="form-control" value="{{client.email}}" placeholder="Email" aria-describedby="basic-addon1" autocomplete="off">
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label class="col-xl-3 col-lg-3 col-form-label">Site web</label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <div class="input-group">
+	                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-globe"></i></span></div>
+	                                                <input id="client_site_web" type="text" name="client_site_web" class="form-control" value="{{client.site_web}}" placeholder="Site web" aria-describedby="basic-addon1" autocomplete="off">
+	                                            </div>
+	                                        </div>
+	                                    </div>
+                                    	<div class="form-group row">
+	                                        <label class="col-xl-3 col-lg-3 col-form-label">Activer</label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <div class="input-group">
+	                                                <div class="input-group-prepend">
+	                                                	<span class="input-group-text">
+	                                                		<input onclick="if_check(this)" id="client_activer" name="client_activer" type="checkbox" {% if client.archive == False %} checked {% endif %}>
+	                                                	</span>
+	                                                </div>
+	                                                {% if client.archive == False %}
+	                                                <div class="form-control" id="value_checkbox">Actif</div>
+	                                                {% else %}
+	                                                <div class="form-control" id="value_checkbox">Archive</div>
+	                                                {% endif %}
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <div class="kt-portlet__foot">
+	                            <div class="kt-form__actions">
+	                                <div class="row">
+	                                    <div class="col-lg-3 col-xl-3">
+	                                    </div>
+	                                    <div class="col-lg-9 col-xl-9">
+	                                        <button type="submit" name="edit_client" value="edit_client" class="btn btn-success">Soumettre</button>&nbsp;
+	                                        <button type="reset" class="btn btn-secondary">Annuler</button>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </form>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+
+	    <!-- Adresse ! -->
+	    <div class="kt-grid__item kt-grid__item--fluid kt-app__content onglet_content" id="kt_todo_content_onglet2" style="display:none;">
+	    	<div class="kt-portlet">
+				<div class="kt-portlet__head">
+					<div class="kt-portlet__head-label">
+						<h3 class="kt-portlet__head-title">
+							Les adresses
+						</h3>
+					</div>
+				</div>
+				<div class="kt-portlet__body">
+					<div class="kt-notification-v2" id="list_adresse">
+						{% for adresse in list_adresse_client %}
+							<div class="kt-notification-v2__item display_icon_competence">
+								<div class="kt-notification-v2__item-icon" style="background-color: inherit;">
+									<svg onclick="add_reset_favori_adresse({{adresse.id}})" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon" style="cursor: pointer;">
+									    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" class="hover_icon_star">
+									        <rect x="0" y="0" width="24" height="24"/>
+									        <path  class="simple_icon_star" id="simple_icon_star_{{adresse.id}}" d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z" fill="#000000" fill-rule="nonzero"{% if adresse.favori == True %} style="fill: #fbd058" {% else %} style="fill:#2c77f445;"{% endif %}/>
+									    </g>
+									</svg>
+								</div>
+								<div class="kt-notification-v2__itek-wrapper">
+									<div class="kt-widget5__section">
+										<a href="#" id="nom_adresse_{{adresse.id}}" class="kt-notification-v2__item-title">
+											{{adresse.nom}}
+										</a>
+										<p style="margin-bottom: 0;" id="adresse_adresse_{{adresse.id}}" class="kt-widget5__desc">
+											Adresse : <span class="kt-font-info" >{{adresse.adresse}}</span>
+										</p>
+										<div class="kt-widget5__info">
+											<span>Ville :</span>
+											<span class="kt-font-info" id="ville_adresse_{{adresse.id}}">{{adresse.ville}}</span>
+											<span>Code postal :</span>
+											<span class="kt-font-info" id="code_postal_adresse_{{adresse.id}}">{{adresse.code_postal}}</span>
+										</div>
+									</div>
+									<div class="kt-notification-v2__item-desc">
+									</div>
+								</div>
+								<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit({{adresse.id}})" style="padding: 0.06rem .25rem;display: none;" title="Modifier l'adresse.">
+	                                <i class="icon-note"></i>
+	                            </a>
+	                            <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_adresse_{{adresse.id}}" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer l'adresse." onclick="openModalDelete({{adresse.id}})">
+	                                <i class="icon-trash"></i>
+	                            </a>
+							</div>
+						{% endfor %}
+					</div>
+					<div class="kt-separator kt-separator--space-lg kt-separator--border-dashed">
+					</div>
+					<button type="button" class="btn btn-primary btn-wide" data-toggle="modal" data-target="#add_adresse">Ajouter une adresse</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Piece jointe ! -->
+	    <div class="kt-grid__item kt-grid__item--fluid kt-app__content onglet_content" id="kt_todo_content_onglet3" style="display:none;">
+	    	<div class="kt-portlet">
+				<div class="kt-portlet__head">
+					<div class="kt-portlet__head-label">
+						<h3 class="kt-portlet__head-title">
+							Les pièces jointes
+						</h3>
+					</div>
+				</div>
+				<div class="kt-portlet__body">
+					<div class="kt-notification-v2" id="list_piece_jointe">
+						{% for piece_jointe in list_piece_jointe %}
+							<div class="kt-notification-v2__item display_icon_competence">
+								<div class="kt-notification-v2__item-icon" style="background-color: inherit;">
+									<svg onclick="add_reset_favori_piece_jointe({{piece_jointe.id}})" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+									    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" class="hover_icon_star">
+									        <polygon points="0 0 24 0 24 24 0 24"/>
+									        <path class="simple_icon_star" id="simple_icon_star_pj_{{piece_jointe.id}}" 
+									        d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" {% if piece_jointe.favori == True %} style="fill: #fbd058" {% else %} style="fill:#2c77f445;"{% endif %}/>
+									        <path d="M11.9999651,17.2276651 L9.80187391,18.4352848 C9.53879239,18.5798204 9.21340017,18.4741205 9.07509004,18.1991974 C9.02001422,18.0897216 9.00100892,17.9643258 9.02101638,17.8424227 L9.44081443,15.2846431 L7.66252134,13.4732136 C7.44968392,13.2564102 7.44532889,12.9003514 7.65279409,12.677934 C7.73540782,12.5893662 7.84365664,12.5317281 7.96078237,12.5139426 L10.418323,12.1407676 L11.5173686,9.81362288 C11.6489093,9.53509542 11.97161,9.42073887 12.2381407,9.5582004 C12.3442746,9.6129383 12.4301813,9.70271178 12.4825615,9.81362288 L13.5816071,12.1407676 L16.0391477,12.5139426 C16.3332818,12.5586066 16.5370768,12.8439892 16.4943366,13.1513625 C16.4773173,13.2737601 16.4221618,13.3868813 16.3374088,13.4732136 L14.5591157,15.2846431 L14.9789137,17.8424227 C15.0291578,18.148554 14.8324094,18.4392867 14.5394638,18.4917923 C14.4228114,18.5127004 14.3028166,18.4928396 14.1980562,18.4352848 L11.9999651,17.2276651 Z" fill="white" style="fill:white;cursor: pointer;" />
+									    </g>
+									</svg>
+								</div>
+								<div class="kt-notification-v2__itek-wrapper">
+									<div class="kt-notification-v2__item-title" id="nom_piece_jointe_{{piece_jointe.id}}">
+										{{piece_jointe.nom}}
+									</div>
+									<a href="{{piece_jointe.document.url}}" download="" class="kt-notification-v2__item-desc kt-font-info" id="document_piece_jointe_{{piece_jointe.id}}">
+										{{piece_jointe.document}}
+									</a>
+									<div class="kt-notification-v2__item-desc" id="date_upload_piece_jointe_{{piece_jointe.id}}">
+										{{piece_jointe.date_upload}}
+									</div>
+								</div>
+								<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit_piece_jointe({{piece_jointe.id}})" style="padding: 0.06rem .25rem;display: none;" title="Modifier l'piece_jointe.">
+	                                <i class="icon-note"></i>
+	                            </a>
+	                            <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_piece_jointe_{{piece_jointe.id}}" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer l'piece_jointe." onclick="openModalDelete_piece_jointe({{piece_jointe.id}})">
+	                                <i class="icon-trash"></i>
+	                            </a>
+							</div>
+						{% endfor %}
+					</div>
+					<div class="kt-separator kt-separator--space-lg kt-separator--border-dashed">
+					</div>
+					<button type="button" class="btn btn-primary btn-wide" data-toggle="modal" data-target="#add_piece_jointe">Ajouter une pièce jointe</button>
+				</div>
+			</div>
+		</div>
+
+		 <!-- Mission type ! -->
+	    <div class="kt-grid__item kt-grid__item--fluid kt-app__content onglet_content" id="kt_todo_content_onglet4" style="display:none;">
+	    	<div class="kt-portlet">
+				<div class="kt-portlet__head">
+					<div class="kt-portlet__head-label">
+						<h3 class="kt-portlet__head-title">
+							Les missions types
+						</h3>
+					</div>
+				</div>
+				<div class="kt-portlet__body">
+					<div class="kt-notification-v2" id="list_mission_type">
+						{% for mission_type in list_mission_type %}
+							<div class="kt-notification-v2__item display_icon_competence">
+								<div class="kt-notification-v2__item-icon" style="background-color: inherit;">
+									<svg onclick="add_reset_favori_mission_type({{mission_type.id}})" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon" style="cursor: pointer;">
+									    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+									        <rect x="0" y="0" width="24" height="24"/>
+									        <path class="simple_icon_star" id="simple_icon_star_mt_{{mission_type.id}}"  d="M4.5,3 L19.5,3 C20.3284271,3 21,3.67157288 21,4.5 L21,19.5 C21,20.3284271 20.3284271,21 19.5,21 L4.5,21 C3.67157288,21 3,20.3284271 3,19.5 L3,4.5 C3,3.67157288 3.67157288,3 4.5,3 Z M8,5 C7.44771525,5 7,5.44771525 7,6 C7,6.55228475 7.44771525,7 8,7 L16,7 C16.5522847,7 17,6.55228475 17,6 C17,5.44771525 16.5522847,5 16,5 L8,5 Z" fill="#000000" {% if mission_type.favori == True %} style="fill: #fbd058" {% else %} style="fill:#2c77f445;"{% endif %}/>
+									        <path d="M11.9999651,17.2276651 L9.80187391,18.4352848 C9.53879239,18.5798204 9.21340017,18.4741205 9.07509004,18.1991974 C9.02001422,18.0897216 9.00100892,17.9643258 9.02101638,17.8424227 L9.44081443,15.2846431 L7.66252134,13.4732136 C7.44968392,13.2564102 7.44532889,12.9003514 7.65279409,12.677934 C7.73540782,12.5893662 7.84365664,12.5317281 7.96078237,12.5139426 L10.418323,12.1407676 L11.5173686,9.81362288 C11.6489093,9.53509542 11.97161,9.42073887 12.2381407,9.5582004 C12.3442746,9.6129383 12.4301813,9.70271178 12.4825615,9.81362288 L13.5816071,12.1407676 L16.0391477,12.5139426 C16.3332818,12.5586066 16.5370768,12.8439892 16.4943366,13.1513625 C16.4773173,13.2737601 16.4221618,13.3868813 16.3374088,13.4732136 L14.5591157,15.2846431 L14.9789137,17.8424227 C15.0291578,18.148554 14.8324094,18.4392867 14.5394638,18.4917923 C14.4228114,18.5127004 14.3028166,18.4928396 14.1980562,18.4352848 L11.9999651,17.2276651 Z" fill="white" style="fill:white;cursor: pointer;" />
+									    </g>
+									</svg>  
+								</div>
+								<div class="kt-notification-v2__itek-wrapper">
+									<div class="kt-widget5__section">
+										<a href="#" id="nom_mission_type_{{mission_type.id}}" class="kt-widget5__title">
+											{{mission_type.nom}}
+										</a>
+										<div class="kt-notification-v2__item-desc" id="list_theme_mission_type_{{mission_type.id}}">
+											Thèmes : {% for theme in mission_type.theme.all %}{% if forloop.counter0 != 0 %}, {% endif %}{{theme.nom}}{% endfor %}{% if mission_type.theme.all.count != 0 %}. {% else %}Aucun thème.{% endif %}
+										</div>
+										<div class="kt-notification-v2__item-desc" id="date_upload_mission_type_{{mission_type.id}}">
+											{{mission_type.date_upload}}
+										</div>
+									</div>
+									<div class="kt-notification-v2__item-desc">
+									</div>
+								</div>
+								<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit_mission_type({{mission_type.id}})" style="padding: 0.06rem .25rem;display: none;" title="Modifier l'mission_type.">
+	                                <i class="icon-note"></i>
+	                            </a>
+	                            <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_mission_type_{{mission_type.id}}" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Supprimer la mission type." onclick="openModalDelete_mission_type({{mission_type.id}})">
+	                                <i class="icon-trash"></i>
+	                            </a>
+							</div>
+						{% endfor %}
+					</div>
+					<div class="kt-separator kt-separator--space-lg kt-separator--border-dashed">
+					</div>
+					<button type="button" class="btn btn-primary btn-wide" data-toggle="modal" data-target="#add_mission_type">Ajouter une mission type</button>
+				</div>
+			</div>
+		</div>
+
+		 <!-- Les missions ! -->
+	    <div class="kt-grid__item kt-grid__item--fluid kt-app__content onglet_content" id="kt_todo_content_onglet5" style="display:none;">
+	    	<div class="row">
+	    		<div class="col-xl-12">
+                    <div class="kt-grid__item kt-grid__item--fluid  kt-portlet kt-portlet--height-fluid kt-todo__list" id="kt_todo_list">
+                        <div class="kt-portlet__body kt-portlet__body--fit-x">
+                        	<div class="row">
+							</div>
+                    	</div>
+                	</div>
+	    		</div>
+	    	</div>
+		</div>
+
+		 <!-- Consultant ! -->
+	    <div class="kt-grid__item kt-grid__item--fluid kt-app__content onglet_content" id="kt_todo_content_onglet6" style="display:none;">
+	    	<div class="row">
+	    		<div class="col-xl-12">
+                    <div class="kt-grid__item kt-grid__item--fluid  kt-portlet kt-portlet--height-fluid kt-todo__list" id="kt_todo_list">
+                        <div class="kt-portlet__body kt-portlet__body--fit-x">
+                        	<div class="row">
+							</div>
+                    	</div>
+                	</div>
+	    		</div>
+	    	</div>
+		</div>
+
+		 <!-- Logs ! -->
+	    <div class="kt-grid__item kt-grid__item--fluid kt-app__content onglet_content" id="kt_todo_content_onglet7" style="display:none;">
+	    	<div class="kt-portlet">
+				<div class="kt-portlet__head">
+					<div class="kt-portlet__head-label">
+						<h3 class="kt-portlet__head-title">
+							Les logs						
+						</h3>
+					</div>
+				</div>
+				<div class="kt-portlet__body">
+					<div class="kt-notification-v2" id="list_log">
+						{% if action_list %}
+			                {% for action in action_list %} 
+							<div class="kt-notification-v2__item display_icon_competence">
+								<div class="kt-notification-v2__itek-wrapper">
+									<div class="kt-widget5__section">
+										<a class="kt-widget5__title">
+											<strong>{{ action.action_time|date:"DATETIME_FORMAT" }}</strong> | {{ action.user.get_username }}{% if action.user.get_full_name %} ({{ action.user.get_full_name }}){% endif %}
+										</a>
+										<div class="kt-notification-v2__item-desc">
+											{{ action.get_change_message }}
+										</div>
+									</div>
+									<div class="kt-notification-v2__item-desc">
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+				        {% else %} 
+				        	<div class="kt-notification-v2__item display_icon_competence">
+								<div class="kt-notification-v2__itek-wrapper">
+									<div class="kt-widget5__section" style="display: flex;flex-direction: column;justify-content: center;">
+										<div class="kt-notification-v2__item-desc">
+											Cet objet n'a pas d'historique de changement. Il n'y a probablement pas encore eu d'actions effectuées.
+										</div>
+									</div>
+									<div class="kt-notification-v2__item-desc">
+									</div>
+								</div>
+							</div>
+				        {% endif %}
+					</div>
+				</div>
+			</div>		   
+		</div>
+	</div>
+</div>
+
+
+
+<div id="edit_adresse" class="modal fade show" data-cliant-url="{% url 'profil_client' client.id %}" role="dialog">
+	<form class="kt-form kt-form--label-right" method="POST" id="form_modif_adresse" action=''>{% csrf_token %}
+	</form>
+</div>
+<div id="add_adresse" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Ajouter une adresse</h4>
+                <button type="button" class="close" id="close_modal" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="kt-form kt-form--label-right" method="POST" id="ajouter_adresse" action=''>{% csrf_token %}
+                    <div class="kt-portlet__body">
+                        <div class="kt-section kt-section--first">
+                            <div class="kt-section__body">
+                                <div class="form-group row">
+		                            <label class="col-xl-3 col-lg-3 col-form-label">Nom : </label>
+									<div class="col-lg-9 col-xl-6">
+										<input class="form-control" id="ajout_nom_adresse" name="nom_adresse">
+									</div>
+		                        </div>  
+		                        <div class="form-group row">
+									<label class="col-xl-3 col-lg-3 col-form-label">Adresse : </label>
+		                            <div class="col-lg-9 col-xl-6">
+		                                <input class="form-control" id="ajout_adresse_adresse" name="adresse_adresse">
+		                            </div>
+									<div class="col-lg-9 col-xl-6">
+									</div>
+		                        </div>
+		                        <div class="form-group row">
+		                            <label class="col-xl-3 col-lg-3 col-form-label">Ville : </label>
+		                            <div class="col-lg-9 col-xl-6">
+		                                <input class="form-control" id="ajout_ville_adresse" name="ville_adresse">
+		                            </div>
+		                            <div class="col-lg-9 col-xl-6">
+		                            </div>
+		                        </div>
+		                        <div class="form-group row">
+		                            <label class="col-xl-3 col-lg-3 col-form-label">Code postal : </label>
+		                            <div class="col-lg-9 col-xl-6">
+		                                <input class="form-control" id="ajout_code_postal_adresse" name="code_postal_adresse">
+		                            </div>
+		                            <div class="col-lg-9 col-xl-6">
+		                            </div>
+		                        </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kt-portlet__foot">
+                        <div class="kt-form__actions">
+                            <div class="row">
+                                <div class="col-lg-12 col-xl-12" style="display: flex;justify-content: center;">
+                                    <button type="submit" name="ajouter_adresse" value="ajouter_adresse" class="btn btn-primary">Enregistrer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal_delete_adresse" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Supprimer une adresse</h5>
+            </div>
+            <div class="modal-body" id="delete_message">
+                Etes-vous sûr de vouloir supprimer cet élément ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close_modal_delete_consultant" data-dismiss="modal">Annuler</button>
+                <form id='form_delete_adresse' class="" method="post">{% csrf_token %}
+                    <button type="submit" class="btn btn-primary" id="id_adresse_to_delete" name="id_consultant_to_delete" value="" alt="Supprimer">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+ 
+
+<div id="edit_piece_jointe" class="modal fade show" data-cliant-url="{% url 'profil_client' client.id %}" role="dialog">
+	<form class="kt-form kt-form--label-right" method="POST" id="form_modif_piece_jointe" action=''>{% csrf_token %}
+	</form>
+</div>
+<div id="add_piece_jointe" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Ajouter une pièce jointe.</h4>
+                <button type="button" class="close" id="close_modal_piece_jointe" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="kt-form kt-form--label-right" method="POST" id="ajouter_piece_jointe" action=''>{% csrf_token %}
+                    <div class="kt-portlet__body">
+                        <div class="kt-section kt-section--first">
+                            <div class="kt-section__body">
+                                <div class="form-group row">
+		                            <label class="col-xl-3 col-lg-3 col-form-label">Nom : </label>
+									<div class="col-lg-9 col-xl-6">
+										<input class="form-control" id="ajout_nom_piece_jointe" name="nom_piece_jointe">
+									</div>
+		                        </div>  
+		                        <div class="form-group row">
+		                            <label class="col-xl-3 col-lg-3 col-form-label">Document : </label>
+									<div class="col-lg-9 col-xl-6">
+										<div class="custom-file">
+											{{form_add.document}}
+											<label class="custom-file-label" for="customFile" style="text-align: left!important;">Choisir un fichier</label>
+										</div>
+									</div>
+		                        </div>  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kt-portlet__foot">
+                        <div class="kt-form__actions">
+                            <div class="row">
+                                <div class="col-lg-12 col-xl-12" style="display: flex;justify-content: center;">
+                                    <button type="submit" name="ajouter_piece_jointe" value="ajouter_piece_jointe" class="btn btn-primary">Enregistrer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal_delete_piece_jointe" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Supprimer une pièce jointe.</h5>
+            </div>
+            <div class="modal-body">
+                Etes-vous sûr de vouloir supprimer cette pièce jointe ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close_modal_delete_piece_jointe" data-dismiss="modal">Annuler</button>
+                <form id='form_delete_piece_jointe' class="" method="post">{% csrf_token %}
+                    <button type="submit" class="btn btn-primary" id="id_piece_jointe_to_delete" name="id_consultant_to_delete" value="" alt="Supprimer">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="edit_mission_type" class="modal fade show" data-cliant-url="{% url 'profil_client' client.id %}" role="dialog">
+	<form class="kt-form kt-form--label-right" method="POST" id="form_modif_mission_type" action=''>{% csrf_token %}
+	</form>
+</div>
+<div id="add_mission_type" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Ajouter une mission type.</h4>
+                <button type="button" class="close" id="close_modal_mission_type" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="kt-form kt-form--label-right" method="POST" id="ajouter_mission_type" action=''>{% csrf_token %}
+                    <div class="kt-portlet__body">
+                        <div class="kt-section kt-section--first">
+                            <div class="kt-section__body">
+                                <div class="form-group row">
+		                            <label class="col-xl-3 col-lg-3 col-form-label">Nom : </label>
+									<div class="col-lg-9 col-xl-6">
+		                                <input class="form-control" id="ajout_nom_mission_type" name="nom_mission_type">
+									</div>
+		                        </div>
+		                        <div class="form-group row">
+									<label class="col-xl-3 col-lg-3 col-form-label">Thème(s) : </label>
+									<div class="col-lg-9 col-xl-6">
+										<select class="selectpicker" id="select_mission_type_ajout" multiple data-selected-text-format="count > 3" data-live-search="true">
+		                                    {% for theme in themes %}
+		                                    <option value="{{theme.id}}">{{theme.nom}}</option>
+		                                    {% endfor %}
+		                                </select>
+									</div>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kt-portlet__foot">
+                        <div class="kt-form__actions">
+                            <div class="row">
+                                <div class="col-lg-12 col-xl-12" style="display: flex;justify-content: center;">
+                                    <button type="submit" name="ajouter_adresse" value="ajouter_adresse" class="btn btn-primary">Enregistrer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal_delete_mission_type" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Supprimer une mission type.</h5>
+            </div>
+            <div class="modal-body">
+                Etes-vous sûr de vouloir supprimer cette mission type ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close_modal_delete_mission_type" data-dismiss="modal">Annuler</button>
+                <form id='form_delete_mission_type' class="" method="post">{% csrf_token %}
+                    <button type="submit" class="btn btn-primary" id="id_mission_type_to_delete" name="id_consultant_to_delete" value="" alt="Supprimer">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'planning/js/throw_modal.js' %}"></script>
+<script>
+	function readURL(input) {
+	    if (input.files && input.files[0]) {
+	        var reader = new FileReader();
+
+	        reader.onload = function (e) {
+	        	x = e.target.result
+	            var img = document.getElementById("imgaaaa");
+				img.style.backgroundImage = "url(" + x + ")";
+	        };
+
+	        reader.readAsDataURL(input.files[0]);
+	    }
+	}
+	function if_check(check)
+	{
+		if (check.checked == true)
+		{
+			document.getElementById("value_checkbox").innerHTML = "Actif";
+		}
+		else
+		{
+			document.getElementById("value_checkbox").innerHTML = "Archive";
+		}
+	}
+	var id_client = document.getElementById("client_id").value;
+	$(document).on('submit', '#edit_client',function(e)
+    {
+    	var client_nom = $('#client_nom').val();
+        var client_email = $('#client_email').val();
+        var client_telephone = $('#client_telephone').val();
+        var client_site_web = $('#client_site_web').val();
+        var client_couleur = $('#client_couleur').val();
+        var client_activer = $('#client_activer').prop("checked");
+        var client_avatar = $('#id_avatar').prop('files')[0];
+    	var form_data = new FormData($('#edit_client').get(0));
+    	form_data.append('client_nom', client_nom);
+    	form_data.append('client_email', client_email);
+    	form_data.append('client_telephone', client_telephone);
+    	form_data.append('client_site_web', client_site_web);
+    	form_data.append('client_couleur', client_couleur);
+    	form_data.append('client_activer', client_activer);
+    	form_data.append('client_avatar', client_avatar);
+    	form_data.append('action', 'editer_client');
+        var token = '{{csrf_token}}';  
+        e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url:'{% url "profil_client" client.id %}',  
+           	headers: { "X-CSRFToken": token },
+	    	cache: false,
+	    	contentType: false,
+	     	processData: false,
+	        method:'post',
+	        type:'POST',
+            data:form_data,
+            success:function(json)
+            {
+            	document.getElementById("edit_client").reset();
+            	document.getElementById("client_nom").value = json.client_nom;
+            	document.getElementById("client_telephone").value = json.client_telephone;
+            	document.getElementById("left_tel").innerHTML = json.client_telephone;
+            	document.getElementById("client_email").value = json.client_email;
+            	document.getElementById("left_email").innerHTML = json.client_email;
+            	document.getElementById("client_site_web").value = json.client_site_web;
+            	document.getElementById("left_web").innerHTML = json.client_site_web;
+            	document.getElementById("nom_client_left").innerHTML = json.client_nom;
+            	document.getElementById("client_couleur").value = json.client_couleur;
+            	document.getElementById("avatar_left").src = json.avatar_consultant;
+            	$("#client_activer").prop('checked',json.client_activer)
+
+            	toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+            },
+            error : function(xhr,errmsg,err)
+            {
+                $('#results').html(`
+                    <div class='alert-box alert radius' data-alert>
+                        Oops! We have encountered an error: ` + errmsg + `
+                        <a href='#' class='close'>&times;</a>
+                    </div>`); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+
+//DEBUT ADRESSE
+    $(document).on('submit', '#add_adresse',function(e)
+    {
+        e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url:'{% url "profil_client" client.id %}',
+            data:
+            {
+                ajout_nom_adresse:$('#ajout_nom_adresse').val(),
+                ajout_adresse_adresse:$('#ajout_adresse_adresse').val(),
+                ajout_ville_adresse:$('#ajout_ville_adresse').val(),
+                ajout_code_postal_adresse:$('#ajout_code_postal_adresse').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'ajouter_adresse'
+            },
+            success:function(json)
+            {
+            	$("#close_modal").click();
+            	$('#list_adresse').prepend(`
+            		<div class="kt-notification-v2__item display_icon_competence">
+	            		<div class="kt-notification-v2__item-icon" style="background-color: inherit;">
+							<svg onclick="add_reset_favori_adresse(` + json.ajout_id_adresse + `)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon" style="cursor: pointer;">
+							    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" class="hover_icon_star">
+							        <rect x="0" y="0" width="24" height="24"/>
+							        <path  class="simple_icon_star" id="simple_icon_star_` + json.ajout_id_adresse + `" d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z" fill="#000000" fill-rule="nonzero"{% if adresse.favori == True %} style="fill: #fbd058" {% else %} style="fill:#2c77f445;"{% endif %}/>
+							    </g>
+							</svg>
+						</div>
+						<div class="kt-notification-v2__itek-wrapper">
+							<div class="kt-widget5__section">
+								<a href="#" id="nom_adresse_` + json.ajout_id_adresse + `" class="kt-widget5__title">
+									` + json.ajout_nom_adresse + `
+								</a>
+								<p style="margin-bottom: 0;" id="adresse_adresse_` + json.ajout_id_adresse + `" class="kt-widget5__desc">
+									Adresse : `  + json.ajout_adresse_adresse + `
+								</p>
+								<div class="kt-widget5__info">
+									<span>Ville :</span>
+									<span class="kt-font-info" id="ville_adresse_` + json.ajout_id_adresse + `">` + json.ajout_ville_adresse+`</span>
+									<span>Code postal :</span>
+									<span class="kt-font-info" id="code_postal_adresse_` + json.ajout_id_adresse + `">` + json.ajout_code_postal_adresse +`</span>
+								</div>
+							</div>
+							<div class="kt-notification-v2__item-desc">
+							</div>
+						</div>
+						<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit(` + json.ajout_id_adresse + `)" style="padding: 0.06rem .25rem;display: none;" title="Modifier l'adresse.">
+                            <i class="icon-note"></i>
+                        </a>
+                        <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_adresse_` + json.ajout_id_adresse + `" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer l'adresse." onclick="openModalDelete(` + json.ajout_id_adresse + `)">
+                            <i class="icon-trash"></i>
+                        </a>
+					</div>`);
+            	toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+            	document.getElementById("ajouter_adresse").reset();
+            },
+            error : function(xhr,errmsg,err)
+            {
+                $('#results').html(`
+                    <div class='alert-box alert radius' data-alert>
+                        Oops! We have encountered an error: ` + errmsg + `
+                        <a href='#' class='close'>&times;</a>
+                    </div>`); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+
+	$(document).on('submit', '#form_modif_adresse',function(e)
+    {
+        e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url: '{% url "profil_client" client.id %}',
+            data:
+            {
+            	edit_id_adresse:$('#edit_id_adresse').val(),
+                edit_nom_adresse:$('#edit_nom_adresse').val(),
+                edit_adresse_adresse:$('#edit_adresse_adresse').val(),
+                edit_ville_adresse:$('#edit_ville_adresse').val(),
+                edit_code_postal_adresse:$('#edit_code_postal_adresse').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'edit_adresse'
+            },
+            success:function(json)
+            {
+            	$("#close_modal_modif_adresse").click();
+
+            	document.getElementById("nom_adresse_" + json.edit_id_adresse).innerHTML = json.edit_nom_adresse;
+            	document.getElementById("adresse_adresse_" + json.edit_id_adresse).innerHTML = "Adresse : " + json.edit_adresse_adresse;
+            	document.getElementById("ville_adresse_" + json.edit_id_adresse).innerHTML = json.edit_ville_adresse;
+            	document.getElementById("code_postal_adresse_" + json.edit_id_adresse).innerHTML = json.edit_code_postal_adresse;
+
+
+            	toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+            },
+            error : function(xhr,errmsg,err)
+            {
+                $('#results').html(`
+                    <div class='alert-box alert radius' data-alert>
+                        Oops! We have encountered an error: ` + errmsg + `
+                        <a href='#' class='close'>&times;</a>
+                    </div>`); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+    function openModalEdit(id_adresse)
+	{
+		console.log(id_adresse)
+		var url = "{% url 'edit_adresse_modal' %}";
+		$.ajax({
+			url: url,
+			data: {
+				'id_adresse': id_adresse
+			},
+			success: function(data){
+				$('#form_modif_adresse').html(data);
+				$('#edit_adresse').modal({ show: true });
+			}
+		});
+	};
+	function add_reset_favori_adresse(id_adresse)
+	{
+		var url = '{% url "profil_client" client.id %}';
+		var token = '{{csrf_token}}';
+		$.ajax({
+			headers: { "X-CSRFToken": token },
+			type:'POST',
+			url: url,
+			data: {
+				'id_adresse':id_adresse,
+				action:'add_reset_favori_adresse'
+			},
+			success: function(json){
+				if (json.is_favori == true)
+				{
+					document.getElementById("simple_icon_star_" + json.id_adresse).style.fill = "#fbd058";
+				}
+				else
+				{
+					document.getElementById("simple_icon_star_" + json.id_adresse).style.fill = "#2c77f445";
+				}
+
+				toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+			}
+		});
+	};
+	function openModalDelete(id_adresse)
+    {
+        document.getElementById("delete_message").innerHTML = "Etes-vous sûr de vouloir retirer cette adresse ?";
+        document.getElementById("id_adresse_to_delete").value = id_adresse;
+        $('#modal_delete_adresse').modal({ show: true });
+    }
+    $(document).on('submit', '#form_delete_adresse',function(e)
+    {
+        e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url:'{% url "profil_client" client.id %}',
+            data:
+            {
+                id_adresse:$('#id_adresse_to_delete').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'supprimer_adresse'
+            },
+            success:function(json)
+            {
+                document.getElementById("form_delete_adresse").reset();
+                $("#to_remove_adresse_"+json.id_adresse).parent().remove();
+				$('#close_modal_delete_consultant').click();
+
+				toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+            },
+            error : function(xhr,errmsg,err)
+            {
+                $('#results').html(`
+                    <div class='alert-box alert radius' data-alert>
+                        Oops! We have encountered an error: ` + errmsg + `
+                        <a href='#' class='close'>&times;</a>
+                    </div>`); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+//FIN ADRESSE
+
+//DEBUT PIECE JOINTE
+    $(document).on('submit', '#add_piece_jointe',function(e)
+    {
+    	var ajout_piece_jointe_file = $('#id_add_document').prop('files')[0];
+    	var ajout_nom_piece_jointe = $('#ajout_nom_piece_jointe').val();
+    	var form_data = new FormData($('#ajouter_piece_jointe').get(0));
+    	form_data.append('ajout_piece_jointe_file', ajout_piece_jointe_file);
+    	form_data.append('ajout_nom_piece_jointe', ajout_nom_piece_jointe);
+    	form_data.append('action', 'ajout_piece_jointe');
+        e.preventDefault();
+        var token = '{{csrf_token}}';
+        $.ajax(
+        {
+            url:'{% url "profil_client" client.id %}',
+            headers: { "X-CSRFToken": token },
+	    	cache: false,
+	    	contentType: false,
+	     	processData: false,
+	        method:'post',
+	        type:'POST',
+            url: '{% url "profil_client" client.id %}',
+            data:form_data,
+            success:function(json)
+            {
+            	$("#close_modal_piece_jointe").click();
+            	$('#list_piece_jointe').prepend(`
+            		<div class="kt-notification-v2__item display_icon_competence">
+            			<div class="kt-notification-v2__item-icon" style="background-color: inherit;">
+							<svg onclick="add_reset_favori_piece_jointe(`+ json.ajout_id_piece_jointe+`)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+							    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" class="hover_icon_star">
+							        <polygon points="0 0 24 0 24 24 0 24"/>
+							        <path class="simple_icon_star" id="simple_icon_star_pj_`+ json.ajout_id_piece_jointe+`" 
+							        d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" {% if piece_jointe.favori == True %} style="fill: #fbd058" {% else %} style="fill:#2c77f445;"{% endif %}/>
+							        <path d="M11.9999651,17.2276651 L9.80187391,18.4352848 C9.53879239,18.5798204 9.21340017,18.4741205 9.07509004,18.1991974 C9.02001422,18.0897216 9.00100892,17.9643258 9.02101638,17.8424227 L9.44081443,15.2846431 L7.66252134,13.4732136 C7.44968392,13.2564102 7.44532889,12.9003514 7.65279409,12.677934 C7.73540782,12.5893662 7.84365664,12.5317281 7.96078237,12.5139426 L10.418323,12.1407676 L11.5173686,9.81362288 C11.6489093,9.53509542 11.97161,9.42073887 12.2381407,9.5582004 C12.3442746,9.6129383 12.4301813,9.70271178 12.4825615,9.81362288 L13.5816071,12.1407676 L16.0391477,12.5139426 C16.3332818,12.5586066 16.5370768,12.8439892 16.4943366,13.1513625 C16.4773173,13.2737601 16.4221618,13.3868813 16.3374088,13.4732136 L14.5591157,15.2846431 L14.9789137,17.8424227 C15.0291578,18.148554 14.8324094,18.4392867 14.5394638,18.4917923 C14.4228114,18.5127004 14.3028166,18.4928396 14.1980562,18.4352848 L11.9999651,17.2276651 Z" fill="white" style="fill:white;cursor: pointer;" />
+							    </g>
+							</svg>
+						</div>
+						<div class="kt-notification-v2__itek-wrapper">
+							<div class="kt-notification-v2__item-title" id="nom_piece_jointe_`+ json.ajout_id_piece_jointe+`">
+								`+ json.ajout_nom_piece_jointe+`
+							</div>
+							<a href="`+ json.ajout_piece_jointe_piece_jointe+`" download="" class="kt-notification-v2__item-desc kt-font-info" id="document_piece_jointe_`+ json.ajout_id_piece_jointe+`">
+								`+ json.ajout_piece_jointe_piece_jointe+`
+							</a>
+							<div class="kt-notification-v2__item-desc" id="date_upload_piece_jointe_`+ json.ajout_id_piece_jointe+`">
+								` + json.ajout_date_upload_piece_jointe + `
+							</div>
+						</div>
+						<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit_piece_jointe(`+ json.ajout_id_piece_jointe+`)" style="padding: 0.06rem .25rem;display: none;" title="Modifier l'piece_jointe.">
+                            <i class="icon-note"></i>
+                        </a>
+                        <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_piece_jointe_`+ json.ajout_id_piece_jointe+`" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer l'piece_jointe." onclick="openModalDelete_piece_jointe(`+ json.ajout_id_piece_jointe+`)">
+                            <i class="icon-trash"></i>
+                        </a>
+					</div>`);
+            	toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+            	document.getElementById("ajouter_piece_jointe").reset();
+            },
+            error : function(xhr,errmsg,err)
+            {
+                $('#results').html(`
+                    <div class='alert-box alert radius' data-alert>
+                        Oops! We have encountered an error: ` + errmsg + `
+                        <a href='#' class='close'>&times;</a>
+                    </div>`); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+	$(document).on('submit', '#form_modif_piece_jointe',function(e)
+    {
+    	var edit_piece_jointe_file = $('#id_document').prop('files')[0];
+    	var edit_nom_piece_jointe = $('#edit_nom_piece_jointe').val();
+    	var edit_id_piece_jointe = $('#edit_id_piece_jointe').val();
+    	var form_data = new FormData($('#form_modif_piece_jointe').get(0));
+    	form_data.append('edit_id_piece_jointe', edit_id_piece_jointe);
+    	form_data.append('edit_piece_jointe_file', edit_piece_jointe_file);
+    	form_data.append('edit_nom_piece_jointe', edit_nom_piece_jointe);
+    	form_data.append('action', 'edit_piece_jointe');
+    	var token = '{{csrf_token}}';
+        e.preventDefault();
+        $.ajax(
+        {
+            headers: { "X-CSRFToken": token },
+	    	cache: false,
+	    	contentType: false,
+	     	processData: false,
+	        method:'post',
+	        type:'POST',
+            url: '{% url "profil_client" client.id %}',
+            data:form_data,
+            success:function(json)
+            {
+            	$("#close_modal_modif_piece_jointe").click();
+
+            	document.getElementById("nom_piece_jointe_" + json.edit_id_piece_jointe).innerHTML = json.edit_nom_piece_jointe;
+            	document.getElementById("document_piece_jointe_" + json.edit_id_piece_jointe).innerHTML = json.edit_document_piece_jointe;
+            	document.getElementById("document_piece_jointe_" + json.edit_id_piece_jointe).href = json.edit_document_piece_jointe;
+            	document.getElementById("date_upload_piece_jointe_" + json.edit_id_piece_jointe).innerHTML = json.edit_date_upload_piece_jointe;
+
+
+            	toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+            },
+            error : function(xhr,errmsg,err)
+            {
+                $('#results').html(`
+                    <div class='alert-box alert radius' data-alert>
+                        Oops! We have encountered an error: ` + errmsg + `
+                        <a href='#' class='close'>&times;</a>
+                    </div>`); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+    function openModalEdit_piece_jointe(id_piece_jointe)
+	{
+		var url = "{% url 'edit_piece_jointe_modal' %}";
+		$.ajax({
+			url: url,
+			data: {
+				'id_piece_jointe': id_piece_jointe
+			},
+			success: function(data){
+				$('#form_modif_piece_jointe').html(data);
+				$('#edit_piece_jointe').modal({ show: true });
+			}
+		});
+	};
+	function add_reset_favori_piece_jointe(id_piece_jointe)
+	{
+		var url = '{% url "profil_client" client.id %}';
+		var token = '{{csrf_token}}';
+		$.ajax({
+			headers: { "X-CSRFToken": token },
+			type:'POST',
+			url: url,
+			data: {
+				'id_piece_jointe':id_piece_jointe,
+				action:'add_reset_favori_piece_jointe'
+			},
+			success: function(json){
+				if (json.is_favori == true)
+				{
+					document.getElementById("simple_icon_star_pj_" + json.id_piece_jointe).style.fill = "#fbd058";
+				}
+				else
+				{
+					document.getElementById("simple_icon_star_pj_" + json.id_piece_jointe).style.fill = "#2c77f445";
+				}
+
+				toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+			}
+		});
+	};
+	function openModalDelete_piece_jointe(id_piece_jointe)
+    {
+        document.getElementById("id_piece_jointe_to_delete").value = id_piece_jointe;
+        $('#modal_delete_piece_jointe').modal({ show: true });
+    }
+    $(document).on('submit', '#form_delete_piece_jointe',function(e)
+    {
+        e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url:'{% url "profil_client" client.id %}',
+            data:
+            {
+                id_piece_jointe:$('#id_piece_jointe_to_delete').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'supprimer_piece_jointe'
+            },
+            success:function(json)
+            {
+                document.getElementById("form_delete_piece_jointe").reset();
+                $("#to_remove_piece_jointe_"+json.id_piece_jointe).parent().remove();
+				$('#close_modal_delete_piece_jointe').click();
+
+				toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+            },
+            error : function(xhr,errmsg,err)
+            {
+                $('#results').html(`
+                    <div class='alert-box alert radius' data-alert>
+                        Oops! We have encountered an error: ` + errmsg + `
+                        <a href='#' class='close'>&times;</a>
+                    </div>`); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+//FIN PIECE JOINTE
+
+//DEBUT MISSION TYPE
+    $(document).on('submit', '#ajouter_mission_type',function(e)
+    {
+    	var selectedValues = [];    
+	    $("#select_mission_type_ajout :selected").each(function(){
+	        selectedValues.push($(this).val()); 
+	    });
+        e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url:'{% url "profil_client" client.id %}',
+            data:
+            {
+                ajout_nom_mission_type:$('#ajout_nom_mission_type').val(),
+                select_mission_type_ajout:selectedValues,
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'ajouter_mission_type'
+            },
+            success:function(json)
+            {
+            	var str_list_theme = "Thèmes : ";
+            	if (json.theme_select.length !=0)
+            	{
+            		for(var i = 0;i < json.theme_select.length; i++)
+            		{
+            			if(i == 0)
+            			{
+            				str_list_theme += json.theme_select[i];
+            			}
+            			else
+        				{
+        					str_list_theme += ", " + json.theme_select[i];
+        				}
+            		}
+            		str_list_theme += "."
+            	}
+            	else
+            	{
+            		str_list_theme = "Aucun thème."
+            	}
+            	$("#close_modal_mission_type").click();
+            	$('#list_mission_type').prepend(`
+            		<div class="kt-notification-v2__item display_icon_competence">
+						<div class="kt-notification-v2__item-icon" style="background-color: inherit;">
+							<svg onclick="add_reset_favori_mission_type(`+json.ajout_id_mission_type+`)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon" style="cursor: pointer;">
+							    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+							        <rect x="0" y="0" width="24" height="24"/>
+							        <path class="simple_icon_star" id="simple_icon_star_mt_`+json.ajout_id_mission_type+`"  d="M4.5,3 L19.5,3 C20.3284271,3 21,3.67157288 21,4.5 L21,19.5 C21,20.3284271 20.3284271,21 19.5,21 L4.5,21 C3.67157288,21 3,20.3284271 3,19.5 L3,4.5 C3,3.67157288 3.67157288,3 4.5,3 Z M8,5 C7.44771525,5 7,5.44771525 7,6 C7,6.55228475 7.44771525,7 8,7 L16,7 C16.5522847,7 17,6.55228475 17,6 C17,5.44771525 16.5522847,5 16,5 L8,5 Z" fill="#000000" {% if mission_type.favori == True %} style="fill: #fbd058" {% else %} style="fill:#2c77f445;"{% endif %}/>
+							        <path d="M11.9999651,17.2276651 L9.80187391,18.4352848 C9.53879239,18.5798204 9.21340017,18.4741205 9.07509004,18.1991974 C9.02001422,18.0897216 9.00100892,17.9643258 9.02101638,17.8424227 L9.44081443,15.2846431 L7.66252134,13.4732136 C7.44968392,13.2564102 7.44532889,12.9003514 7.65279409,12.677934 C7.73540782,12.5893662 7.84365664,12.5317281 7.96078237,12.5139426 L10.418323,12.1407676 L11.5173686,9.81362288 C11.6489093,9.53509542 11.97161,9.42073887 12.2381407,9.5582004 C12.3442746,9.6129383 12.4301813,9.70271178 12.4825615,9.81362288 L13.5816071,12.1407676 L16.0391477,12.5139426 C16.3332818,12.5586066 16.5370768,12.8439892 16.4943366,13.1513625 C16.4773173,13.2737601 16.4221618,13.3868813 16.3374088,13.4732136 L14.5591157,15.2846431 L14.9789137,17.8424227 C15.0291578,18.148554 14.8324094,18.4392867 14.5394638,18.4917923 C14.4228114,18.5127004 14.3028166,18.4928396 14.1980562,18.4352848 L11.9999651,17.2276651 Z" fill="white" style="fill:white;cursor: pointer;" />
+							    </g>
+							</svg>  
+						</div>
+						<div class="kt-notification-v2__itek-wrapper">
+							<div class="kt-widget5__section">
+								<a href="#" id="nom_mission_type_`+json.ajout_id_mission_type+`" class="kt-widget5__title">
+									`+json.ajout_nom_mission_type+`
+								</a>
+								<div class="kt-notification-v2__item-desc" id="list_theme_mission_type_`+json.ajout_id_mission_type+`">
+									` + str_list_theme + `
+								</div>
+								<div class="kt-notification-v2__item-desc" id="date_upload_mission_type_`+json.ajout_id_mission_type+`">
+									`+ json.ajout_date_upload_mission_type +`
+								</div>
+							</div>
+							<div class="kt-notification-v2__item-desc">
+							</div>
+						</div>
+						<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit_mission_type(`+json.ajout_id_mission_type+`)" style="padding: 0.06rem .25rem;display: none;" title="Modifier l'mission_type.">
+	                        <i class="icon-note"></i>
+	                    </a>
+	                    <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_mission_type_`+json.ajout_id_mission_type+`" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Supprimer la mission type." onclick="openModalDelete_mission_type(`+json.ajout_id_mission_type+`)">
+	                        <i class="icon-trash"></i>
+	                    </a>
+					</div>`);
+            	toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+            	document.getElementById("ajouter_mission_type").reset();
+            },
+            error : function(xhr,errmsg,err)
+            {
+                $('#results').html(`
+                    <div class='alert-box alert radius' data-alert>
+                        Oops! We have encountered an error: ` + errmsg + `
+                        <a href='#' class='close'>&times;</a>
+                    </div>`); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+	$(document).on('submit', '#form_modif_mission_type',function(e)
+    {
+    	var selectedValues = [];    
+	    $("#select_mission_type :selected").each(function(){
+	        selectedValues.push($(this).val()); 
+	    });
+        e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url: '{% url "profil_client" client.id %}',
+            data:
+            {
+            	theme_select:selectedValues,
+            	edit_nom_mission_type:$('#edit_nom_mission_type').val(),
+            	edit_id_mission_type:$('#edit_id_mission_type').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'edit_mission_type'
+            },
+            success:function(json)
+            {
+            	$("#close_modal_modif_mission_type").click();
+            	var str_list_theme = "Thèmes : ";
+            	document.getElementById("nom_mission_type_" + json.edit_id_mission_type).innerHTML = json.edit_nom_mission_type;
+            	document.getElementById("date_upload_mission_type_" + json.edit_id_mission_type).innerHTML = json.edit_date_upload_mission_type;
+            	if (json.theme_select.length !=0)
+            	{
+            		for(var i = 0;i < json.theme_select.length; i++)
+            		{
+            			if(i == 0)
+            			{
+            				str_list_theme += json.theme_select[i];
+            			}
+            			else
+        				{
+        					str_list_theme += ", " + json.theme_select[i];
+        				}
+            		}
+            		str_list_theme += "."
+            	}
+            	else
+            	{
+            		str_list_theme = "Aucun thème."
+            	}
+            	document.getElementById("list_theme_mission_type_" + json.edit_id_mission_type).innerHTML = str_list_theme;
+
+            	toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+            },
+            error : function(xhr,errmsg,err)
+            {
+                $('#results').html(`
+                    <div class='alert-box alert radius' data-alert>
+                        Oops! We have encountered an error: ` + errmsg + `
+                        <a href='#' class='close'>&times;</a>
+                    </div>`); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+    function openModalEdit_mission_type(id_mission_type)
+	{
+		var url = "{% url 'edit_mission_type_modal' %}";
+		$.ajax({
+			url: url,
+			data: {
+				'id_mission_type': id_mission_type
+			},
+			success: function(data){
+				$('#form_modif_mission_type').html(data);
+				$('#edit_mission_type').modal({ show: true });
+			}
+		});
+	};
+	function add_reset_favori_mission_type(id_mission_type)
+	{
+		var url = '{% url "profil_client" client.id %}';
+		var token = '{{csrf_token}}';
+		$.ajax({
+			headers: { "X-CSRFToken": token },
+			type:'POST',
+			url: url,
+			data: {
+				'id_mission_type':id_mission_type,
+				action:'add_reset_favori_mission_type'
+			},
+			success: function(json){
+				if (json.is_favori == true)
+				{
+					document.getElementById("simple_icon_star_mt_" + json.id_mission_type).style.fill = "#fbd058";
+				}
+				else
+				{
+					document.getElementById("simple_icon_star_mt_" + json.id_mission_type).style.fill = "#2c77f445";
+				}
+
+				toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+			}
+		});
+	};
+	function openModalDelete_mission_type(id_mission_type)
+    {
+        document.getElementById("id_mission_type_to_delete").value = id_mission_type;
+        $('#modal_delete_mission_type').modal({ show: true });
+    }
+    $(document).on('submit', '#form_delete_mission_type',function(e)
+    {
+        e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url:'{% url "profil_client" client.id %}',
+            data:
+            {
+                id_mission_type:$('#id_mission_type_to_delete').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'supprimer_mission_type'
+            },
+            success:function(json)
+            {
+                document.getElementById("form_delete_mission_type").reset();
+                $("#to_remove_mission_type_"+json.id_mission_type).parent().remove();
+				$('#close_modal_delete_mission_type').click();
+
+				toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+            },
+            error : function(xhr,errmsg,err)
+            {
+                $('#results').html(`
+                    <div class='alert-box alert radius' data-alert>
+                        Oops! We have encountered an error: ` + errmsg + `
+                        <a href='#' class='close'>&times;</a>
+                    </div>`); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+//FIN MISSION TYPE
+
+</script>
+{% endblock %}

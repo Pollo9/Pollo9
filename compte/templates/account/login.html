@@ -1,0 +1,54 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+
+
+
+
+<!--
+<form class="login" method="POST" action="{% url 'account_login' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <button class="submitg" type="submit" style="margin-top:-10px;">{% trans "Sign In" %}</button>
+</form>
+
+
+-->
+
+<!-- Form -->
+<form class="login" method="POST" action="{% url 'account_login' %}">{% csrf_token %}
+
+<!-- Title -->
+          <div class="mb-7">
+            <h2 class="h3 text-drak font-weight-normal mb-0" style="text-align: center;font-size: 2rem;color: #67666e;font-size: 1.75rem;margin-bottom: .5rem;font-weight: 900;line-height: 1.2;">Sherpa Consulting <br><b>- Connexion -</b>  </span></h2>
+          </div>
+          <!-- End Title -->
+  
+
+  {{ form.as_p }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  
+	<a class="link-muted text-capitalize font-weight-normal" style="float: right;margin-top: 15px;" href="{% url 'account_reset_password' %}">Mot de passe oublié</a>
+  <!-- Button -->
+  <div class="row align-items-center mb-5">
+    
+
+    <div class="col-12 text-left"  style="margin-top: 15px;">
+      <button type="submit" class="btn" style="margin-left: -15px;background-image: linear-gradient(150deg, #05080a 0%, #00b9af 100%);border-color: white;color: white;">Connexion</button>
+    </div>
+  </div>
+  <!-- End Button -->
+</form>
+<!-- End Form -->
+
+{% endblock %}

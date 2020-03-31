@@ -1,0 +1,83 @@
+{% load staticfiles %}
+<div class="kt-aside  kt-aside--fixed  kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop" id="kt_aside">
+	<div class="kt-aside__brand kt-grid__item  " id="kt_aside_brand">
+		<div class="kt-aside__brand-logo">
+			<a href="#">
+				<img alt="Logo" src="{% static 'planning/img/alltoo_logo.png' %}" style="max-width: 130px; max-height: 50px">
+			</a>
+		</div>
+	</div>
+	<div class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_aside_menu_wrapper">
+		<div id="kt_aside_menu" class="kt-aside-menu  kt-aside-menu--dropdown " data-ktmenu-vertical="1"
+			 data-ktmenu-dropdown="1" data-ktmenu-scroll="0"  style="padding: 0px;">		
+			<ul class="kt-menu__nav ">
+				<li class="kt-menu__item " aria-haspopup="true" >
+					<a  href="{% url 'planning' %}" class="kt-menu__link ">
+						<i class="kt-menu__link-icon icon-user"></i>
+						<span class="kt-menu__link-text" style="font-size: 12px!important">Mon profile</span>
+					</a>
+				</li>
+				<li class="kt-menu__item " aria-haspopup="true" >
+					<a  href="{% url 'planning' %}" class="kt-menu__link ">
+						<i class="kt-menu__link-icon icon-calendar"></i>
+						<span class="kt-menu__link-text" style="font-size: 12px!important">Mon planning</span>
+					</a>
+				</li>
+				<li class="kt-menu__item  kt-menu__item--submenu" data-ktmenu-submenu-toggle="hover">
+					<a  href="{% url 'messagerie_administrateur' %}" class="kt-menu__link ">
+						<i class="kt-menu__link-icon icon-speech"></i>
+						<span class="kt-menu__link-text" style="font-size: 12px!important">Ma messagerie</span>
+						{% if notif_total > 0 %}
+							<span class="kt-badge kt-badge--success kt-font-bold" id="notif_{{cons.id}}" style="left: 3px; position: relative; background: #f74044;">{{ notif_total }}</span>
+						{% endif %}
+					</a>
+				</li>
+				<hr style="background-color: #848090;">
+				<li class="kt-menu__item " aria-haspopup="true" >
+					<a  href="{% url 'reglages' %}" class="kt-menu__link ">
+						<i class="kt-menu__link-icon icon-chart"></i>
+						<span class="kt-menu__link-text" style="font-size: 12px!important">Statistique</span>
+					</a>
+				</li>
+				<li class="kt-menu__item kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+					<a  href="{% url 'mission' %}" class="kt-menu__link ">
+						<i class="kt-menu__link-icon icon-calendar"></i>
+						<span class="kt-menu__link-text" style="font-size: 12px!important">Planning</span>
+					</a>
+				</li>
+
+				<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"  data-ktmenu-submenu-toggle="hover">
+					<a  href="{% url 'client' %}" class="kt-menu__link ">
+						<i class="kt-menu__link-icon icon-people"></i>
+						<span class="kt-menu__link-text" style="font-size: 12px!important">Clients</span>
+					</a>
+				</li>
+
+				<li class="kt-menu__item  kt-menu__item--submenu">
+					<a  href="{% url 'utilisateurs' %}" class="kt-menu__link ">
+						<i class="kt-menu__link-icon icon-people"></i>
+						<span class="kt-menu__link-text" style="font-size: 12px!important">Utilisateurs</span>
+					</a>
+				</li>
+
+				<li class="kt-menu__item  kt-menu__item--submenu" data-ktmenu-submenu-toggle="hover">
+					<a  href="{% url 'messagerie_administrateur' %}" class="kt-menu__link ">
+						<i class="kt-menu__link-icon icon-speech"></i>
+						<span class="kt-menu__link-text" style="font-size: 12px!important">Messagerie</span>
+						{% if notif_total > 0 %}
+							<span class="kt-badge kt-badge--success kt-font-bold" id="notif_{{cons.id}}" style="left: 3px; position: relative; background: #f74044;">{{ notif_total }}</span>
+						{% endif %}
+					</a>
+				</li>
+				
+				<li class="kt-menu__item " aria-haspopup="true" >
+					<a  href="{% url 'reglages' %}" class="kt-menu__link ">
+						<i class="kt-menu__link-icon icon-settings"></i>
+						<span class="kt-menu__link-text" style="font-size: 12px!important">Réglages</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+

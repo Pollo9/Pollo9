@@ -1,0 +1,210 @@
+.slice-xl {
+            padding-top: 8rem;
+            padding-bottom: 8rem;
+        }
+
+        .slice {
+            position: relative;
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+
+        @media (min-width: 768px) .has-floating-items {
+            padding-bottom: 18rem !important;
+        }
+
+        .has-floating-items {
+            padding-bottom: 18rem !important;
+        }
+
+        .bg-grad-primary {
+            background-image: linear-gradient(to right bottom, #002d71, #143c93, #2a4bb6, #415ada, #5b69ff);
+        }
+
+        .tongue-secondary {
+            color: #212529;
+            background-image: url(data:image/svg+xml;
+            charset=utf8, %3Csvg xmlns=\'http://www.w3.org/2000/svg\'… 28.6875C 13.0974 33.2729 6.88965 33.9995 3.15027 34.4375Z\'/%3E%3C/svg%3E);
+
+        }
+
+        .tongue {
+            line-height: 35px;
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 50%;
+            display: inline-block;
+            width: 138px;
+            height: 35px;
+            transform: rotate(180deg) translateX(50%);
+            text-align: center;
+            color: #6c7686;
+            background-image: url(data:image/svg+xml;
+            charset=utf8, %3Csvg xmlns=\'http://www.w3.org/2000/svg\'… 28.6875C 13.0974 33.2729 6.88965 33.9995 3.15027 34.4375Z\'/%3E%3C/svg%3E);
+background-repeat: no-repeat;
+            background-size: 100%;
+        }
+
+        .tongue i {
+            animation: floating-sm 3s ease infinite;
+        }
+
+        .far {
+            font-weight: 400;
+        }
+
+        .fal, .far {
+            font-family: "Font Awesome 5 Pro";
+        }
+
+        .fa, .fab, .fal, .far, .fas {
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-font-smoothing: antialiased;
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            line-height: 1;
+        }
+
+        .text-white {
+            color: #fff !important;
+        }
+
+        .text-white {
+            color: #fff !important;
+        }
+
+        .h1, .h2, .h3, h1, h2, h3 {
+            font-weight: 500;
+        }
+
+        .h1, h1 {
+            font-size: 2.5rem;
+        }
+
+        .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+            font-family: inherit;
+            font-weight: 500;
+            line-height: 1.3;
+            margin-bottom: .5rem;
+            color: #343a40;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: .5rem;
+        }
+
+        .lead {
+            font-size: 1.125rem;
+            font-weight: 300;
+        }
+
+        .btn:not(:disabled):not(.disabled) {
+            cursor: pointer;
+        }
+
+        .btn-circle {
+            border-radius: 30px;
+        }
+
+        .btn-translate--hover {
+            transition: all .2s ease-in-out;
+        }
+
+        .btn {
+            position: relative;
+        }
+
+        .pr-4, .px-4 {
+            padding-right: 1.5rem !important;
+        }
+
+        .floating-items {
+            position: relative;
+            z-index: 10;
+            left: 0%;
+            margin-left: -570px;
+        }
+
+        .floating-icon:nth-child(1) {
+            top: 110px;
+            left: -60px;
+            width: 120px;
+            height: 120px;
+        }
+
+        .floating-icon:nth-child(5) {
+            top: 70px;
+            left: 920px;
+            width: 100px;
+            height: 100px;
+            animation-delay: 2s;
+        }
+
+        .floating-icon:nth-child(4) {
+            top: 180px;
+            left: 680px;
+            width: 140px;
+            height: 140px;
+            animation-delay: 1.5s;
+        }
+
+        .floating-icon:nth-child(3) {
+            top: 90px;
+            left: 480px;
+            width: 80px;
+            height: 80px;
+            animation-delay: 1s;
+        }
+
+        .floating-icon:nth-child(2) {
+            top: 170px;
+            left: 180px;
+            width: 160px;
+            height: 160px;
+            animation-delay: .5s;
+        }
+
+        .floating-icon {
+            position: absolute;
+            animation: floating 3s ease infinite;
+            text-align: center;
+            border-radius: 50%;
+            background-color: #fff;
+            box-shadow: 0 30px 40px 0 rgba(0, 0, 0, .1);
+        }
+
+        .floating-icon img, .floating-icon span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .floating-icon img {
+            max-width: 100%;
+        }
+
+        .img-saturate {
+            filter: saturate(150%);
+        }
+
+        0% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(20px);
+        }
+
+        100% {
+            transform: translateY(0);
+        }
+
+        .icon {
+            display: inline-flex;
+            min-width: 4rem;
+            min-height: 4rem;
+        }
+    

@@ -1,0 +1,186 @@
+{% extends 'base_planning.html' %} {% load staticfiles %}
+
+{% block link %}
+	
+{% endblock %}
+
+
+{% block content %}
+<style>
+	.kt-chat__text {
+		max-width: 60%;
+		word-wrap: break-word;
+	}
+	.kt-app .kt-app__content {
+		margin-left: 0;
+	}
+	.kt-chat .kt-chat__messages .kt-chat__message .kt-chat__text {
+	    padding: 1.2rem 1.7rem !important;
+	}
+	.kt-portlet__head {
+		height: 60px;
+	}
+	.kt-portlet__body {
+		height: calc(100% - 130px);
+		padding: 10px 25px !important;
+	}
+	.kt-portlet__foot {
+		padding: 15px 25px 10px 25px !important;
+		height: 70px;
+	}
+	.kt-portlet.kt-portlet--head-lg .kt-portlet__head {
+    	min-height: auto;
+	}
+</style>
+
+<h1 class="title_page" style="margin-top: 20px">Messagerie Consultant</h1>
+
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+
+	<!-- begin:: Content -->
+	<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
+		<!--Begin::App-->
+		<div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
+
+		    <!--Begin:: App Aside Mobile Toggle-->
+		    <button class="kt-app__aside-close" id="kt_chat_aside_close">
+		        <i class="la la-close"></i>
+		    </button>
+		    <!--End:: App Aside Mobile Toggle-->
+
+		    <!--Begin:: App Content-->
+		    <div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="kt_chat_content">
+		        <div class="kt-chat">
+		            <div class="kt-portlet kt-portlet--head-lg kt-portlet--last">
+
+		                <div class="kt-portlet__head">
+		                    <div class="kt-chat__head ">
+		                        <div class="kt-chat__left">
+
+		                        </div>
+		                        
+		                        <div class="kt-chat__center">
+		                            <div class="kt-chat__label">
+		                                <a href="#" class="kt-chat__title">Sherpa Consulting</a>
+		                            </div>
+		                        </div>
+
+		                        <div class="kt-chat__right">
+		                        </div>
+		                    </div>
+		                </div>
+		                
+		                <div class="kt-portlet__body">
+		                    <div class="kt-scroll kt-scroll--pull ps ps--active-y" id="msg_wrapper" data-mobile-height="300" style="height: 252px; overflow: hidden;">
+
+		                        <div class="kt-chat__messages messages">
+
+		                        	{% for message in msg %}
+		                        	{% if message.user.username != user.username %}
+		                            <div class="kt-chat__message">
+		                                <div class="kt-chat__user">
+		                                    <span class="kt-media kt-media--circle kt-media--sm"> 
+		                                        <img src="../../static/planning/img/default_user.png" alt="image">
+		                                    </span>
+		                                    <a href="#" class="kt-chat__username">Sherpa Consulting</a>
+		                                    <span class="kt-chat__datetime">{{message.date}}</span>
+		                                </div>
+		                                <div class="kt-chat__text kt-bg-light-success">
+		                                    {{message.message}}
+		                                </div>
+		                            </div>
+		                            {% else %}
+		                            <div class="kt-chat__message kt-chat__message--right">
+		                                <div class="kt-chat__user">
+		                                    <span class="kt-chat__datetime">{{message.date}}</span>
+		                                    <a href="#" class="kt-chat__username">{{user.first_name}} {{user.last_name}}</a>
+		                                    <span class="kt-media kt-media--circle kt-media--sm"> 
+		                                        <img src="{{message.user.profile.avatar.url}}" alt="image">
+		                                    </span>
+		                                </div>
+		                                <div class="kt-chat__text kt-bg-light-brand">
+		                                    {{message.message}}
+		                                </div>
+		                            </div>
+		                            {% endif %}
+		                            {% endfor %}
+
+		                        </div>
+
+			                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+			                    	<div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+			                    </div>
+			                    <div class="ps__rail-y" style="top: 0px; height: 252px; right: -2px;">
+			                    	<div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 64px;"></div>
+			                    </div>
+
+		                	</div>
+		                </div>
+		                
+		                <div class="kt-portlet__foot">
+		                	<form action="" method="POST" id="post-form"> {% csrf_token %}
+		                		<div class="kt-chat__input">
+			                        <div class="kt-chat__editor">
+			                            <textarea style="height: 40px; width: 90%; resize: none;" id="message" placeholder="Type here..."></textarea>
+			                            <input type="submit" class="btn btn-brand btn-md btn-upper btn-bold kt-chat__reply" style="margin: 0 0 30px 40px;" value="Reply">
+			                        </div>
+			                    </div>
+						    </form> 
+		                </div>
+
+			        </div>
+			    </div>
+			    <!--End:: App Content-->
+
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+
+
+{% block script %}
+<script src="{% static 'planning/js/chat.js' %}" type="text/javascript"></script>
+<script type="text/javascript">
+element = document.getElementById('msg_wrapper');
+element.scrollTop = element.scrollHeight;
+</script>
+<script type="text/javascript">
+	$(document).on('submit', '#post-form',function(e){
+		if ($('#message').val()!='') {
+		    e.preventDefault();
+		    $.ajax({
+		        type:'POST',
+		        url:'{% url "messagerie_consultant" %}',
+		        data:{
+		            message:$('#message').val(),
+		            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+		            action: 'post'
+		        },
+		        success:function(json){
+		            document.getElementById("post-form").reset();
+		            $(".messages").append(`<div class="kt-chat__message kt-chat__message--right">
+	            		<div class="kt-chat__user">
+	            			<span class="kt-chat__datetime">`+json.date+`</span>
+	            			<a href="#" class="kt-chat__username">{{user.first_name}} {{user.last_name}}</a>
+	            			<span class="kt-media kt-media--circle kt-media--sm"><img src="{{ user.profile.avatar.url }}" alt="image"></span>
+	            		</div>
+	            		<div class="kt-chat__text kt-bg-light-brand"> json.message </div>
+	            	</div>`
+		            )
+		        element = document.getElementById('msg_wrapper');
+  				element.scrollTop = element.scrollHeight;
+		        },
+		        error : function(xhr,errmsg,err) {
+		        $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+		            " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+		        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+		    	}
+		    });
+	  	}
+	});
+</script>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% load staticfiles %}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Modifier l'adresse</h4>
+            <button type="button" class="close" id="close_modal_modif_adresse" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="kt-portlet__body">
+                <div class="kt-section kt-section--first">
+                    <div class="kt-section__body">
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-lg-3 col-form-label">Nom : </label>
+							<div class="col-lg-9 col-xl-6">
+								<input class="form-control" id="edit_nom_adresse" name="nom_adresse" value="{{adresse.nom}}">
+							</div>
+                        </div>
+                        <div class="form-group row">
+							<label class="col-xl-3 col-lg-3 col-form-label">Adresse : </label>
+                            <div class="col-lg-9 col-xl-6">
+                                <input class="form-control" id="edit_adresse_adresse" name="adresse_adresse" value="{{adresse.adresse}}">
+                            </div>
+							<div class="col-lg-9 col-xl-6">
+							</div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-lg-3 col-form-label">Ville : </label>
+                            <div class="col-lg-9 col-xl-6">
+                                <input class="form-control" id="edit_ville_adresse" name="ville_adresse" value="{{adresse.ville}}">
+                            </div>
+                            <div class="col-lg-9 col-xl-6">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-lg-3 col-form-label">Code postal : </label>
+                            <div class="col-lg-9 col-xl-6">
+                                <input class="form-control" id="edit_code_postal_adresse" name="code_postal_adresse" value="{{adresse.code_postal}}">
+                            </div>
+                            <div class="col-lg-9 col-xl-6">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="kt-portlet__foot">
+                <div class="kt-form__actions">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12" style="display: flex;justify-content: center;">
+                        	<input type="hidden" name="edit_id_adresse" id="edit_id_adresse" value="{{adresse.id}}">
+                            <button type="submit" name="modifier_adresse" value="modifier_adresse" class="btn btn-primary">Modifier</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

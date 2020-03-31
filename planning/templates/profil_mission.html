@@ -1,0 +1,509 @@
+{% extends 'base_planning.html' %} {% load staticfiles %}
+
+{% block link %}
+	<link href="{% static 'call_center/css/todo.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+
+{% block content %}
+<input type="hidden" name="mission_id" id="mission_id" value="{{mission.id}}">
+<a href="{% url 'mission' %}" class="title_page" style="margin-top: 20px;width: 60px;"><- retour</a>
+<h1 class="title_page" style="margin-top: 20px">Mission</h1>	
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" >			
+	<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+		<div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
+		    <div class="kt-grid__item kt-app__toggle kt-app__aside" id="kt_user_profile_aside">
+				<div class="kt-portlet ">
+				    <div class="kt-portlet__head  kt-portlet__head--noborder">
+				        <div class="kt-portlet__head-label">
+				            <h3 class="kt-portlet__head-title">
+				            </h3>
+				        </div>
+				    </div>
+				    <div class="kt-portlet__body kt-portlet__body--fit-y">
+				        <!--begin::Widget -->
+				        <div class="kt-widget kt-widget--user-profile-1">
+				            <div class="kt-widget__head">
+				                <div class="kt-widget__content">
+				                    <div class="kt-widget__section">
+				                        <a href="/administrateur/profil_client/{{mission.client.id}}" id="url_client" class="kt-widget__username">
+				                            {{mission.client.nom}}
+				                        </a><br>
+				                        <a href="/administrateur/profil_consultant/{{mission.consultant.user.id}}" id="url_consultant" class="kt-widget__username">
+				                            {{mission.consultant.user.first_name}} {{mission.consultant.user.last_name}}
+				                        </a>
+				                        <span id="url_type" class="kt-widget__subtitle">
+				                            {{mission.mission_type.nom}}
+				                        </span>
+									</div>
+					            </div>
+				            </div>
+				            <div class="kt-widget__body">
+				                <div class="kt-widget__content">
+				                </div>
+				                <div class="kt-widget__items">
+				                	<div onclick="notif_active_admin(this);" id="notif_personnel" class="kt-widget__item kt-widget__item--active">
+				                        <span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												</svg>                              
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Informations personnelles
+				                            </span>
+				                        </span>
+				                    </div>
+				                    <div onclick="info_active_admin(this);" id="info_personnel" class="kt-widget__item kt-widget__item">
+				                    	<span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												</svg>                              
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Compétences
+				                            </span>
+				                        </span>
+				                    </div>
+				                    <div onclick="info_active_admin(this);" id="info_personnel" class="kt-widget__item kt-widget__item">
+				                    	<span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												</svg>                              
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Missions
+				                            </span>
+				                        </span>
+				                    </div>
+				                    <div onclick="info_active_admin(this);" id="info_personnel" class="kt-widget__item kt-widget__item">
+				                    	<span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												</svg>                              
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Retour
+				                            </span>
+				                        </span>
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+		    </div>
+		    <div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="information_content">
+		        <div class="row">
+		            <div class="col-xl-12">
+		                <div class="kt-portlet">
+		                    <div class="kt-portlet__head">
+		                        <div class="kt-portlet__head-label">
+		                            <h3 class="kt-portlet__head-title">Profil <small>Mettez à jour les informations</small></h3>
+		                        </div>
+		                    </div>
+		                    <form class="kt-form kt-form--label-right" method="POST" id="edit_mission" enctype="multipart/form-data">{% csrf_token %}
+		                        <div class="kt-portlet__body">
+		                            <div class="kt-section kt-section--first">
+		                                <div class="kt-section__body">
+
+		                                	<p id="results"></p>
+		                                	
+		                                	<div class="row">
+		                                        <label class="col-xl-3"></label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <h3 class="kt-section__title kt-section__title-sm">Information mission :</h3>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Consultant</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                        	<div class="dropdown bootstrap-select form-control kt-">
+			                                        	<select class="form-control kt-selectpicker" name="mission_consultant" id="mission_consultant" data-size="4" autocomplete="off" required>
+														    <option value="">---------</option>
+														    {% for consultant in consultants %}
+														    {% if consultant.id == mission.consultant.user.id %}
+														    <option value="{{consultant.profile.id}}" selected>{{consultant.first_name}} {{consultant.last_name}}</option>
+														    {% else %}
+														    <option value="{{consultant.profile.id}}">{{consultant.first_name}} {{consultant.last_name}}</option>
+														    {% endif %}
+														    {% endfor %}
+														</select>
+													</div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Client</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                        	<div class="dropdown bootstrap-select form-control kt-">
+			                                        	<select class="form-control kt-selectpicker" name="mission_client" id="mission_client" data-size="4" autocomplete="off" required>
+														    <option value="">---------</option>
+														    {% for client in clients %}
+														    {% if client.id == mission.client.id %}
+														    <option value="{{client.id}}" selected>{{client.nom}}</option>
+														    {% else %}
+														    <option value="{{client.id}}">{{client.nom}}</option>
+														    {% endif %}
+														    {% endfor %}
+														</select>
+													</div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                    	<label class="col-xl-3 col-lg-3 col-form-label">Statut</label>
+		                                        <div class="kt-radio-inline">
+		                                        	{% for statut in statuts %}
+		                                        	{% if statut.id == mission.statut.id %}
+		                                        	<label class="kt-radio">
+		                                        		<input type="radio" name="mission_statut" id="statut_{{statut.id}}" value="{{statut.id}}" checked>
+														{{statut.nom}}
+														<span></span>
+													</label>
+													{% else %}
+													<label class="kt-radio">
+														<input type="radio" name="mission_statut" id="statut_{{statut.id}}" value="{{statut.id}}">
+														{{statut.nom}}
+														<span></span>
+													</label>
+													{% endif %}
+													{% endfor %}
+												</div>
+		                                    </div>
+		                                    <div class="row">
+		                                        <label class="col-xl-3"></label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <h3 class="kt-section__title kt-section__title-sm">Horaire mission :</h3>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Jour</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <input class="form-control" type="date" name="mission_jour" id="mission_jour" value="{{mission.jour_de_mission|date:'Y-m-d'}}" autocomplete="off">
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Horaire début</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <input class="form-control" type="time" name="mission_debut" id="mission_debut" value="{{mission.horaire_debut}}" autocomplete="off">
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Horaire fin</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <input class="form-control" type="time" name="mission_fin" id="mission_fin" value="{{mission.horaire_fin}}" autocomplete="off">
+		                                        </div>
+		                                    </div>
+		                                    <div class="row">
+		                                        <label class="col-xl-3"></label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <h3 class="kt-section__title kt-section__title-sm">Documents :</h3>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Adresse mission</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                        	<div class="dropdown bootstrap-select form-control kt-">
+			                                        	<select class="form-control kt-selectpicker" name="mission_adresse" id="mission_adresse" data-size="4" autocomplete="off" required>
+														    <option value="">---------</option>
+														    {% for adresse in adresses %}
+														    {% if adresse.id == mission.adresse_de_mission.id %}
+														    <option value="{{adresse.id}}" selected>{{adresse.nom}}</option>
+														    {% else %}
+														    <option value="{{adresse.id}}">{{adresse.nom}}</option>
+														    {% endif %}
+														    {% endfor %}
+														</select>
+													</div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Pièces jointes</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                        	<div class="dropdown bootstrap-select form-control kt-">
+		                                        		<select class="form-control kt-selectpicker" id="mission_pj" name="mission_pj" data-size="4" multiple required>
+			                                        		{% for pj in pieces_jointes %}
+															{% if pj in mission.piece_jointe.all %}
+															<option id="pj_{{pj.id}}" value="{{pj.id}}" selected>{{pj.nom}}</option>
+															{% else %}
+															<option id="pj_{{pj.id}}" value="{{pj.id}}">{{pj.nom}}</option>
+															{% endif %}
+															{% endfor %}
+														</select>
+													</div>
+												</div>		                                    	
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Type mission</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                        	<div class="dropdown bootstrap-select form-control kt-">
+			                                        	<select class="form-control kt-selectpicker" name="mission_type" id="mission_type" data-size="4" autocomplete="off" required>
+														    <option value="">---------</option>
+														    {% for type in types %}
+														    {% if type.id == mission.mission_type.id %}
+														    <option value="{{type.id}}" selected>{{type.nom}}</option>
+														    {% else %}
+														    <option value="{{type.id}}">{{type.nom}}</option>
+														    {% endif %}
+														    {% endfor %}
+														</select>
+													</div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="row">
+		                                        <label class="col-xl-3"></label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <h3 class="kt-section__title kt-section__title-sm">Visibilité consultant :</h3>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Client visible</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <div class="input-group">
+		                                                <div class="input-group-prepend">
+		                                                	<span class="input-group-text">
+		                                                		<input onclick="if_check_client(this)" id="mission_client_visible" name="mission_client_visible" type="checkbox" {% if mission.is_client_visible %} checked {% endif %}>
+		                                                	</span>
+		                                                </div>
+		                                                {% if mission.is_client_visible %}
+		                                                <div class="form-control" id="value_checkbox_client">Visible</div>
+		                                                {% else %}
+		                                                <div class="form-control" id="value_checkbox_client">Invisible</div>
+		                                                {% endif %}
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Adresse visible</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <div class="input-group">
+		                                                <div class="input-group-prepend">
+		                                                	<span class="input-group-text">
+		                                                		<input onclick="if_check_adresse(this)" id="mission_adresse_visible" name="mission_adresse_visible" type="checkbox" {% if mission.is_adresse_visible %} checked {% endif %}>
+		                                                	</span>
+		                                                </div>
+		                                                {% if mission.is_adresse_visible %}
+		                                                <div class="form-control" id="value_checkbox_adresse">Visible</div>
+		                                                {% else %}
+		                                                <div class="form-control" id="value_checkbox_adresse">Invisible</div>
+		                                                {% endif %}
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Pièces jointes visibles</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                        	<div class="dropdown bootstrap-select form-control kt-">
+			                                        	<select class="form-control kt-selectpicker" id="mission_pj_visible" name="mission_pj_visible" data-size="4" multiple tabindex="-98">
+			                                        		{% for pj in pieces_jointes %}
+															{% if pj in mission.piece_jointe_visible.all %}
+															<option id="pj_visible_{{pj.id}}" value="{{pj.id}}" selected>{{pj.nom}}</option>
+															{% else %}
+															<option id="pj_visible_{{pj.id}}" value="{{pj.id}}">{{pj.nom}}</option>
+															{% endif %}
+															{% endfor %}
+														</select>
+													</div>
+												</div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Type mission visible</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <div class="input-group">
+		                                                <div class="input-group-prepend">
+		                                                	<span class="input-group-text">
+		                                                		<input onclick="if_check_type(this)" id="mission_type_visible" name="mission_type_visible" type="checkbox" {% if mission.is_misson_type_visible %} checked {% endif %}>
+		                                                	</span>
+		                                                </div>
+		                                                {% if mission.is_misson_type_visible %}
+		                                                <div class="form-control" id="value_checkbox_type">Visible</div>
+		                                                {% else %}
+		                                                <div class="form-control" id="value_checkbox_type">Invisible</div>
+		                                                {% endif %}
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="kt-portlet__foot">
+		                            <div class="kt-form__actions">
+		                                <div class="row">
+		                                    <div class="col-lg-3 col-xl-3">
+		                                    </div>
+		                                    <div class="col-lg-9 col-xl-9">
+		                                        <button type="submit" name="edit_mission" value="edit_mission" class="btn btn-success">Soumettre</button>&nbsp;
+		                                        <button type="reset" class="btn btn-secondary">Annuler</button>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </form>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		    <!-- Stats ! -->
+		    <div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="kt_todo_content2" style="display:none;">
+		    	<div class="row">
+		    		<div class="col-xl-12">
+	                    <div class="kt-grid__item kt-grid__item--fluid  kt-portlet kt-portlet--height-fluid kt-todo__list" id="kt_todo_list">
+	                        <div class="kt-portlet__body kt-portlet__body--fit-x">
+	                        	<div class="row">
+								</div>
+	                    	</div>
+	                	</div>
+		    		</div>
+		    	</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'planning/js/throw_modal.js' %}"></script>
+<script src="{% static 'planning/js/bootstrap-select.js' %}"></script>
+<script>
+	function if_check_client(check)
+	{
+		if (check.checked == true)
+		{
+			document.getElementById("value_checkbox_client").innerHTML = "Visible";
+		}
+		else
+		{
+			document.getElementById("value_checkbox_client").innerHTML = "Invisible";
+		}
+	}
+	function if_check_adresse(check)
+	{
+		if (check.checked == true)
+		{
+			document.getElementById("value_checkbox_adresse").innerHTML = "Visible";
+		}
+		else
+		{
+			document.getElementById("value_checkbox_adresse").innerHTML = "Invisible";
+		}
+	}
+	function if_check_type(check)
+	{
+		if (check.checked == true)
+		{
+			document.getElementById("value_checkbox_type").innerHTML = "Visible";
+		}
+		else
+		{
+			document.getElementById("value_checkbox_type").innerHTML = "Invisible";
+		}
+	}
+
+	var id_mission = document.getElementById("mission_id").value;
+	$(document).on('submit', '#edit_mission',function(e)
+    {
+        e.preventDefault();
+
+        var radios = document.getElementsByName('mission_statut');
+		var mission_statut = '';
+		for(var i=0;i<radios.length;i++)
+		{
+		   if(radios[i].checked)
+		      	mission_statut = radios[i].value;
+		}
+
+		var selectedList1 = [],selectedList2 = [],selectBox1 = document.getElementById("mission_pj"),selectBox2 = document.getElementById("mission_pj_visible"),i;
+		for (i=0; i < selectBox1.options.length; i++) 
+		{
+			if (selectBox1.options[i].selected) 
+			{
+				selectedList1.push(selectBox1.options[i].value);
+			}
+		}
+		for (i=0; i < selectBox2.options.length; i++) 
+		{
+			if (selectBox2.options[i].selected) 
+			{
+				selectedList2.push(selectBox2.options[i].value);
+			}
+		}
+
+        $.ajax(
+        {
+            type:'POST',
+            url:"administrateur/profil_mission/" + id_mission,    
+            data:
+            {
+                mission_jour:$('#mission_jour').val(),
+                mission_debut:$('#mission_debut').val(),
+                mission_fin:$('#mission_fin').val(),
+                mission_consultant:$('#mission_consultant').val(),
+                mission_client:$('#mission_client').val(),
+                mission_statut:mission_statut,
+                mission_adresse:$('#mission_adresse').val(),
+                mission_pj:selectedList1,
+                mission_type:$('#mission_type').val(),
+                mission_client_visible:$('#mission_client_visible').prop("checked"),
+                mission_adresse_visible:$('#mission_adresse_visible').prop("checked"),
+                mission_pj_visible:selectedList2,
+                mission_type_visible:$('#mission_type_visible').prop("checked"),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'editer_mission'
+            },
+            success:function(json)
+            {
+				document.getElementById("edit_mission").reset();
+            	document.getElementById("mission_jour").value = json.mission_jour;
+            	document.getElementById("mission_debut").value = json.mission_debut;
+            	document.getElementById("mission_fin").value = json.mission_fin;
+            	document.getElementById("mission_consultant").value = json.mission_consultant;
+            	document.getElementById("mission_client").value = json.mission_client;
+            	document.getElementById("statut_"+json.mission_statut).checked = true;
+            	document.getElementById("mission_adresse").value = json.mission_adresse;
+            	for (var i = json.mission_pj.length; i < 0; i++) {
+            		document.getElementById("pj_"+json.mission_pj[i]).attr("selected","true");
+            	}
+            	document.getElementById("mission_type").value = json.mission_type;
+            	$("#mission_client_visible").prop('checked',json.mission_client_visible);
+            	$("#mission_adresse_visible").prop('checked',json.mission_adresse_visible);
+            	for (var i = json.mission_pj_visible.length; i < 0; i++) {
+            		document.getElementById("pj_visible_"+json.mission_pj_visible[i]).attr("selected","true");
+            	}
+            	$("#mission_type_visible").prop('checked',json.mission_type_visible);
+
+            	document.getElementById('url_client').innerHTML = json.client_nom;
+            	document.getElementById('url_consultant').innerHTML = json.consultant_nom;
+            	document.getElementById('url_type').innerHTML = json.type_nom;
+            	document.getElementById('url_client').href = json.client_url;
+            	document.getElementById('url_consultant').href = json.consultant_url;
+
+            	toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+            },
+            error : function(xhr,errmsg,err)
+            {
+                $('#results').html(`
+                    <div class='alert-box alert radius' data-alert>
+                        Oops! We have encountered an error: ` + errmsg + `
+                        <a href='#' class='close'>&times;</a>
+                    </div>`); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+</script>
+{% endblock %}

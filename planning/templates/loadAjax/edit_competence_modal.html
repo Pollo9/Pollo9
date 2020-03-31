@@ -1,0 +1,54 @@
+{% load staticfiles %}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Modifier la compétence</h4>
+            <button type="button" class="close" id="close_modal_modif_competence" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="kt-portlet__body">
+                <div class="kt-section kt-section--first">
+                    <div class="kt-section__body">
+                        <div class="row" style="margin-bottom: 15px;">
+                            <div class="col-lg-12" style="display: flex;align-items: center;justify-content: center;">
+                                {% if competence.note == 1 %}
+                                    <img id="modif_image_competence" src="{% static 'planning/img/1stars.png' %}">
+                                {% elif competence.note == 2 %}
+                                    <img id="modif_image_competence" src="{% static 'planning/img/2stars.png' %}">
+                                {% else %}
+                                    <img id="modif_image_competence" src="{% static 'planning/img/3stars.png' %}">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-lg-3 col-form-label">Compétence : </label>
+							<div class="col-lg-9 col-xl-6">
+								<div class="form-control" name="nom_consultant">{{competence.nom.nom}}</div>
+							</div>
+                        </div>
+                        <div class="form-group row">
+							<label class="col-xl-3 col-lg-3 col-form-label">Note : </label>
+							<div class="col-lg-9 col-xl-6">
+								<select class="form-control form-control-sm" id="edit_note_competence" onchange="select_image_modif_competence(this.value)" name="edit_note_competence">
+									<option {% if competence.note == 1 %} selected="" {% endif %} value="1">1</option>
+									<option {% if competence.note == 2 %} selected="" {% endif %} value="2">2</option>
+									<option {% if competence.note == 3 %} selected="" {% endif %} value="3">3</option>
+								</select>
+							</div>
+						</div>
+                    </div>
+                </div>
+            </div>
+            <div class="kt-portlet__foot">
+                <div class="kt-form__actions">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12" style="display: flex;justify-content: center;">
+                        	<input type="hidden" name="edit_id_competence" id="edit_id_competence" value="{{competence.id}}">
+                            <button type="submit" name="modifier_competence" value="modifier_competence" class="btn btn-primary">Modifier</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

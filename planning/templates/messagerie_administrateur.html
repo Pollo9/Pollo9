@@ -1,0 +1,271 @@
+{% extends 'base_planning.html' %} {% load staticfiles %}
+
+{% block link %}
+	
+{% endblock %}
+
+
+{% block content %}
+<style>
+	#kt_subheader {
+		position: static;
+	}
+	.diminutif_photo
+	{
+		width: 90px;
+	    height: 90px;
+	    border-radius: 50px;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    font-size: 20px;
+	    font-weight: bold;
+	}
+</style>
+
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" style="padding-top: 0;">
+	<!-- begin:: Content Head -->
+	<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+	    <div class="kt-container  kt-container--fluid ">
+	        <div class="kt-subheader__main">
+	            <h3 class="kt-subheader__title">Utilisateurs</h3>
+	            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+	            <div class="kt-subheader__group" id="kt_subheader_search">
+	                <span class="kt-subheader__desc" id="kt_subheader_total">{{consultants_liste.count}} Total</span>
+	                <form class="kt-margin-l-20" id="kt_subheader_search_form">
+	                    <div class="kt-input-icon kt-input-icon--right kt-subheader__search">
+                            <input type="text" class="form-control" placeholder="Search..." id="myInput">
+                            <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                            	<span>
+	                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+									    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+									        <rect x="0" y="0" width="24" height="24"></rect>
+									        <path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
+									        <path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero"></path>
+									    </g>
+									</svg>
+	                            </span>
+	                        </span>
+	                    </div>
+	                </form>
+	            </div>
+	        </div>     
+	    </div>
+	</div>
+	<!-- end:: Content Head -->
+
+	<!-- begin:: Content -->
+	<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid" style="padding-top: 45px;">
+		<!--Begin::Section-->
+		{% for consultant in consultants %}
+		<div class="row consultant_rows" id="consultant_row_{{consultant.number}}" {% if consultant.number != 1 %}style="display: none;" {%endif%}>
+			{% for cons in consultant %}
+		    <div class="col-xl-3">
+		        <!--Begin::Portlet-->
+		        <div class="kt-portlet kt-portlet--height-fluid">
+		            <div class="kt-portlet__head kt-portlet__head--noborder">
+						{% for k,v in notif.items %}
+			            {% if k == cons.id and v > 0 %}
+			            <span class="kt-badge kt-badge--success kt-font-bold" id="notif_{{cons.id}}" style="left: 100%; top: 5px; position: relative; background: #f74044;">{{ v }}</span>
+			            {% endif %}
+			            {% endfor %}
+	            	</div>
+		            <div class="kt-portlet__body" style="padding-top: 0;">
+		                <!--begin::Widget -->
+		                <div class="kt-widget kt-widget--user-profile-2">
+		                    <div class="kt-widget__head">
+		                    	{% if cons.profile.avatar.url != None %}
+		                        <div class="kt-widget__media">
+		                            <img class="kt-widget__img kt-hidden-" src="{{cons.profile.avatar.url}}" alt="image" title="" style="">
+		                        </div>
+			                    {% else %}
+		                    	<div class="kt-widget__media diminutif_photo" style="background-color:{{cons.profile.couleur_rdm}}30;">
+                                    <span class="kt-widget__img kt-hidden-" style="color:{{cons.profile.couleur_rdm}};font-weight:bold;">{{cons.profile.diminutif}}</span>
+                                </div>
+			                    {% endif %}
+		                        <div class="kt-widget__info">
+		                            <a href="/profil_utilisateur/{{cons.id}}" class="kt-widget__username">
+		                                {{cons.first_name}} {{cons.last_name}}                                              
+		                            </a>
+		                        </div>
+		                    </div>
+
+		                    <div class="kt-widget__body" style="margin-top: 10px;">                                      
+
+		                        <div class="kt-widget__item">
+		                            <div class="kt-widget__contact">
+		                                <span class="kt-widget__label">Email:</span>
+		                                <a href="#" class="kt-widget__data">{{cons.email}}</a>
+		                            </div>
+		                            <div class="kt-widget__contact">
+		                                <span class="kt-widget__label">Téléphone:</span>
+		                                <a href="#" class="kt-widget__data">{{cons.profile.telephone}}</a>
+		                            </div>
+		                            <div class="kt-widget__contact">
+		                                <span class="kt-widget__label">Localisation:</span>
+		                                <span class="kt-widget__data">{{cons.profile.ville}}</span>
+		                            </div>
+		                        </div>
+		                    </div>
+	                    
+		                    <div class="kt-widget__footer" style="margin-bottom: 2rem;">
+		                        <button type="button" class="btn btn-label-brand btn-lg btn-upper" onclick="openModal({{ cons.id }})" id="show-conversation" data-toggle="modal" data-target="#kt_chat_modal" data-id="{{cons.id}}">Envoyer un message 
+		                        </button>
+		                    </div>
+	                	</div>         
+	                	<!--end::Widget -->
+	            	</div>
+	        	</div>
+	        	<!--End::Portlet--> 
+	    	</div>
+	    	{% endfor %}
+	    </div>
+	    {% endfor %}
+		<!--End::Section-->
+
+
+		<!--Begin::Section-->
+		<div class="row">
+		    <div class="col-xl-12">       
+		        <!--begin:: Components/Pagination/Default-->
+				<div class="kt-portlet">
+				    <div class="kt-portlet__body">
+				        <!--begin: Pagination-->
+				        <div class="kt-pagination kt-pagination--brand">
+				            <ul class="kt-pagination__links">
+						        <!--<li class="kt-pagination__link--first pagination" data-page="1">
+				                    <a href="#"><i class="icon-control-start"></i></a>
+				                </li>
+				                <li class="kt-pagination__link--prev pagination" data-page="1">
+				                    <a href="#"><i class="icon-arrow-left"></i></a>
+				                </li>-->
+				                {% for i in paginator.page_range %}
+						        <li class="{% if i == 1 %}kt-pagination__link--active{%endif%} pagination" data-page="{{i}}" id="page_link_{{i}}">
+				                    <a>{{i}}</a>
+				                </li>
+						        {% endfor %}
+						        <!--
+						        <li class="kt-pagination__link--next pagination" data-page="{{start_page.next_page_number}}">
+				                    <a href="#"><i class="icon-arrow-right"></i></a>
+				                </li>
+				                <li class="kt-pagination__link--last pagination" data-page="{{start_page.paginator.num_pages}}">
+				                    <a href="#"><i class="icon-control-end"></i></a>
+				                </li>-->
+				            </ul>
+				        </div>
+				        <!--end: Pagination-->
+				    </div>
+				</div>
+				<!--end:: Components/Pagination/Default-->       
+		    </div>           
+		</div> 
+		<!--End::Section-->
+	</div>
+	<!-- end:: Content -->				
+</div>
+
+<div class="modal fade- modal-sticky-bottom-right" id="modal-conversation" role="dialog" data-backdrop="false">
+	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+
+	    </div>
+	</div>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+<script src="{% static 'planning/js/chat.js' %}" type="text/javascript"></script>
+<script src="{% static 'planning/js/bootstrap.min.js' %}"></script>
+
+<script type="text/javascript">
+	
+	var page = 1;
+	$(document).on('click', '.pagination',function(){
+	    page = $(this).attr('data-page');
+	    consultant_row = "consultant_row_"+page;
+	    document.querySelectorAll('.consultant_rows').forEach(function(el) {
+		   el.style.display = 'none';
+		});
+		document.getElementById(consultant_row).style.display = "flex";
+		
+		next_page = "page_link_"+page;
+		document.querySelectorAll('.pagination').forEach(function(el) {
+		   el.classList.remove("kt-pagination__link--active");
+		});
+	    document.getElementById(next_page).classList.add("kt-pagination__link--active");
+	});
+
+	function openModal(id_consultant)
+	{
+		if (document.getElementById('notif_'+id_consultant)) {
+			var notif = document.getElementById('notif_'+id_consultant);
+		}
+    	$.ajax({
+	      	url: '{% url "messagerie_administrateur_modal" %}',
+	      	data: {
+				'id_consultant': id_consultant
+			},
+	      	type: 'get',
+	      	dataType: 'json',
+      		success: function (data) {
+      			$("#modal-conversation").modal("show");
+        		$("#modal-conversation .modal-content").html(data.html_form);
+        		element = document.getElementById('msg_wrapper');
+				element.scrollTop = element.scrollHeight;
+				if (notif) {
+					notif.remove();
+				}
+    		}
+    	});
+	}
+
+	$(document).on('submit', '#post-form',function(e){
+		if ($('#message').val()!='') {
+		    e.preventDefault();
+		    $.ajax({
+		        type:'POST',
+		        url: '{% url "messagerie_administrateur_modal" %}',
+		        data:{
+		            message:$('#message_text').val(),
+		            id_consultant:$('#id_consultant').val(),
+		            message_sms:$('#message_sms').prop("checked"),
+		            message_email:$('#message_email').prop("checked"),
+		            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+		            action: 'post'
+		        },
+		        success:function(json){
+		            document.getElementById("post-form").reset();
+		            var to_print_avatar;
+		            if (json.avatar != null)
+		            {
+		            	to_print_avatar=`<span class="kt-media kt-media--circle kt-media--sm"><img src="`+json.avatar+`" alt="image"></span>`
+		            }
+		            else
+		            {
+		            	to_print_avatar=`<span class="kt-media kt-media--circle kt-media--sm" style="background-color:` + json.rdm_couleur + `30;"><span style="color:` + json.rdm_couleur + `;font-weight:bold;">`+json.diminutif+`</span></span>`
+		            }
+		            $(".messages").append(
+		            	`<div class="kt-chat__message kt-chat__message--right kt-chat__message--brand">
+	                        <div class="kt-chat__user">
+	                            <span class="kt-chat__datetime">`+json.date+`</span>
+	                            <a href="#" class="kt-chat__username">Sherpa Consulting</a>
+	                            ` + to_print_avatar + `
+	                        </div>
+	                        <div class="kt-chat__text">`+json.message+`</div>
+	                    </div>`
+		            );
+		        element = document.getElementById('msg_wrapper');
+  				element.scrollTop = element.scrollHeight;
+		        },
+		        error : function(xhr,errmsg,err) {
+		        $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+		            " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+		        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+		    	}
+		    });
+	  	}
+	});
+</script>
+{% endblock %}

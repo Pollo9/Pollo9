@@ -1,0 +1,948 @@
+{% extends 'base_planning.html' %} {% load staticfiles %}
+
+{% block link %}
+	<link href="{% static 'call_center/css/todo.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+
+{% block content %}
+<style type="text/css">
+	.icon_competence
+	{
+		display: none;
+	}
+
+	.display_icon_competence:hover .icon_competence
+	{
+		display: flex!important;
+	}
+</style>
+<input type="hidden" name="consultant_id" id="consultant_id" value="{{consultant.id}}">
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" style="margin-top: 25px;">			
+	<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+		<div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
+		    <div class="kt-grid__item kt-app__toggle kt-app__aside" id="kt_user_profile_aside">
+				<div class="kt-portlet ">
+				    <div class="kt-portlet__head  kt-portlet__head--noborder">
+				        <div class="kt-portlet__head-label">
+				            <h3 class="kt-portlet__head-title">
+				            </h3>
+				        </div>
+				    </div>
+				    <div class="kt-portlet__body kt-portlet__body--fit-y">
+				        <!--begin::Widget -->
+				        <div class="kt-widget kt-widget--user-profile-1">
+				            <div class="kt-widget__head" style="align-items: center;">
+				                {% if consultant.profile.avatar.url != None %}
+				                <div class="kt-widget__media">
+				                	<img id="avatar_left" src="{{ consultant.profile.avatar.url }}">
+				                </div>
+				                {% else %}
+				                <div class="kt-widget__media" style="background-color:{{consultant.profile.couleur_rdm}}30;width: 90px;max-width: 100%;border-radius: 8px;height: 90px;display: flex;align-items: center;justify-content: center;">
+                                    <span class="kt-widget__img kt-hidden-" style="color:{{consultant.profile.couleur_rdm}};font-size: 25px;font-weight:bold;">{{consultant.profile.diminutif}}</span>
+                                </div>
+				                {% endif %}
+				                <div class="kt-widget__content">
+				                    <div class="kt-widget__section">
+				                        <a href="#" id="left_prenom" class="kt-widget__username">
+				                            {{consultant.first_name}}
+				                        </a>
+				                        <span id="left_nom" class="kt-widget__subtitle">
+				                            {{consultant.last_name}}
+				                        </span>
+				                    </div>
+					            </div>
+				            </div>
+				            <div class="kt-widget__body">
+				                <div class="kt-widget__content">
+				                    <div class="kt-widget__info">
+				                        <span class="kt-widget__label">Email:</span>
+				                        <a href="mailto:{{consultant.email}}" subject="subject text" id="left_email" class="kt-widget__data">{{consultant.email}}</a>
+				                    </div>
+				                    <div class="kt-widget__info">
+				                        <span class="kt-widget__label">Téléphone:</span>
+				                        <a href="tel:{{consultant.profile.telephone}}" id="left_tel" class="kt-widget__data">{{consultant.profile.telephone}}</a>
+				                    </div>
+				                </div>
+				                <div class="kt-widget__items">
+				                	<div onclick="notif_active_admin();" id="notif_personnel" class="kt-widget__item kt-widget__item--active">
+				                        <span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												        <polygon points="0 0 24 0 24 24 0 24"></polygon>
+												        <path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
+												        <path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"></path>
+												    </g>
+												</svg>                              
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Informations personnelles
+				                            </span>
+				                        </span>
+				                    </div>
+				                    <div onclick="info_active_admin();" id="info_personnel" class="kt-widget__item kt-widget__item">
+				                    	<span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												        <polygon points="0 0 24 0 24 24 0 24"></polygon>
+												        <path d="M12,18 L7.91561963,20.1472858 C7.42677504,20.4042866 6.82214789,20.2163401 6.56514708,19.7274955 C6.46280801,19.5328351 6.42749334,19.309867 6.46467018,19.0931094 L7.24471742,14.545085 L3.94038429,11.3241562 C3.54490071,10.938655 3.5368084,10.3055417 3.92230962,9.91005817 C4.07581822,9.75257453 4.27696063,9.65008735 4.49459766,9.61846284 L9.06107374,8.95491503 L11.1032639,4.81698575 C11.3476862,4.32173209 11.9473121,4.11839309 12.4425657,4.36281539 C12.6397783,4.46014562 12.7994058,4.61977315 12.8967361,4.81698575 L14.9389263,8.95491503 L19.5054023,9.61846284 C20.0519472,9.69788046 20.4306287,10.2053233 20.351211,10.7518682 C20.3195865,10.9695052 20.2170993,11.1706476 20.0596157,11.3241562 L16.7552826,14.545085 L17.5353298,19.0931094 C17.6286908,19.6374458 17.263103,20.1544017 16.7187666,20.2477627 C16.5020089,20.2849396 16.2790408,20.2496249 16.0843804,20.1472858 L12,18 Z" fill="#000000"></path>
+												    </g>
+												</svg>                             
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Compétences
+				                            </span>
+				                        </span>
+				                    </div>
+				                    <div onclick="mission_active_admin();" id="mission" class="kt-widget__item kt-widget__item">
+				                    	<span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												        <rect x="0" y="0" width="24" height="24"/>
+												        <path d="M8,3 L8,3.5 C8,4.32842712 8.67157288,5 9.5,5 L14.5,5 C15.3284271,5 16,4.32842712 16,3.5 L16,3 L18,3 C19.1045695,3 20,3.8954305 20,5 L20,21 C20,22.1045695 19.1045695,23 18,23 L6,23 C4.8954305,23 4,22.1045695 4,21 L4,5 C4,3.8954305 4.8954305,3 6,3 L8,3 Z" fill="#000000" opacity="0.3"/>
+												        <path d="M11,2 C11,1.44771525 11.4477153,1 12,1 C12.5522847,1 13,1.44771525 13,2 L14.5,2 C14.7761424,2 15,2.22385763 15,2.5 L15,3.5 C15,3.77614237 14.7761424,4 14.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 L9,2.5 C9,2.22385763 9.22385763,2 9.5,2 L11,2 Z" fill="#000000"/>
+												        <rect fill="#000000" opacity="0.3" x="7" y="10" width="5" height="2" rx="1"/>
+												        <rect fill="#000000" opacity="0.3" x="7" y="14" width="9" height="2" rx="1"/>
+												    </g>
+												</svg>                             
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Missions
+				                            </span>
+				                        </span>
+				                    </div>
+				                    <a href="{% url 'messagerie_administrateur' %}" class="kt-widget__item kt-widget__item">
+				                    	<span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												        <rect x="0" y="0" width="24" height="24"/>
+												        <path d="M21,12.0829584 C20.6747915,12.0283988 20.3407122,12 20,12 C16.6862915,12 14,14.6862915 14,18 C14,18.3407122 14.0283988,18.6747915 14.0829584,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,12.0829584 Z M18.1444251,7.83964668 L12,11.1481833 L5.85557487,7.83964668 C5.4908718,7.6432681 5.03602525,7.77972206 4.83964668,8.14442513 C4.6432681,8.5091282 4.77972206,8.96397475 5.14442513,9.16035332 L11.6444251,12.6603533 C11.8664074,12.7798822 12.1335926,12.7798822 12.3555749,12.6603533 L18.8555749,9.16035332 C19.2202779,8.96397475 19.3567319,8.5091282 19.1603533,8.14442513 C18.9639747,7.77972206 18.5091282,7.6432681 18.1444251,7.83964668 Z" fill="#000000"/>
+												        <circle fill="#000000" opacity="0.3" cx="19.5" cy="17.5" r="2.5"/>
+												    </g>
+												</svg>                            
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Messagerie
+				                            </span>
+				                        </span>
+				                    </a>
+				                    <a href="{% url 'utilisateurs' %}" class="kt-widget__item kt-widget__item">
+				                    	<span class="kt-widget__section">
+				                            <span class="kt-widget__icon">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												        <rect x="0" y="0" width="24" height="24"/>
+												        <path d="M8.42034438,20 L21,20 C22.1045695,20 23,19.1045695 23,18 L23,6 C23,4.8954305 22.1045695,4 21,4 L8.42034438,4 C8.15668432,4 7.90369297,4.10412727 7.71642146,4.28972363 L0.653241109,11.2897236 C0.260966303,11.6784895 0.25812177,12.3116481 0.646887666,12.7039229 C0.648995955,12.7060502 0.651113791,12.7081681 0.653241109,12.7102764 L7.71642146,19.7102764 C7.90369297,19.8958727 8.15668432,20 8.42034438,20 Z" fill="#000000" opacity="0.3"/>
+												        <path d="M12.5857864,12 L11.1715729,10.5857864 C10.7810486,10.1952621 10.7810486,9.56209717 11.1715729,9.17157288 C11.5620972,8.78104858 12.1952621,8.78104858 12.5857864,9.17157288 L14,10.5857864 L15.4142136,9.17157288 C15.8047379,8.78104858 16.4379028,8.78104858 16.8284271,9.17157288 C17.2189514,9.56209717 17.2189514,10.1952621 16.8284271,10.5857864 L15.4142136,12 L16.8284271,13.4142136 C17.2189514,13.8047379 17.2189514,14.4379028 16.8284271,14.8284271 C16.4379028,15.2189514 15.8047379,15.2189514 15.4142136,14.8284271 L14,13.4142136 L12.5857864,14.8284271 C12.1952621,15.2189514 11.5620972,15.2189514 11.1715729,14.8284271 C10.7810486,14.4379028 10.7810486,13.8047379 11.1715729,13.4142136 L12.5857864,12 Z" fill="#000000"/>
+												    </g>
+												</svg>                             
+											</span>
+				                            <span class="kt-widget__desc">
+				                                Retour
+				                            </span>
+				                        </span>
+				                    </a>
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+		    </div>
+		    <!-- Informations personnelles -->
+		    <div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="information_content">
+		        <div class="row">
+		            <div class="col-xl-12">
+		                <div class="kt-portlet">
+		                    <div class="kt-portlet__head">
+		                        <div class="kt-portlet__head-label">
+		                            <h3 class="kt-portlet__head-title">Profil <small>Mettre à jour les informations</small></h3>
+		                        </div>
+		                    </div>
+		                    <form class="kt-form kt-form--label-right" method="POST" id="edit_consultant" enctype="multipart/form-data" data-consultant-url="{% url 'profil_utilisateur' consultant.id %}">{% csrf_token %}
+		                        <div class="kt-portlet__body">
+		                            <div class="kt-section kt-section--first">
+		                                <div class="kt-section__body">
+		                                    <div class="row">
+		                                        <label class="col-xl-3"></label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <h3 class="kt-section__title kt-section__title-sm">Information utilisateur :</h3>
+		                                        </div>
+		                                    </div>
+		                                    <input type="hidden" name="avatar_act" value="{{consultant.profile.avatar}}">
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Avatar</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <div class="kt-avatar kt-avatar--outline" id="kt_user_avatar">
+			                                        	<div class="kt-avatar kt-avatar--outline" id="kt_user_avatar">
+			                                        		{% if consultant.profile.avatar.url != None %}
+			                                                <div id="imgaaaa" class="kt-avatar__holder" style="background-image: url('{{ consultant.profile.avatar.url }}')"></div>
+			                                                {% else %}
+			                                                <div id="imgaaaa" class="kt-avatar__holder" style=""></div>
+							                				{% endif %}
+			                                                <label class="kt-avatar__upload" data-toggle="kt-tooltip" title="" data-original-title="Change avatar">
+			                                                    <i class="icon-pencil"></i>
+		                                                		{% for field in form %}
+		                                                    		<input type="file" name="{{field.name}}" id="id_avatar" accept=".png, .jpg, .jpeg" onchange="readURL(this)">
+			                                                    {% endfor %}
+			                                                </label>
+			                                                <span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="" data-original-title="Cancel avatar">
+			                                                    <i class="fa fa-times"></i>
+			                                                </span>
+			                                            </div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Prénom</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <input class="form-control" name="consultant_prenom" type="text" id="consultant_prenom" value="{{consultant.first_name}}" autocomplete="off">
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Nom</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <input class="form-control" type="text" name="consultant_nom" id="consultant_nom" value="{{consultant.last_name}}" autocomplete="off">
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Diminutif</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <input class="form-control" type="text" name="consultant_diminutif" id="consultant_diminutif" value="{{consultant.profile.diminutif}}" autocomplete="off">
+		                                        </div>
+		                                    </div>
+		                                    <div class="row">
+		                                        <label class="col-xl-3"></label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <h3 class="kt-section__title kt-section__title-sm">Contact :</h3>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Téléphone portable</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <div class="input-group">
+		                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-call-end"></i></span></div>
+		                                                <input id="consultant_telephone" type="text" name="consultant_telephone" class="form-control" value="{{consultant.profile.telephone}}" placeholder="Phone" aria-describedby="basic-addon1" autocomplete="off">
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Email</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <div class="input-group">
+		                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-envelope-open"></i></span></div>
+		                                                <input id="consultant_email" type="text" name="consultant_email" class="form-control" value="{{consultant.email}}" placeholder="Email" aria-describedby="basic-addon1" autocomplete="off">
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Ville</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <input id="consultant_ville" class="form-control" type="text" name="consultant_ville" value="{{consultant.profile.ville}}" autocomplete="off">
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Code postal</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <input id="consultant_code_postal" class="form-control" type="text" name="consultant_code_postal" value="{{consultant.profile.code_postal}}" autocomplete="off">
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Adresse</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <input id="consultant_adresse" class="form-control" type="text" name="consultant_adresse" value="{{consultant.profile.adresse}}" autocomplete="off">
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-group row">
+		                                        <label class="col-xl-3 col-lg-3 col-form-label">Activer</label>
+		                                        <div class="col-lg-9 col-xl-6">
+		                                            <div class="input-group">
+		                                                <div class="input-group-prepend">
+		                                                	<span class="input-group-text">
+		                                                		<input onclick="if_check(this)" id="consultant_activer" name="consultant_activer" type="checkbox" {% if consultant.is_active %} checked="" {% endif %}>
+		                                                	</span>
+		                                                </div>
+		                                                {% if consultant.is_active %}
+		                                                <div class="form-control" id="value_checkbox">Actif</div>
+		                                                {% else %}
+		                                                <div class="form-control" id="value_checkbox">Inactif</div>
+		                                                {% endif %}
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="kt-portlet__foot">
+		                            <div class="kt-form__actions">
+		                                <div class="row">
+		                                    <div class="col-lg-3 col-xl-3">
+		                                    </div>
+		                                    <div class="col-lg-9 col-xl-9">
+		                                        <button type="submit" name="modifier_consultant" value="modifier_consultant" class="btn btn-success">Modifier</button>&nbsp;
+		                                        <button type="reset" class="btn btn-secondary">Annuler</button>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </form>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		    <!-- Fin Informations personnelles -->
+		    <!-- Compétences -->
+		    <div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="kt_todo_content2" style="display:none;">
+		    	<div class="kt-portlet">
+					<div class="kt-portlet__head">
+						<div class="kt-portlet__head-label">
+							<h3 class="kt-portlet__head-title">
+								Les compétences
+							</h3>
+						</div>
+					</div>
+					<div class="kt-portlet__body">
+						<div class="kt-notification-v2" id="list_competence">
+							{% for competence in list_competence %}
+								<div class="kt-notification-v2__item display_icon_competence">
+									<div class="kt-notification-v2__item-icon" style="background-color: transparent!important;" id="to_change_image_note_competence">
+										{% if competence.note == 1 %}
+										<img id="photo_competence_{{competence.id}}" src="{% static 'planning/img/1stars.png' %}">
+										{% elif competence.note == 2 %}
+										<img id="photo_competence_{{competence.id}}" src="{% static 'planning/img/2stars.png' %}">
+										{% else %}
+										<img id="photo_competence_{{competence.id}}" src="{% static 'planning/img/3stars.png' %}">
+										{% endif %}
+									</div>
+									<div class="kt-notification-v2__itek-wrapper">
+										<div class="kt-notification-v2__item-title">
+											{{competence.nom}}
+										</div>
+										<div class="kt-notification-v2__item-desc">
+											{{competence.date_modification}}
+										</div>
+									</div>
+									<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit({{competence.id}})" style="padding: 0.06rem .25rem;display: none;" title="Modifier la compétence.">
+		                                <i class="icon-note"></i>
+		                            </a>
+		                            <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_competence_{{competence.id}}" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer la compétence." onclick="openModalDelete({{competence.id}})">
+		                                <i class="icon-trash"></i>
+		                            </a>
+								</div>
+							{% endfor %}
+						</div>
+						<div class="kt-separator kt-separator--space-lg kt-separator--border-dashed">
+						</div>
+						<button type="button" class="btn btn-primary btn-wide" data-toggle="modal" data-target="#add_competence">Ajouter une compétence</button>
+					</div>
+				</div>
+		    </div>
+		    <!-- Fin compétences -->
+		    <!-- Compétences -->
+		    <div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="kt_todo_content3" style="display:none;">
+		    	<div class="kt-portlet kt-portlet--height-fluid">
+				<div class="kt-portlet__head">
+					<div class="kt-portlet__head-label">
+						<h3 class="kt-portlet__head-title">
+							Les missions
+						</h3>
+					</div>
+					<div class="kt-portlet__head-toolbar">
+						<ul class="nav nav-pills nav-pills-sm nav-pills-label nav-pills-bold" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" data-toggle="tab" href="#kt_widget5_tab1_content" role="tab" aria-selected="true">
+									Plus récentes
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#kt_widget5_tab2_content" role="tab" aria-selected="false">
+									Mois
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#kt_widget5_tab3_content" role="tab" aria-selected="false">
+									Toutes
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="kt-portlet__body">
+					<div class="tab-content">
+						<div class="tab-pane active" id="kt_widget5_tab1_content" aria-expanded="true">
+							<div class="kt-widget5">
+								{% if list_mission_week.count != 0 %}
+									{% for mission in list_mission_week %}
+									<div class="kt-widget5__item">
+										<div class="kt-widget5__content">
+											<div class="kt-widget5__pic">
+												{% if mission.client != Null %}
+												<img class="kt-widget7__img" src="{{mission.client.avatar.url}}" alt="" style="max-width: 4rem;">
+												{% endif %}
+											</div>
+											<div class="kt-widget5__section">
+												<a href="#" class="kt-widget5__title">
+													{{mission.mission_type}}
+												</a>
+												<p class="kt-widget5__desc">
+													{{mission.jour_de_mission}}
+												</p>
+												<div class="kt-widget5__info">
+													<span>Client :</span>
+													<span class="kt-font-info">{{mission.client}}</span>
+													<span>Statut :</span>
+													<span class="kt-font-info">{{mission.statut}}</span>
+												</div>
+											</div>
+										</div>						
+										<div class="kt-widget5__content">
+											<div class="kt-widget5__stats">
+												<span class="kt-widget5__number">19,200</span>
+												<span class="kt-widget5__sales">sales</span>
+											</div>
+											<div class="kt-widget5__stats">
+												<span class="kt-widget5__number">1046</span>
+												<span class="kt-widget5__votes">votes</span>
+											</div>
+										</div>	
+									</div>
+									{% endfor %}
+								{% else %}
+									<div style="height: 300px;width: 100%;display: flex;align-items: center;justify-content: center;color: #777676;">
+										Rien à afficher..
+									</div>
+								{% endif %}
+							</div>
+						</div>
+						<div class="tab-pane" id="kt_widget5_tab2_content">
+							<div class="kt-widget5">
+								{% if list_mission_month.count != 0 %}
+									{% for mission in list_mission_month %}
+									<div class="kt-widget5__item">
+										<div class="kt-widget5__content">
+											<div class="kt-widget5__pic">
+												{% if mission.client != Null %}
+												<img class="kt-widget7__img" src="{{mission.client.avatar.url}}" alt="" style="max-width: 4rem;">
+												{% endif %}
+											</div>
+											<div class="kt-widget5__section">
+												<a href="#" class="kt-widget5__title">
+													{{mission.mission_type}}
+												</a>
+												<p class="kt-widget5__desc">
+													{{mission.jour_de_mission}}
+												</p>
+												<div class="kt-widget5__info">
+													<span>Client :</span>
+													<span class="kt-font-info">{{mission.client}}</span>
+													<span>Statut :</span>
+													<span class="kt-font-info">{{mission.statut}}</span>
+												</div>
+											</div>
+										</div>						
+										<div class="kt-widget5__content">
+											<div class="kt-widget5__stats">
+												<span class="kt-widget5__number">19,200</span>
+												<span class="kt-widget5__sales">sales</span>
+											</div>
+											<div class="kt-widget5__stats">
+												<span class="kt-widget5__number">1046</span>
+												<span class="kt-widget5__votes">votes</span>
+											</div>
+										</div>	
+									</div>
+									{% endfor %}
+								{% else %}
+									<div style="height: 300px;width: 100%;display: flex;align-items: center;justify-content: center;color: #777676;">
+										Rien à afficher..
+									</div>
+								{% endif %}
+							</div>
+						</div>
+						<div class="tab-pane" id="kt_widget5_tab3_content">
+							<div class="kt-widget5">
+								{% if list_mission_all.count != 0 %}
+									{% for mission in list_mission_all %}
+									<div class="kt-widget5__item">
+										<div class="kt-widget5__content">
+											<div class="kt-widget5__pic">
+												{% if mission.client != Null %}
+												<img class="kt-widget7__img" src="{{mission.client.avatar.url}}" alt="" style="max-width: 4rem;">
+												{% endif %}
+											</div>
+											<div class="kt-widget5__section">
+												<a href="#" class="kt-widget5__title">
+													{{mission.mission_type}}
+												</a>
+												<p class="kt-widget5__desc">
+													{{mission.jour_de_mission}}
+												</p>
+												<div class="kt-widget5__info">
+													<span>Client :</span>
+													<span class="kt-font-info">{{mission.client}}</span>
+													<span>Statut :</span>
+													<span class="kt-font-info">{{mission.statut}}</span>
+												</div>
+											</div>
+										</div>						
+										<div class="kt-widget5__content">
+											<div class="kt-widget5__stats">
+												<span class="kt-widget5__number">19,200</span>
+												<span class="kt-widget5__sales">sales</span>
+											</div>
+											<div class="kt-widget5__stats">
+												<span class="kt-widget5__number">1046</span>
+												<span class="kt-widget5__votes">votes</span>
+											</div>
+										</div>	
+									</div>
+									{% endfor %}	
+								{% else %}
+									<div style="height: 300px;width: 100%;display: flex;align-items: center;justify-content: center;color: #777676;">
+										Rien à afficher..
+									</div>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		    <!-- Fin compétences -->
+		</div>
+	</div>
+</div>
+
+<div id="add_competence" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Ajouter une compétence</h4>
+                <button type="button" class="close" id="close_modal" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="kt-form kt-form--label-right" method="POST" id="ajouter_competence" action='' data-consultant-url="{% url 'profil_utilisateur' consultant.id %}">{% csrf_token %}
+                    <div class="kt-portlet__body">
+                        <div class="kt-section kt-section--first">
+                            <div class="kt-section__body">
+                            	<div class="row" style="margin-bottom: 15px;">
+                                    <div class="col-lg-12" style="display: flex;align-items: center;justify-content: center;">
+                                        <img id="ajout_image_competence" src="{% static 'planning/img/1stars.png' %}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Compétence : </label>
+									<div class="col-lg-9 col-xl-6">
+										<select class="form-control form-control-sm" name="nom_competence" id="nom_competence" required="">
+											{% for theme in themes %}
+												<option value="{{theme.id}}" id="option_{{theme.id}}">{{theme.nom}}</option>
+											{% endfor %}
+										</select>
+									</div>
+                                </div>
+                                <div class="form-group row">
+									<label class="col-xl-3 col-lg-3 col-form-label">Note : </label>
+									<div class="col-lg-9 col-xl-6">
+										<select onchange="select_image_ajout_competence(this.value)" class="form-control form-control-sm" name="note_competence" id="note_competence">
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+										</select>
+									</div>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kt-portlet__foot">
+                        <div class="kt-form__actions">
+                            <div class="row">
+                                <div class="col-lg-12 col-xl-12" style="display: flex;justify-content: center;">
+                                    <button type="submit" name="ajouter_client" value="ajouter_client" class="btn btn-primary">Enregistrer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="edit_competence" class="modal fade show" data-consultant-url="{% url 'profil_utilisateur' consultant.id %}" role="dialog">
+	<form class="kt-form kt-form--label-right" method="POST" id="form_modif_competence" action=''>{% csrf_token %}
+	</form>
+</div>
+<div id="modal_delete_competence" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Supprimer une compétence</h5>
+            </div>
+            <div class="modal-body" id="delete_message">
+                Etes-vous sûr de vouloir supprimer cet élément ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close_modal_delete_consultant" data-dismiss="modal">Annuler</button>
+                <form id='form_delete_competence' class="" method="post">{% csrf_token %}
+                    <button type="submit" class="btn btn-primary" id="id_competence_to_delete" name="id_consultant_to_delete" value="" alt="Supprimer">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script src="{% static 'planning/js/throw_modal.js' %}"></script><script>
+function select_image_ajout_competence(nbr_etoile)
+{
+	if (nbr_etoile == 1)
+	{
+		src_image = "{% static 'planning/img/1stars.png' %}"
+	}
+	if (nbr_etoile == 2)
+	{
+		src_image = "{% static 'planning/img/2stars.png' %}"
+	}
+	if (nbr_etoile == 3)
+	{
+		src_image = "{% static 'planning/img/3stars.png' %}"
+	}
+	document.getElementById('ajout_image_competence').src = src_image;
+}
+function select_image_modif_competence(nbr_etoile)
+{
+	if (nbr_etoile == 1)
+	{
+		src_image = "{% static 'planning/img/1stars.png' %}"
+	}
+	if (nbr_etoile == 2)
+	{
+		src_image = "{% static 'planning/img/2stars.png' %}"
+	}
+	if (nbr_etoile == 3)
+	{
+		src_image = "{% static 'planning/img/3stars.png' %}"
+	}
+	document.getElementById('modif_image_competence').src = src_image;
+}
+
+	function openModalEdit(id_client)
+	{
+		var url = "{% url 'edit_competence_modal' %}";
+		$.ajax({
+			url: url,
+			data: {
+				'id_competence': id_client
+			},
+			success: function(data){
+				$('#form_modif_competence').html(data);
+				$('#edit_competence').modal({ show: true });
+			}
+		});
+	};
+	function readURL(input) {
+	    if (input.files && input.files[0]) {
+	        var reader = new FileReader();
+
+	        reader.onload = function (e) {
+	        	x = e.target.result
+	            var img = document.getElementById("imgaaaa");
+				img.style.backgroundImage = "url(" + x + ")";
+	        };
+
+	        reader.readAsDataURL(input.files[0]);
+	    }
+	}
+	function if_check(check)
+	{
+		if (check.checked == true)
+		{
+			document.getElementById("value_checkbox").innerHTML = "Actif";
+		}
+		else
+		{
+			document.getElementById("value_checkbox").innerHTML = "Inactif";
+		}
+	}
+	var id_consultant = document.getElementById("consultant_id").value;
+	
+	$(document).on('submit', '#form_modif_competence',function(e)
+    {
+    	var url = $("#edit_competence").attr("data-consultant-url");
+        e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url: url,
+            data:
+            {
+                edit_note_competence:$('#edit_note_competence').val(),
+                edit_id_competence:$('#edit_id_competence').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'edit_competence'
+            },
+            success:function(json)
+            {
+            	$("#close_modal_modif_competence").click();
+            	var url_photo;
+            	if (json.edit_note_competence == "1")
+            	{
+            		url_photo = "{% static 'planning/img/1stars.png' %}";
+				}
+            	else if (json.edit_note_competence == "2")
+            	{
+            		url_photo = "{% static 'planning/img/2stars.png' %}";
+            	}
+            	else
+            	{
+            		url_photo = "{% static 'planning/img/3stars.png' %}"
+            	}
+            	$("#photo_competence_" + json.edit_id_competence).attr("src", url_photo);
+            	toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+            },
+            error : function(xhr,errmsg,err)
+            {
+                $('#results').html(`
+                    <div class='alert-box alert radius' data-alert>
+                        Oops! We have encountered an error: ` + errmsg + `
+                        <a href='#' class='close'>&times;</a>
+                    </div>`); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+
+	$(document).on('submit', '#edit_consultant',function(e)
+    {
+    	var url = $("#edit_consultant").attr("data-consultant-url");
+        e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url: url,    
+            data:
+            {
+                consultant_prenom:$('#consultant_prenom').val(),
+                consultant_nom:$('#consultant_nom').val(),
+                consultant_diminutif:$('#consultant_diminutif').val(),
+                consultant_telephone:$('#consultant_telephone').val(),
+                consultant_email:$('#consultant_email').val(),
+                consultant_ville:$('#consultant_ville').val(),
+                consultant_code_postal:$('#consultant_code_postal').val(),
+                consultant_adresse:$('#consultant_adresse').val(),
+                consultant_activer:$('#consultant_activer').prop("checked"),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'editer_consultant'
+            },
+            success:function(json)
+            {
+            	document.getElementById("edit_consultant").reset();
+            	document.getElementById("consultant_prenom").value = json.consultant_prenom;
+            	document.getElementById("consultant_nom").value = json.consultant_nom;
+            	document.getElementById("consultant_diminutif").value = json.consultant_diminutif;
+            	document.getElementById("consultant_telephone").value = json.consultant_telephone;
+            	document.getElementById("consultant_email").value = json.consultant_email;
+            	document.getElementById("consultant_ville").value = json.consultant_ville;
+            	document.getElementById("consultant_code_postal").value = json.consultant_code_postal;
+            	document.getElementById("consultant_adresse").value = json.consultant_adresse;
+            	document.getElementById("left_nom").innerHTML = json.consultant_nom;
+            	document.getElementById("left_prenom").innerHTML = json.consultant_prenom;
+            	document.getElementById("left_email").innerHTML = json.consultant_email;
+            	document.getElementById("left_tel").innerHTML = json.consultant_telephone;
+            	
+            	$("#consultant_activer").prop('checked',json.consultant_activer)
+            	toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+            },
+            error : function(xhr,errmsg,err)
+            {
+                $('#results').html(`
+                    <div class='alert-box alert radius' data-alert>
+                        Oops! We have encountered an error: ` + errmsg + `
+                        <a href='#' class='close'>&times;</a>
+                    </div>`); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+
+    $(document).on('submit', '#ajouter_competence',function(e)
+    {
+    	var url = $("#ajouter_competence").attr("data-consultant-url");
+        e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url:url,
+            data:
+            {
+                nom_competence:$('#nom_competence').val(),
+                note_competence:$('#note_competence').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'ajouter_competence'
+            },
+            success:function(json)
+            {
+            	$("#close_modal").click();
+            	document.getElementById('ajout_image_competence').src = "{% static 'planning/img/1stars.png' %}"
+            	var img_note = "";
+            	if (json.note_competence == "1")
+            	{
+            		img_note = `{% static 'planning/img/1stars.png' %}`;
+            	}
+            	else if (json.note_competence == "2")
+            	{
+            		img_note = `{% static 'planning/img/2stars.png' %}`;
+            	}
+            	else
+            	{
+            		img_note = `{% static 'planning/img/3stars.png' %}`;
+            	}
+            	$("#list_competence").prepend(`
+            		<div class="kt-notification-v2__item display_icon_competence">
+						<div class="kt-notification-v2__item-icon">
+							<img id="photo_competence_` + json.id_competence + `" src="` + img_note + `">
+						</div>
+						<div class="kt-notification-v2__itek-wrapper">
+							<div class="kt-notification-v2__item-title">
+								` + json.nom_competence + `
+							</div>
+							<div class="kt-notification-v2__item-desc">
+								` + json.date_competence + `
+							</div>
+						</div>
+						<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit(` + json.id_competence + `)" style="padding: 0.06rem .25rem;display: none;" title="Modifier la compétence.">
+                            <i class="icon-note"></i>
+                        </a>
+                        <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_competence_` + json.id_competence + `" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer la compétence." onclick="openModalDelete(` + json.id_competence + `)">
+                            <i class="icon-trash"></i>
+                        </a>
+					</div>
+            		`);
+            	$("#option_" + json.id_theme).remove()
+            	toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+            	document.getElementById("ajouter_competence").reset();
+            },
+            error : function(xhr,errmsg,err)
+            {
+                $('#results').html(`
+                    <div class='alert-box alert radius' data-alert>
+                        Oops! We have encountered an error: ` + errmsg + `
+                        <a href='#' class='close'>&times;</a>
+                    </div>`); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+
+    $(document).on('submit', '#form_delete_competence',function(e)
+    {
+        e.preventDefault();
+        $.ajax(
+        {
+            type:'POST',
+            url:'{% url "profil_utilisateur" consultant.id %}',
+            data:
+            {
+                id_competence:$('#id_competence_to_delete').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'supprimer_competence'
+            },
+            success:function(json)
+            {
+                document.getElementById("form_delete_competence").reset();
+                $("#to_remove_competence_"+json.id_competence).parent().remove();
+                document.getElementById("nom_competence").innerHTML += (`<option value="` + json.id_theme + `" id="option_` + json.id_theme + `">` + json.nom_theme + `</option>`);
+                $('#close_modal_delete_consultant').click();
+                toastr.options = {
+	                "closeButton": false,
+	                "debug": false,
+	                "newestOnTop": true,
+	                "progressBar": true,
+	                "positionClass": "toast-top-right",
+	                "preventDuplicates": false,
+	                "onclick": null,
+	                "showDuration": "300",
+	                "hideDuration": "1000",
+	                "timeOut": "2500",
+	                "extendedTimeOut": "1000",
+	                "showEasing": "swing",
+	                "hideEasing": "linear",
+	                "showMethod": "fadeIn",
+	                "hideMethod": "fadeOut"
+	              };
+              	toastr.success(json.message);
+            },
+            error : function(xhr,errmsg,err)
+            {
+                $('#results').html(`
+                    <div class='alert-box alert radius' data-alert>
+                        Oops! We have encountered an error: ` + errmsg + `
+                        <a href='#' class='close'>&times;</a>
+                    </div>`); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+
+	function openModalDelete(id_competence)
+    {
+        document.getElementById("delete_message").innerHTML = "Etes-vous sûr de vouloir retirer cette competence ?";
+        document.getElementById("id_competence_to_delete").value = id_competence;
+        $('#modal_delete_competence').modal({ show: true });
+    }
+</script>
+{% endblock %}

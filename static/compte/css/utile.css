@@ -1,0 +1,238 @@
+.slice {
+            position: relative;
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+
+        .overflow-hidden {
+            overflow: hidden !important;
+        }
+
+        .bg-gradient-secondary {
+            background: linear-gradient(80deg, #fafbfe 0, #fafcfe 100%) !important;
+        }
+
+        .bg-size--contain {
+            background-size: contain;
+        }
+
+        .bg-absolute-cover {
+            position: absolute;
+            z-index: 100;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+        }
+
+        .align-items-center {
+            align-items: center !important;
+        }
+
+        .d-flex {
+            display: flex !important;
+        }
+
+        .zindex-100 {
+            z-index: 100 !important;
+        }
+
+        .position-relative {
+            position: relative !important;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        .mb-md,
+        .my-md {
+            margin-bottom: 4rem !important;
+        }
+
+        .badge-pill {
+            min-width: 60px !important;
+        }
+
+        .badge-lg {
+            padding: .85em 1.375em;
+        }
+
+        .badge {
+            margin: .25rem 0;
+        }
+
+        .badge-success {
+            color: #16c333;
+            background-color: #dff8e4;
+        }
+
+        .badge-pill {
+            padding-right: .65em;
+            padding-left: .65em;
+            border-radius: 10rem;
+        }
+
+        .badge {
+            font-size: 83%;
+            font-weight: 700;
+            line-height: 1;
+            display: inline-block;
+            padding: .25rem .625rem;
+            text-align: center;
+            vertical-align: baseline;
+            white-space: nowrap;
+            border-radius: .25rem;
+        }
+
+        .mt-4,
+        .my-4 {
+            margin-top: 1.5rem !important;
+        }
+
+        .h1,
+        .h2,
+        .h3,
+        h1,
+        h2,
+        h3 {
+            font-weight: 500;
+        }
+
+        .h3,
+        h3 {
+            font-size: 1.75rem;
+        }
+
+        .fluid-paragraph {
+            position: relative;
+            width: 680px;
+            margin: auto;
+            padding: 0 1.5rem;
+        }
+
+        .lh-180 {
+            line-height: 1.8;
+        }
+
+        .lead {
+            font-size: 1.125rem;
+            font-weight: 300;
+        }
+
+        .card {
+            position: relative;
+        }
+
+        [class*=shadow] {
+            transition: all .2s ease-in-out;
+        }
+
+        .mb-4,
+        .my-4 {
+            margin-bottom: 1.5rem !important;
+        }
+
+        .shadow {
+            box-shadow: 0 0 1.25rem rgba(108, 118, 134, .1) !important;
+        }
+
+        .border-0 {
+            border: 0 !important;
+        }
+
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            border: .0625rem solid rgba(0, 0, 0, .08);
+            border-radius: .375rem;
+            background-color: #fff;
+            background-clip: border-box;
+        }
+
+        .pb-5,
+        .py-5 {
+            padding-bottom: 3rem !important;
+        }
+
+        .pt-5,
+        .py-5 {
+            padding-top: 3rem !important;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            flex: 1 1 auto;
+        }
+
+        .align-items-start {
+            align-items: flex-start !important;
+        }
+
+        .d-flex {
+            display: flex !important;
+        }
+
+        .icon-green {
+            color: #21bc3c;
+            background-color: rgba(118, 226, 136, .5);
+        }
+
+        .icon-shape {
+            text-align: center;
+            border-radius: .25rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon {
+            display: inline-flex;
+            min-width: 3rem;
+            min-height: 3rem;
+        }
+
+        .rounded-circle {
+            border-radius: 50% !important;
+        }
+
+        .icon-shape i,
+        .icon-shape svg {
+            font-size: 1.125rem;
+        }
+
+        .icon i,
+        .icon svg {
+            font-size: 2.75rem;
+        }
+
+        .fab {
+            font-family: "Font Awesome 5 Brands";
+        }
+
+        .fa,
+        .fab,
+        .fal,
+        .far,
+        .fas {
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-font-smoothing: antialiased;
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            line-height: 1;
+        }
+
+        .icon-orange {
+            color: #b86b00;
+            background-color: rgba(255, 170, 51, .5);
+        }
+
+        .icon-teal {
+            color: #0093d7;
+            background-color: rgba(86, 199, 251, .5);
+        }

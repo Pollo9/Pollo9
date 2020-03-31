@@ -1,0 +1,96 @@
+{% load staticfiles %}
+<div class="kt-chat">
+    <div class="kt-portlet kt-portlet--last" style="margin-top: 0;">
+        <div class="kt-portlet__head">
+            <div class="kt-chat__head ">
+                <div class="kt-chat__left">
+                    <div class="kt-chat__label">
+                        <a href="#" class="kt-chat__title">{{consultant_selectionne.first_name}} {{consultant_selectionne.last_name}}</a>
+                    </div>
+                </div>
+                <div class="kt-chat__right">
+                    <a class="btn btn-clean btn-sm btn-icon" onclick="openModal({{consultant_selectionne.id}})" data-dismiss="modal">
+                        <i class="icon-reload"></i>
+                    </a>
+                    <button type="button" class="btn btn-clean btn-sm btn-icon" data-dismiss="modal">
+                        <i class="icon-close"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="kt-portlet__body">
+            <div class="kt-scroll kt-scroll--pull" data-height="410" data-mobile-height="225" style="overflow: auto; height: 400px;" id="msg_wrapper">
+                <div class="kt-chat__messages kt-chat__messages--solid messages">
+                    {% for message in msg %}
+                    {% if message.user.username == consultant_selectionne.username %}
+                    <div class="kt-chat__message kt-chat__message--success">
+                        <div class="kt-chat__user">
+                            {% if message.user.profile.avatar.url != None %}
+                            <span class="kt-media kt-media--circle kt-media--sm">
+                                <img src="{{ message.user.profile.avatar.url }}" alt="image">
+                            </span>
+                            {% else %}
+                            <span class="kt-media kt-media--circle kt-media--sm" style="background-color:{{message.user.profile.couleur_rdm}}30;">
+                                <span class="kt-widget__img kt-hidden-" style="color:{{message.user.profile.couleur_rdm}};font-weight:bold;">{{message.user.profile.diminutif}}</span>
+                            </span>
+                            {% endif %}
+                            <a href="{% url 'profil_utilisateur' consultant_selectionne.id %}" class="kt-chat__username">{{consultant_selectionne.first_name}} {{consultant_selectionne.last_name}}</a>
+                            <span class="kt-chat__datetime">{{message.date}}</span>
+                        </div>
+                        <div class="kt-chat__text">
+                            {{message.message}}
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="kt-chat__message kt-chat__message--right kt-chat__message--brand">
+                        <div class="kt-chat__user">
+                            <span class="kt-chat__datetime">{{message.date}}</span>
+                            <a href="#" class="kt-chat__username">Sherpa Consulting</a>
+                            {% if message.user.profile.avatar.url != None %}
+                            <span class="kt-media kt-media--circle kt-media--sm">
+                                <img src="{{ message.user.profile.avatar.url }}" alt="image">
+                            </span>
+                            {% else %}
+                            <span class="kt-media kt-media--circle kt-media--sm" style="background-color:{{message.user.profile.couleur_rdm}}30;">
+                                <span class="kt-widget__img kt-hidden-" style="color:{{message.user.profile.couleur_rdm}};font-weight:bold;">{{message.user.profile.diminutif}}</span>
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div class="kt-chat__text">
+                            {{message.message}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="kt-portlet__foot">
+            <form action="" method="POST" id="post-form"> {% csrf_token %}
+                <div class="kt-chat__input">
+                    <div class="kt-chat__editor">
+                        <input type="hidden" name="id_consultant" id="id_consultant" value="{{consultant_selectionne.id}}">
+                        <textarea style="height: 40px; width: 90%; resize: none;" id="message_text" placeholder="Ecrivez ici..."></textarea>
+                        <div class="kt-chat__toolbar">
+                            <div class="kt_chat__tools">
+                                <div class="kt-checkbox-inline">
+                                    <label class="kt-checkbox">
+                                        <input name="message_sms" id="message_sms" type="checkbox"> SMS
+                                        <span></span>
+                                    </label>
+                                    <label class="kt-checkbox">
+                                        <input name="message_email" id="message_email" type="checkbox"> Email
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="kt_chat__actions">
+                                <button type="submit" class="btn btn-brand btn-md  btn-font-sm btn-upper btn-bold kt-chat__reply">répondre</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form> 
+        </div>
+    </div>
+</div>
