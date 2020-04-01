@@ -41,10 +41,6 @@ import os
 from django.contrib.admin.models import LogEntry
 from django.contrib.admin.utils import unquote
 
-# @permission_required('auth.can_view_user', raise_exception=True)
-# {% if perms.auth.can_view_user %}
-# {% endif %}
-
 def get_content_type_for_model(obj): # Since this module gets imported in the application's root package, # it cannot import models from other applications at the module level.
 	from django.contrib.contenttypes.models import ContentType
 	return ContentType.objects.get_for_model(obj, for_concrete_model=False)
@@ -61,7 +57,6 @@ def erreur_403(request):
 	context = locals()
 	template = 'permission.html'
 	return render(request,template,context)
-
 
 @login_required
 def index (request):
@@ -87,15 +82,11 @@ def generate_mdp():
 
 	return mdp
 
-
-
 @login_required
 def reglages(request):
 	context = locals()
 	template = 'reglages.html'
 	return render(request,template,context)
-
-
 
 #### Partie administrateur
 @login_required
@@ -104,6 +95,7 @@ def planning(request):
 	template = 'planning.html'
 	return render(request,template,context)
 
+@permission_required('auth.view_user', raise_exception=True)
 @login_required
 def utilisateurs(request):
 
@@ -194,6 +186,7 @@ def utilisateurs(request):
 	template = 'utilisateurs.html'
 	return render(request,template,context)
 
+@permission_required('auth.view_user_profile', raise_exception=True)
 @login_required
 def profil_utilisateur(request,datapk):
 
@@ -295,6 +288,7 @@ def profil_utilisateur(request,datapk):
 	template = 'profil_utilisateur.html'
 	return render(request,template,context)
 
+@permission_required('planning.view_client', raise_exception=True)
 @login_required
 def client(request):
 
@@ -359,6 +353,7 @@ def client(request):
 	template = 'client.html'
 	return render(request,template,context)
 
+@permission_required('planning.view_client_profile', raise_exception=True)
 @login_required
 def profil_client(request,datapk):
 
@@ -693,7 +688,6 @@ def mission(request):
 	template = 'mission.html'
 	return render(request,template,context)
 
-
 @login_required
 def profil_mission(request,datapk):
 
@@ -759,7 +753,6 @@ def profil_mission(request,datapk):
 	template = 'profil_mission.html'
 	return render(request,template,context)
 
-
 def mission_consultant(request):
 
 	missions = Mission.objects.filter(consultant = request.user.profile)
@@ -771,7 +764,6 @@ def mission_consultant(request):
 # var = get_object_or_404(Bdd, pk=id)
 
 # MESSAGERIE
-@login_required
 @login_required
 def messagerie_administrateur(request):
 
@@ -801,7 +793,6 @@ def messagerie_administrateur(request):
 	context = locals()
 	template = 'messagerie_administrateur.html'
 	return render(request,template,context)
-
 
 @login_required
 def messagerie_consultant(request):
@@ -924,7 +915,7 @@ def messagerie_administrateur_modal(request):
 	context = locals()
 	html_form = render_to_string('loadAjax/messagerie_administrateur_modal.html',context,request=request)
 	return JsonResponse({'html_form': html_form})
-	
+
 def edit_adresse_modal(request):
 
 	adresse_id = request.GET.get('id_adresse')
@@ -1041,7 +1032,6 @@ def ajax_missions(request):
 
 	list_json = json.dumps(list)
 	return HttpResponse(list_json, 'application/javascript')
-
 
 def ajax_mission_consultant(request):
 	

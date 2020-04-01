@@ -17,505 +17,750 @@
 		display: flex!important;
 	}
 </style>
+<div class="kt-subheader  kt-grid__item">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">Profil</h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>	            
+            <div class="kt-subheader__group" id="kt_subheader_search">
+                <span class="kt-subheader__desc" id="kt_subheader_total">{{utilisateur.first_name}} {{utilisateur.last_name}}</span>
+            </div>
+        </div>        
+        <div class="kt-subheader__toolbar">
+        	<a href="{% url 'utilisateurs' %}" class="btn btn-default btn-bold">Retour</a>
+        </div>
+    </div>
+</div>	
 <input type="hidden" name="utilisateur_id" id="utilisateur_id" value="{{utilisateur.id}}">
-<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" style="margin-top: 25px;">			
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" style="margin-top: 25px;">		
 	<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-		<div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
-		    <div class="kt-grid__item kt-app__toggle kt-app__aside" id="kt_user_profile_aside">
-				<div class="kt-portlet ">
-				    <div class="kt-portlet__head  kt-portlet__head--noborder">
-				        <div class="kt-portlet__head-label">
-				            <h3 class="kt-portlet__head-title">
-				            </h3>
-				        </div>
-				    </div>
-				    <div class="kt-portlet__body kt-portlet__body--fit-y">
-				        <!--begin::Widget -->
-				        <div class="kt-widget kt-widget--user-profile-1">
-				            <div class="kt-widget__head" style="align-items: center;">
-				                {% if utilisateur.profile.avatar.url != None %}
-				                <div class="kt-widget__media">
-				                	<img id="avatar_left" src="{{ utilisateur.profile.avatar.url }}">
-				                </div>
-				                {% else %}
-				                <div class="kt-widget__media" style="background-color:{{utilisateur.profile.couleur_rdm}}30;width: 90px;max-width: 100%;border-radius: 8px;height: 90px;display: flex;align-items: center;justify-content: center;">
-                                    <span class="kt-widget__img kt-hidden-" id="diminutif_consultant_left" style="color:{{utilisateur.profile.couleur_rdm}};font-size: 25px;font-weight:bold;">{{utilisateur.profile.diminutif}}</span>
-                                </div>
-				                {% endif %}
-				                <div class="kt-widget__content">
-				                    <div class="kt-widget__section">
-				                        <a href="#" id="left_prenom" class="kt-widget__username">
-				                            {{utilisateur.first_name}}
-				                        </a>
-				                        <span id="left_nom" class="kt-widget__subtitle">
-				                            {{utilisateur.last_name}}
-				                        </span>
-				                    </div>
-					            </div>
-				            </div>
-				            <div class="kt-widget__body">
-				                <div class="kt-widget__content">
-				                    <div class="kt-widget__info">
-				                        <span class="kt-widget__label">Email:</span>
-				                        <a href="mailto:{{utilisateur.email}}" subject="subject text" id="left_email" class="kt-widget__data">{{utilisateur.email}}</a>
-				                    </div>
-				                    <div class="kt-widget__info">
-				                        <span class="kt-widget__label">Téléphone:</span>
-				                        <a href="tel:{{utilisateur.profile.telephone}}" id="left_tel" class="kt-widget__data">{{utilisateur.profile.telephone}}</a>
-				                    </div>
-				                </div>
-				                <div class="kt-widget__items">
-				                	<div onclick="notif_active_admin();" id="notif_personnel" class="kt-widget__item kt-widget__item--active">
-				                        <span class="kt-widget__section">
-				                            <span class="kt-widget__icon">
-												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+	    <div class="kt-portlet" style="margin-bottom: 40px;">
+	        <div class="kt-portlet__body">
+	            <div class="kt-widget kt-widget--user-profile-3">
+	                <div class="kt-widget__top">
+	                    <div class="kt-widget__media">
+	                        {% if utilisateur.profile.avatar.url != None %}
+			                <div class="kt-widget__media">
+			                	<img id="avatar_left" src="{{ utilisateur.profile.avatar.url }}">
+			                </div>
+			                {% else %}
+			                <div class="kt-widget__media" style="background-color:{{utilisateur.profile.couleur_rdm}}30;width: 90px;max-width: 100%;border-radius: 8px;height: 90px;display: flex;align-items: center;justify-content: center;">
+                                <span class="kt-widget__img kt-hidden-" id="diminutif_consultant_left" style="color:{{utilisateur.profile.couleur_rdm}};font-size: 25px;font-weight:bold;">{{utilisateur.profile.diminutif}}</span>
+                            </div>
+			                {% endif %}
+	                    </div>
+	                    <div class="kt-widget__content">
+	                        <div class="kt-widget__head">
+	                            <div class="kt-widget__user">
+	                                <a href="#" class="kt-widget__username">
+	                                <span id="left_prenom">{{utilisateur.first_name}}</span> <span id="left_nom">{{utilisateur.last_name}}</span>                     
+	                            </a>
+	                            </div>
+	                            <div class="kt-widget__action">
+	                                <a class="btn btn-label-brand btn-sm btn-upper" href="{% url 'messagerie_administrateur' %}">
+	                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+										    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+										        <rect x="0" y="0" width="24" height="24"/>
+										        <path d="M21,12.0829584 C20.6747915,12.0283988 20.3407122,12 20,12 C16.6862915,12 14,14.6862915 14,18 C14,18.3407122 14.0283988,18.6747915 14.0829584,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,12.0829584 Z M18.1444251,7.83964668 L12,11.1481833 L5.85557487,7.83964668 C5.4908718,7.6432681 5.03602525,7.77972206 4.83964668,8.14442513 C4.6432681,8.5091282 4.77972206,8.96397475 5.14442513,9.16035332 L11.6444251,12.6603533 C11.8664074,12.7798822 12.1335926,12.7798822 12.3555749,12.6603533 L18.8555749,9.16035332 C19.2202779,8.96397475 19.3567319,8.5091282 19.1603533,8.14442513 C18.9639747,7.77972206 18.5091282,7.6432681 18.1444251,7.83964668 Z" fill="#000000"/>
+										        <circle fill="#000000" opacity="0.3" cx="19.5" cy="17.5" r="2.5"/>
+										    </g>
+										</svg>
+										Messagerie
+	                                </a>
+	                           </div>
+	                        </div>
+
+	                        <div class="kt-widget__subhead">
+	                            <a id="left_email"><i class="icon-envelope-open"></i>{{utilisateur.email}}</a>
+	                            <a id="left_tel"><i class="icon-call-end"></i>{{utilisateur.profile.telephone}}</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="kt-widget__bottom kt-hidden">
+	                    <div class="kt-widget__item">
+	                        <div class="kt-widget__icon">
+	                            <i class="flaticon-piggy-bank"></i>
+	                        </div>
+	                        <div class="kt-widget__details">
+	                            <span class="kt-widget__title">Earnings</span>
+	                            <span class="kt-widget__value"><span>$</span>249,500</span>
+	                        </div>
+	                    </div>
+
+	                    <div class="kt-widget__item">
+	                        <div class="kt-widget__icon">
+	                            <i class="flaticon-confetti"></i>
+	                        </div>
+	                        <div class="kt-widget__details">
+	                            <span class="kt-widget__title">Expances</span>
+	                            <span class="kt-widget__value"><span>$</span>164,700</span>
+	                        </div>
+	                    </div>
+
+	                    <div class="kt-widget__item">
+	                        <div class="kt-widget__icon">
+	                            <i class="flaticon-pie-chart"></i>
+	                        </div>
+	                        <div class="kt-widget__details">
+	                            <span class="kt-widget__title">Net</span>
+	                            <span class="kt-widget__value"><span>$</span>782,300</span>
+	                        </div>
+	                    </div>
+
+	                    <div class="kt-widget__item">
+	                        <div class="kt-widget__icon">
+	                            <i class="flaticon-file-2"></i>
+	                        </div>
+	                        <div class="kt-widget__details">
+	                            <span class="kt-widget__title">73 Tasks</span>
+	                            <a href="#" class="kt-widget__value kt-font-brand">View</a>
+	                        </div>
+	                    </div>
+
+	                    <div class="kt-widget__item">
+	                        <div class="kt-widget__icon">
+	                            <i class="flaticon-chat-1"></i>
+	                        </div>
+	                        <div class="kt-widget__details">
+	                            <span class="kt-widget__title">648 Comments</span>
+	                            <a href="#" class="kt-widget__value kt-font-brand">View</a>
+	                        </div>
+	                    </div>
+
+	                    <div class="kt-widget__item">
+	                        <div class="kt-widget__icon">
+	                            <i class="flaticon-network"></i>
+	                        </div>
+	                        <div class="kt-widget__details">
+	                            <div class="kt-section__content kt-section__content--solid">
+	                                <div class="kt-badge kt-badge__pics">
+	                                    <a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer">
+	                                        <img src="/metronic/themes/metronic/theme/default/demo3/dist/assets/media/users/100_7.jpg" alt="image">
+	                                    </a>
+	                                    <a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Alison Brandy">
+	                                        <img src="/metronic/themes/metronic/theme/default/demo3/dist/assets/media/users/100_3.jpg" alt="image">
+	                                    </a>
+	                                    <a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Selina Cranson">
+	                                        <img src="/metronic/themes/metronic/theme/default/demo3/dist/assets/media/users/100_2.jpg" alt="image">
+	                                    </a>
+	                                    <a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Luke Walls">
+	                                        <img src="/metronic/themes/metronic/theme/default/demo3/dist/assets/media/users/100_13.jpg" alt="image">
+	                                    </a>
+	                                    <a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Micheal York">
+	                                        <img src="/metronic/themes/metronic/theme/default/demo3/dist/assets/media/users/100_4.jpg" alt="image">
+	                                    </a>
+	                                    <a href="#" class="kt-badge__pic kt-badge__pic--last kt-font-brand">
+	                                    +7
+	                                </a>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    <!--End:: Portlet-->
+
+	    <div class="row">
+	        <div class="col-xl-4">
+	            <!--Begin:: Portlet-->
+	            <div class="kt-portlet kt-portlet--head-noborder" style="margin-bottom: 40px;">
+	                <div class="kt-portlet__head">
+	                    <div class="kt-portlet__head-label">
+	                        <h3 class="kt-portlet__head-title  kt-font-danger">
+							Important Notice
+						</h3>
+	                    </div>
+	                </div>
+	                <div class="kt-portlet__body kt-portlet__body--fit-top">
+	                    <div class="kt-section kt-section--space-sm">
+	                    </div>
+	                    <div class="kt-section kt-section--last">
+	                    </div>
+	                </div>
+	            </div>
+	            <!--End:: Portlet-->
+
+	            <!--Begin:: Portlet-->
+	            <div class="kt-portlet" style="margin-bottom: 40px;">
+	                <div class="kt-portlet__head">
+	                    <div class="kt-portlet__head-label">
+	                        <h3 class="kt-portlet__head-title">
+							Stats
+						</h3>
+	                    </div>
+	                </div>
+	                <div class="kt-portlet__body">
+	                    <div class="kt-section kt-section--last">
+	                    </div>
+	                </div>
+	            </div>
+	            <!--End:: Portlet-->
+
+	            <!--Begin:: Portlet-->
+	            <div class="kt-portlet">
+	                <div class="kt-portlet__head">
+	                    <div class="kt-portlet__head-label">
+	                        <h3 class="kt-portlet__head-title">
+							Company
+						</h3>
+	                    </div>
+	                </div>
+	                <div class="kt-form kt-form--label-right">
+	                    <div class="kt-portlet__body">
+	                    </div>
+	                </div>
+	            </div>
+	            <!--End:: Portlet-->
+	        </div>
+	        <div class="col-xl-8">
+	            <!--Begin:: Portlet-->
+	            <div class="kt-portlet kt-portlet--tabs">
+	                <div class="kt-portlet__head">
+	                    <div class="kt-portlet__head-toolbar">
+	                        <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist">
+	                            <li class="nav-item">
+	                                <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_1" role="tab">
+										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
 												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 												        <polygon points="0 0 24 0 24 24 0 24"></polygon>
 												        <path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
 												        <path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"></path>
 												    </g>
 												</svg>                              
-											</span>
-				                            <span class="kt-widget__desc">
-				                                Informations personnelles
-				                            </span>
-				                        </span>
-				                    </div>
-				                    <div onclick="info_active_admin();" id="info_personnel" class="kt-widget__item kt-widget__item">
-				                    	<span class="kt-widget__section">
-				                            <span class="kt-widget__icon">
-												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-												        <polygon points="0 0 24 0 24 24 0 24"></polygon>
-												        <path d="M12,18 L7.91561963,20.1472858 C7.42677504,20.4042866 6.82214789,20.2163401 6.56514708,19.7274955 C6.46280801,19.5328351 6.42749334,19.309867 6.46467018,19.0931094 L7.24471742,14.545085 L3.94038429,11.3241562 C3.54490071,10.938655 3.5368084,10.3055417 3.92230962,9.91005817 C4.07581822,9.75257453 4.27696063,9.65008735 4.49459766,9.61846284 L9.06107374,8.95491503 L11.1032639,4.81698575 C11.3476862,4.32173209 11.9473121,4.11839309 12.4425657,4.36281539 C12.6397783,4.46014562 12.7994058,4.61977315 12.8967361,4.81698575 L14.9389263,8.95491503 L19.5054023,9.61846284 C20.0519472,9.69788046 20.4306287,10.2053233 20.351211,10.7518682 C20.3195865,10.9695052 20.2170993,11.1706476 20.0596157,11.3241562 L16.7552826,14.545085 L17.5353298,19.0931094 C17.6286908,19.6374458 17.263103,20.1544017 16.7187666,20.2477627 C16.5020089,20.2849396 16.2790408,20.2496249 16.0843804,20.1472858 L12,18 Z" fill="#000000"></path>
-												    </g>
-												</svg>                             
-											</span>
-				                            <span class="kt-widget__desc">
-				                                Compétences
-				                            </span>
-				                        </span>
-				                    </div>
-				                    <div onclick="mission_active_admin();" id="mission" class="kt-widget__item kt-widget__item">
-				                    	<span class="kt-widget__section">
-				                            <span class="kt-widget__icon">
-												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-												        <rect x="0" y="0" width="24" height="24"/>
-												        <path d="M8,3 L8,3.5 C8,4.32842712 8.67157288,5 9.5,5 L14.5,5 C15.3284271,5 16,4.32842712 16,3.5 L16,3 L18,3 C19.1045695,3 20,3.8954305 20,5 L20,21 C20,22.1045695 19.1045695,23 18,23 L6,23 C4.8954305,23 4,22.1045695 4,21 L4,5 C4,3.8954305 4.8954305,3 6,3 L8,3 Z" fill="#000000" opacity="0.3"/>
-												        <path d="M11,2 C11,1.44771525 11.4477153,1 12,1 C12.5522847,1 13,1.44771525 13,2 L14.5,2 C14.7761424,2 15,2.22385763 15,2.5 L15,3.5 C15,3.77614237 14.7761424,4 14.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 L9,2.5 C9,2.22385763 9.22385763,2 9.5,2 L11,2 Z" fill="#000000"/>
-												        <rect fill="#000000" opacity="0.3" x="7" y="10" width="5" height="2" rx="1"/>
-												        <rect fill="#000000" opacity="0.3" x="7" y="14" width="9" height="2" rx="1"/>
-												    </g>
-												</svg>                             
-											</span>
-				                            <span class="kt-widget__desc">
-				                                Missions
-				                            </span>
-				                        </span>
-				                    </div>
-				                    <a href="{% url 'messagerie_administrateur' %}" class="kt-widget__item kt-widget__item">
-				                    	<span class="kt-widget__section">
-				                            <span class="kt-widget__icon">
-												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-												        <rect x="0" y="0" width="24" height="24"/>
-												        <path d="M21,12.0829584 C20.6747915,12.0283988 20.3407122,12 20,12 C16.6862915,12 14,14.6862915 14,18 C14,18.3407122 14.0283988,18.6747915 14.0829584,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,12.0829584 Z M18.1444251,7.83964668 L12,11.1481833 L5.85557487,7.83964668 C5.4908718,7.6432681 5.03602525,7.77972206 4.83964668,8.14442513 C4.6432681,8.5091282 4.77972206,8.96397475 5.14442513,9.16035332 L11.6444251,12.6603533 C11.8664074,12.7798822 12.1335926,12.7798822 12.3555749,12.6603533 L18.8555749,9.16035332 C19.2202779,8.96397475 19.3567319,8.5091282 19.1603533,8.14442513 C18.9639747,7.77972206 18.5091282,7.6432681 18.1444251,7.83964668 Z" fill="#000000"/>
-												        <circle fill="#000000" opacity="0.3" cx="19.5" cy="17.5" r="2.5"/>
-												    </g>
-												</svg>                            
-											</span>
-				                            <span class="kt-widget__desc">
-				                                Messagerie
-				                            </span>
-				                        </span>
-				                    </a>
-				                    <a href="{% url 'utilisateurs' %}" class="kt-widget__item kt-widget__item">
-				                    	<span class="kt-widget__section">
-				                            <span class="kt-widget__icon">
-												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-												        <rect x="0" y="0" width="24" height="24"/>
-												        <path d="M8.42034438,20 L21,20 C22.1045695,20 23,19.1045695 23,18 L23,6 C23,4.8954305 22.1045695,4 21,4 L8.42034438,4 C8.15668432,4 7.90369297,4.10412727 7.71642146,4.28972363 L0.653241109,11.2897236 C0.260966303,11.6784895 0.25812177,12.3116481 0.646887666,12.7039229 C0.648995955,12.7060502 0.651113791,12.7081681 0.653241109,12.7102764 L7.71642146,19.7102764 C7.90369297,19.8958727 8.15668432,20 8.42034438,20 Z" fill="#000000" opacity="0.3"/>
-												        <path d="M12.5857864,12 L11.1715729,10.5857864 C10.7810486,10.1952621 10.7810486,9.56209717 11.1715729,9.17157288 C11.5620972,8.78104858 12.1952621,8.78104858 12.5857864,9.17157288 L14,10.5857864 L15.4142136,9.17157288 C15.8047379,8.78104858 16.4379028,8.78104858 16.8284271,9.17157288 C17.2189514,9.56209717 17.2189514,10.1952621 16.8284271,10.5857864 L15.4142136,12 L16.8284271,13.4142136 C17.2189514,13.8047379 17.2189514,14.4379028 16.8284271,14.8284271 C16.4379028,15.2189514 15.8047379,15.2189514 15.4142136,14.8284271 L14,13.4142136 L12.5857864,14.8284271 C12.1952621,15.2189514 11.5620972,15.2189514 11.1715729,14.8284271 C10.7810486,14.4379028 10.7810486,13.8047379 11.1715729,13.4142136 L12.5857864,12 Z" fill="#000000"/>
-												    </g>
-												</svg>                             
-											</span>
-				                            <span class="kt-widget__desc">
-				                                Retour
-				                            </span>
-				                        </span>
-				                    </a>
-				                </div>
-				            </div>
-				        </div>
-				    </div>
-				</div>
-		    </div>
-		    <!-- Informations personnelles -->
-		    <div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="information_content">
-		        <div class="row">
-		            <div class="col-xl-12">
-		                <div class="kt-portlet">
-		                    <div class="kt-portlet__head">
-		                        <div class="kt-portlet__head-label">
-		                            <h3 class="kt-portlet__head-title">Profil <small>Mettre à jour les informations</small></h3>
-		                        </div>
-		                    </div>
-		                    <form class="kt-form kt-form--label-right" method="POST" id="edit_utilisateur" enctype="multipart/form-data" data-utilisateur-url="{% url 'profil_utilisateur' utilisateur.id %}">{% csrf_token %}
-		                        <div class="kt-portlet__body">
-		                            <div class="kt-section kt-section--first">
-		                                <div class="kt-section__body">
-		                                    <div class="row">
-		                                        <label class="col-xl-3"></label>
-		                                        <div class="col-lg-9 col-xl-6">
-		                                            <h3 class="kt-section__title kt-section__title-sm">Information utilisateur :</h3>
-		                                        </div>
-		                                    </div>
-		                                    <input type="hidden" name="avatar_act" value="{{utilisateur.profile.avatar}}">
-		                                    <div class="form-group row">
-		                                        <label class="col-xl-3 col-lg-3 col-form-label">Avatar</label>
-		                                        <div class="col-lg-9 col-xl-6">
-		                                            <div class="kt-avatar kt-avatar--outline" id="kt_user_avatar">
-			                                        	<div class="kt-avatar kt-avatar--outline" id="kt_user_avatar">
-			                                        		{% if utilisateur.profile.avatar.url != None %}
-			                                                <div id="imgaaaa" class="kt-avatar__holder" style="background-image: url('{{ utilisateur.profile.avatar.url }}')"></div>
-			                                                {% else %}
-			                                                <div id="imgaaaa" class="kt-avatar__holder" style=""></div>
-							                				{% endif %}
-			                                                <label class="kt-avatar__upload" data-toggle="kt-tooltip" title="" data-original-title="Change avatar">
-			                                                    <i class="icon-pencil"></i>
-		                                                		{% for field in form %}
-		                                                    		<input type="file" name="{{field.name}}" id="id_avatar" accept=".png, .jpg, .jpeg" onchange="readURL(this)">
-			                                                    {% endfor %}
-			                                                </label>
-			                                                <span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="" data-original-title="Cancel avatar">
-			                                                    <i class="fa fa-times"></i>
-			                                                </span>
+									Informations personnelles
+	                                </a>
+	                            </li>
+                             	{% if perms.planning.view_competence %}
+	                            <li class="nav-item">
+	                                <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_2" role="tab">
+	                                	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+										    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+										        <polygon points="0 0 24 0 24 24 0 24"></polygon>
+										        <path d="M12,18 L7.91561963,20.1472858 C7.42677504,20.4042866 6.82214789,20.2163401 6.56514708,19.7274955 C6.46280801,19.5328351 6.42749334,19.309867 6.46467018,19.0931094 L7.24471742,14.545085 L3.94038429,11.3241562 C3.54490071,10.938655 3.5368084,10.3055417 3.92230962,9.91005817 C4.07581822,9.75257453 4.27696063,9.65008735 4.49459766,9.61846284 L9.06107374,8.95491503 L11.1032639,4.81698575 C11.3476862,4.32173209 11.9473121,4.11839309 12.4425657,4.36281539 C12.6397783,4.46014562 12.7994058,4.61977315 12.8967361,4.81698575 L14.9389263,8.95491503 L19.5054023,9.61846284 C20.0519472,9.69788046 20.4306287,10.2053233 20.351211,10.7518682 C20.3195865,10.9695052 20.2170993,11.1706476 20.0596157,11.3241562 L16.7552826,14.545085 L17.5353298,19.0931094 C17.6286908,19.6374458 17.263103,20.1544017 16.7187666,20.2477627 C16.5020089,20.2849396 16.2790408,20.2496249 16.0843804,20.1472858 L12,18 Z" fill="#000000"></path>
+										    </g>
+										</svg> 
+										Compétences
+	                                </a>
+	                            </li>
+	                            {% endif %}
+	                            {% if perms.planning.view_mission %}
+	                            <li class="nav-item">
+	                                <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3" role="tab">
+										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+										    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+										        <rect x="0" y="0" width="24" height="24"/>
+										        <path d="M8,3 L8,3.5 C8,4.32842712 8.67157288,5 9.5,5 L14.5,5 C15.3284271,5 16,4.32842712 16,3.5 L16,3 L18,3 C19.1045695,3 20,3.8954305 20,5 L20,21 C20,22.1045695 19.1045695,23 18,23 L6,23 C4.8954305,23 4,22.1045695 4,21 L4,5 C4,3.8954305 4.8954305,3 6,3 L8,3 Z" fill="#000000" opacity="0.3"/>
+										        <path d="M11,2 C11,1.44771525 11.4477153,1 12,1 C12.5522847,1 13,1.44771525 13,2 L14.5,2 C14.7761424,2 15,2.22385763 15,2.5 L15,3.5 C15,3.77614237 14.7761424,4 14.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 L9,2.5 C9,2.22385763 9.22385763,2 9.5,2 L11,2 Z" fill="#000000"/>
+										        <rect fill="#000000" opacity="0.3" x="7" y="10" width="5" height="2" rx="1"/>
+										        <rect fill="#000000" opacity="0.3" x="7" y="14" width="9" height="2" rx="1"/>
+										    </g>
+										</svg> 
+										Missions
+	                                </a>
+	                            </li>
+	                            {% endif %}
+	                        </ul>
+	                    </div>
+	                </div>
+	                <div class="kt-portlet__body">
+	                    <div class="tab-content kt-margin-t-20">
+	                        <!--Begin:: Tab Content-->
+	                        {% if perms.auth.change_user %}
+	                        <div class="tab-pane active" id="kt_apps_contacts_view_tab_1" role="tabpanel">
+			                    <form class="kt-form kt-form--label-right" method="POST" id="edit_utilisateur" enctype="multipart/form-data" data-utilisateur-url="{% url 'profil_utilisateur' utilisateur.id %}">{% csrf_token %}
+			                        <div class="kt-portlet__body">
+			                            <div class="kt-section kt-section--first">
+			                                <div class="kt-section__body">
+			                                    <div class="row">
+			                                        <label class="col-xl-3"></label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <h3 class="kt-section__title kt-section__title-sm">Information utilisateur :</h3>
+			                                        </div>
+			                                    </div>
+			                                    <input type="hidden" name="avatar_act" value="{{utilisateur.profile.avatar}}">
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Avatar</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <div class="kt-avatar kt-avatar--outline" id="kt_user_avatar">
+				                                        	<div class="kt-avatar kt-avatar--outline" id="kt_user_avatar">
+				                                        		{% if utilisateur.profile.avatar.url != None %}
+				                                                <div id="imgaaaa" class="kt-avatar__holder" style="background-image: url('{{ utilisateur.profile.avatar.url }}')"></div>
+				                                                {% else %}
+				                                                <div id="imgaaaa" class="kt-avatar__holder" style=""></div>
+								                				{% endif %}
+				                                                <label class="kt-avatar__upload" data-toggle="kt-tooltip" title="" data-original-title="Change avatar">
+				                                                    <i class="icon-pencil"></i>
+			                                                		{% for field in form %}
+			                                                    		<input type="file" name="{{field.name}}" id="id_avatar" accept=".png, .jpg, .jpeg" onchange="readURL(this)">
+				                                                    {% endfor %}
+				                                                </label>
+				                                                <span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="" data-original-title="Cancel avatar">
+				                                                    <i class="fa fa-times"></i>
+				                                                </span>
+				                                            </div>
 			                                            </div>
-		                                            </div>
-		                                        </div>
-		                                    </div>
+			                                        </div>
+			                                    </div>
 
-		                                    <div class="form-group row">
-		                                        <label class="col-xl-3 col-lg-3 col-form-label">Prénom</label>
-		                                        <div class="col-lg-9 col-xl-6">
-		                                            <input class="form-control" name="utilisateur_prenom" type="text" id="utilisateur_prenom" value="{{utilisateur.first_name}}" autocomplete="off">
-		                                        </div>
-		                                    </div>
-		                                    <div class="form-group row">
-		                                        <label class="col-xl-3 col-lg-3 col-form-label">Nom</label>
-		                                        <div class="col-lg-9 col-xl-6">
-		                                            <input class="form-control" type="text" name="utilisateur_nom" id="utilisateur_nom" value="{{utilisateur.last_name}}" autocomplete="off">
-		                                        </div>
-		                                    </div>
-		                                    <div class="form-group row">
-		                                        <label class="col-xl-3 col-lg-3 col-form-label">Diminutif</label>
-		                                        <div class="col-lg-9 col-xl-6">
-		                                            <input class="form-control" type="text" name="utilisateur_diminutif" id="utilisateur_diminutif" value="{{utilisateur.profile.diminutif}}" autocomplete="off">
-		                                        </div>
-		                                    </div>
-		                                    <div class="row">
-		                                        <label class="col-xl-3"></label>
-		                                        <div class="col-lg-9 col-xl-6">
-		                                            <h3 class="kt-section__title kt-section__title-sm">Contact :</h3>
-		                                        </div>
-		                                    </div>
-		                                    <div class="form-group row">
-		                                        <label class="col-xl-3 col-lg-3 col-form-label">Téléphone portable</label>
-		                                        <div class="col-lg-9 col-xl-6">
-		                                            <div class="input-group">
-		                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-call-end"></i></span></div>
-		                                                <input id="utilisateur_telephone" type="text" name="utilisateur_telephone" class="form-control" value="{{utilisateur.profile.telephone}}" placeholder="Phone" aria-describedby="basic-addon1" autocomplete="off">
-		                                            </div>
-		                                        </div>
-		                                    </div>
-		                                    <div class="form-group row">
-		                                        <label class="col-xl-3 col-lg-3 col-form-label">Email</label>
-		                                        <div class="col-lg-9 col-xl-6">
-		                                            <div class="input-group">
-		                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-envelope-open"></i></span></div>
-		                                                <input id="utilisateur_email" type="text" name="utilisateur_email" class="form-control" value="{{utilisateur.email}}" placeholder="Email" aria-describedby="basic-addon1" autocomplete="off">
-		                                            </div>
-		                                        </div>
-		                                    </div>
-		                                    <div class="form-group row">
-		                                        <label class="col-xl-3 col-lg-3 col-form-label">Ville</label>
-		                                        <div class="col-lg-9 col-xl-6">
-		                                            <input id="utilisateur_ville" class="form-control" type="text" name="utilisateur_ville" value="{{utilisateur.profile.ville}}" autocomplete="off">
-		                                        </div>
-		                                    </div>
-		                                    <div class="form-group row">
-		                                        <label class="col-xl-3 col-lg-3 col-form-label">Code postal</label>
-		                                        <div class="col-lg-9 col-xl-6">
-		                                            <input id="utilisateur_code_postal" class="form-control" type="text" name="utilisateur_code_postal" value="{{utilisateur.profile.code_postal}}" autocomplete="off">
-		                                        </div>
-		                                    </div>
-		                                    <div class="form-group row">
-		                                        <label class="col-xl-3 col-lg-3 col-form-label">Adresse</label>
-		                                        <div class="col-lg-9 col-xl-6">
-		                                            <input id="utilisateur_adresse" class="form-control" type="text" name="utilisateur_adresse" value="{{utilisateur.profile.adresse}}" autocomplete="off">
-		                                        </div>
-		                                    </div>
-		                                    <div class="form-group row">
-		                                        <label class="col-xl-3 col-lg-3 col-form-label">Activer</label>
-		                                        <div class="col-lg-9 col-xl-6">
-		                                            <div class="input-group">
-		                                                <div class="input-group-prepend">
-		                                                	<span class="input-group-text">
-		                                                		<input onclick="if_check(this)" id="utilisateur_activer" name="utilisateur_activer" type="checkbox" {% if utilisateur.is_active %} checked="" {% endif %}>
-		                                                	</span>
-		                                                </div>
-		                                                {% if utilisateur.is_active %}
-		                                                <div class="form-control" id="value_checkbox">Actif</div>
-		                                                {% else %}
-		                                                <div class="form-control" id="value_checkbox">Inactif</div>
-		                                                {% endif %}
-		                                            </div>
-		                                        </div>
-		                                    </div>
-		                                </div>
-		                            </div>
-		                        </div>
-		                        <div class="kt-portlet__foot">
-		                            <div class="kt-form__actions">
-		                                <div class="row">
-		                                    <div class="col-lg-3 col-xl-3">
-		                                    </div>
-		                                    <div class="col-lg-9 col-xl-9">
-		                                        <button type="submit" name="modifier_utilisateur" value="modifier_utilisateur" class="btn btn-success">Modifier</button>&nbsp;
-		                                        <button type="reset" class="btn btn-secondary">Annuler</button>
-		                                    </div>
-		                                </div>
-		                            </div>
-		                        </div>
-		                    </form>
-		                </div>
-		            </div>
-		        </div>
-		    </div>
-		    <!-- Fin Informations personnelles -->
-		    <!-- Compétences -->
-		    <div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="kt_todo_content2" style="display:none;">
-		    	<div class="kt-portlet">
-					<div class="kt-portlet__head">
-						<div class="kt-portlet__head-label">
-							<h3 class="kt-portlet__head-title">
-								Les compétences
-							</h3>
-						</div>
-					</div>
-					<div class="kt-portlet__body">
-						<div class="kt-notification-v2" id="list_competence">
-							{% for competence in list_competence %}
-								<div class="kt-notification-v2__item display_icon_competence">
-									<div class="kt-notification-v2__item-icon" style="background-color: transparent!important;" id="to_change_image_note_competence">
-										{% if competence.note == 1 %}
-										<img id="photo_competence_{{competence.id}}" src="{% static 'planning/img/1stars.png' %}">
-										{% elif competence.note == 2 %}
-										<img id="photo_competence_{{competence.id}}" src="{% static 'planning/img/2stars.png' %}">
-										{% else %}
-										<img id="photo_competence_{{competence.id}}" src="{% static 'planning/img/3stars.png' %}">
-										{% endif %}
-									</div>
-									<div class="kt-notification-v2__itek-wrapper">
-										<div class="kt-notification-v2__item-title">
-											{{competence.nom}}
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Prénom</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <input class="form-control" name="utilisateur_prenom" type="text" id="utilisateur_prenom" value="{{utilisateur.first_name}}" autocomplete="off">
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Nom</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <input class="form-control" type="text" name="utilisateur_nom" id="utilisateur_nom" value="{{utilisateur.last_name}}" autocomplete="off">
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Diminutif</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <input class="form-control" type="text" name="utilisateur_diminutif" id="utilisateur_diminutif" value="{{utilisateur.profile.diminutif}}" autocomplete="off">
+			                                        </div>
+			                                    </div>
+			                                    <div class="row">
+			                                        <label class="col-xl-3"></label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <h3 class="kt-section__title kt-section__title-sm">Contact :</h3>
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Téléphone portable</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <div class="input-group">
+			                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-call-end"></i></span></div>
+			                                                <input id="utilisateur_telephone" type="text" name="utilisateur_telephone" class="form-control" value="{{utilisateur.profile.telephone}}" placeholder="Phone" aria-describedby="basic-addon1" autocomplete="off">
+			                                            </div>
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Email</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <div class="input-group">
+			                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-envelope-open"></i></span></div>
+			                                                <input id="utilisateur_email" type="text" name="utilisateur_email" class="form-control" value="{{utilisateur.email}}" placeholder="Email" aria-describedby="basic-addon1" autocomplete="off">
+			                                            </div>
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Ville</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <input id="utilisateur_ville" class="form-control" type="text" name="utilisateur_ville" value="{{utilisateur.profile.ville}}" autocomplete="off">
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Code postal</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <input id="utilisateur_code_postal" class="form-control" type="text" name="utilisateur_code_postal" value="{{utilisateur.profile.code_postal}}" autocomplete="off">
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Adresse</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <input id="utilisateur_adresse" class="form-control" type="text" name="utilisateur_adresse" value="{{utilisateur.profile.adresse}}" autocomplete="off">
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Activer</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <div class="input-group">
+			                                                <div class="input-group-prepend">
+			                                                	<span class="input-group-text">
+			                                                		<input onclick="if_check(this)" id="utilisateur_activer" name="utilisateur_activer" type="checkbox" {% if utilisateur.is_active %} checked="" {% endif %}>
+			                                                	</span>
+			                                                </div>
+			                                                {% if utilisateur.is_active %}
+			                                                <div class="form-control" id="value_checkbox">Actif</div>
+			                                                {% else %}
+			                                                <div class="form-control" id="value_checkbox">Inactif</div>
+			                                                {% endif %}
+			                                            </div>
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                        </div>
+			                        <div class="kt-portlet__foot">
+			                            <div class="kt-form__actions">
+			                                <div class="row">
+			                                    <div class="col-lg-3 col-xl-3">
+			                                    </div>
+			                                    <div class="col-lg-9 col-xl-9">
+			                                        <button type="submit" name="modifier_utilisateur" value="modifier_utilisateur" class="btn btn-success">Modifier</button>&nbsp;
+			                                        <button type="reset" class="btn btn-secondary">Annuler</button>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </form>
+			                </div>
+			                {% else %}
+			                <div class="tab-pane active" id="kt_apps_contacts_view_tab_1" role="tabpanel">
+			                    <form class="kt-form kt-form--label-right" method="POST" id="edit_utilisateur" enctype="multipart/form-data" data-utilisateur-url="{% url 'profil_utilisateur' utilisateur.id %}">{% csrf_token %}
+			                        <div class="kt-portlet__body">
+			                            <div class="kt-section kt-section--first">
+			                                <div class="kt-section__body">
+			                                    <div class="row">
+			                                        <label class="col-xl-3"></label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <h3 class="kt-section__title kt-section__title-sm">Information utilisateur :</h3>
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Avatar</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <div class="kt-avatar kt-avatar--outline" id="kt_user_avatar">
+				                                        	<div class="kt-avatar kt-avatar--outline" id="kt_user_avatar">
+				                                        		{% if utilisateur.profile.avatar.url != None %}
+				                                                <div id="imgaaaa" class="kt-avatar__holder" style="background-image: url('{{ utilisateur.profile.avatar.url }}')"></div>
+				                                                {% else %}
+				                                                <div id="imgaaaa" class="kt-avatar__holder" style=""></div>
+								                				{% endif %}
+				                                                <span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="" data-original-title="Cancel avatar">
+				                                                    <i class="fa fa-times"></i>
+				                                                </span>
+				                                            </div>
+			                                            </div>
+			                                        </div>
+			                                    </div>
+
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Prénom</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <input disabled="" class="form-control" name="utilisateur_prenom" type="text" id="utilisateur_prenom" value="{{utilisateur.first_name}}" autocomplete="off">
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Nom</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <input disabled="" class="form-control" type="text" name="utilisateur_nom" id="utilisateur_nom" value="{{utilisateur.last_name}}" autocomplete="off">
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Diminutif</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <input disabled="" class="form-control" type="text" name="utilisateur_diminutif" id="utilisateur_diminutif" value="{{utilisateur.profile.diminutif}}" autocomplete="off">
+			                                        </div>
+			                                    </div>
+			                                    <div class="row">
+			                                        <label class="col-xl-3"></label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <h3 class="kt-section__title kt-section__title-sm">Contact :</h3>
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Téléphone portable</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <div class="input-group">
+			                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-call-end"></i></span></div>
+			                                                <input disabled="" id="utilisateur_telephone" type="text" name="utilisateur_telephone" class="form-control" value="{{utilisateur.profile.telephone}}" placeholder="Phone" aria-describedby="basic-addon1" autocomplete="off">
+			                                            </div>
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Email</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <div class="input-group">
+			                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-envelope-open"></i></span></div>
+			                                                <input disabled="" id="utilisateur_email" type="text" name="utilisateur_email" class="form-control" value="{{utilisateur.email}}" placeholder="Email" aria-describedby="basic-addon1" autocomplete="off">
+			                                            </div>
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Ville</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <input disabled="" id="utilisateur_ville" class="form-control" type="text" name="utilisateur_ville" value="{{utilisateur.profile.ville}}" autocomplete="off">
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Code postal</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <input disabled="" id="utilisateur_code_postal" class="form-control" type="text" name="utilisateur_code_postal" value="{{utilisateur.profile.code_postal}}" autocomplete="off">
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Adresse</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <input disabled="" id="utilisateur_adresse" class="form-control" type="text" name="utilisateur_adresse" value="{{utilisateur.profile.adresse}}" autocomplete="off">
+			                                        </div>
+			                                    </div>
+			                                    <div class="form-group row">
+			                                        <label class="col-xl-3 col-lg-3 col-form-label">Activer</label>
+			                                        <div class="col-lg-9 col-xl-6">
+			                                            <div class="input-group">
+			                                                <div class="input-group-prepend">
+			                                                	<span class="input-group-text">
+			                                                		<input disabled="" onclick="if_check(this)" id="utilisateur_activer" name="utilisateur_activer" type="checkbox" {% if utilisateur.is_active %} checked="" {% endif %}>
+			                                                	</span>
+			                                                </div>
+			                                                {% if utilisateur.is_active %}
+			                                                <div class="form-control" id="value_checkbox">Actif</div>
+			                                                {% else %}
+			                                                <div class="form-control" id="value_checkbox">Inactif</div>
+			                                                {% endif %}
+			                                            </div>
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                        </div>
+			                        <div class="kt-portlet__foot">
+			                            <div class="kt-form__actions">
+			                                <div class="row">
+			                                    <div class="col-lg-3 col-xl-3">
+			                                    </div>
+			                                    <div class="col-lg-9 col-xl-9">
+			                                        <button type="submit" name="modifier_utilisateur" value="modifier_utilisateur" class="btn btn-success">Modifier</button>&nbsp;
+			                                        <button type="reset" class="btn btn-secondary">Annuler</button>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </form>
+			                </div>
+			                {% endif %}
+	                        <!--End:: Tab Content-->
+
+	                        <!--Begin:: Tab Content-->
+	                        {% if perms.planning.view_competence %}
+	                        <div class="tab-pane" id="kt_apps_contacts_view_tab_2" role="tabpanel">
+	                        	<div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="kt_todo_content2">
+							    	<div class="kt-portlet">
+										<div class="kt-portlet__head">
+											<div class="kt-portlet__head-label">
+												<h3 class="kt-portlet__head-title">
+													Les compétences
+												</h3>
+											</div>
 										</div>
-										<div class="kt-notification-v2__item-desc">
-											{{competence.date_modification}}
+										<div class="kt-portlet__body">
+											<div class="kt-notification-v2" id="list_competence">
+												{% for competence in list_competence %}
+													<div class="kt-notification-v2__item display_icon_competence">
+														<div class="kt-notification-v2__item-icon" style="background-color: transparent!important;" id="to_change_image_note_competence">
+															{% if competence.note == 1 %}
+															<img id="photo_competence_{{competence.id}}" src="{% static 'planning/img/1stars.png' %}">
+															{% elif competence.note == 2 %}
+															<img id="photo_competence_{{competence.id}}" src="{% static 'planning/img/2stars.png' %}">
+															{% else %}
+															<img id="photo_competence_{{competence.id}}" src="{% static 'planning/img/3stars.png' %}">
+															{% endif %}
+														</div>
+														<div class="kt-notification-v2__itek-wrapper">
+															<div class="kt-notification-v2__item-title">
+																{{competence.nom}}
+															</div>
+															<div class="kt-notification-v2__item-desc">
+																{{competence.date_modification}}
+															</div>
+														</div>
+														{% if perms.planning.change_competence %}
+														<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit({{competence.id}})" style="padding: 0.06rem .25rem;display: none;" title="Modifier la compétence.">
+							                                <i class="icon-note"></i>
+							                            </a>
+							                            {% endif %}
+							                            {% if perms.planning.delete_competence %}
+							                            <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_competence_{{competence.id}}" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer la compétence." onclick="openModalDelete({{competence.id}})">
+							                                <i class="icon-trash"></i>
+							                            </a>
+							                            {% endif %}
+													</div>
+												{% endfor %}
+											</div>
+											<div class="kt-separator kt-separator--space-lg kt-separator--border-dashed">
+											</div>
+											<button type="button" class="btn btn-primary btn-wide" data-toggle="modal" data-target="#add_competence">Ajouter une compétence</button>
 										</div>
 									</div>
-									<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit({{competence.id}})" style="padding: 0.06rem .25rem;display: none;" title="Modifier la compétence.">
-		                                <i class="icon-note"></i>
-		                            </a>
-		                            <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_competence_{{competence.id}}" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer la compétence." onclick="openModalDelete({{competence.id}})">
-		                                <i class="icon-trash"></i>
-		                            </a>
 								</div>
-							{% endfor %}
-						</div>
-						<div class="kt-separator kt-separator--space-lg kt-separator--border-dashed">
-						</div>
-						<button type="button" class="btn btn-primary btn-wide" data-toggle="modal" data-target="#add_competence">Ajouter une compétence</button>
-					</div>
-				</div>
-		    </div>
-		    <!-- Fin compétences -->
-		    <!-- Compétences -->
-		    <div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="kt_todo_content3" style="display:none;">
-		    	<div class="kt-portlet kt-portlet--height-fluid">
-				<div class="kt-portlet__head">
-					<div class="kt-portlet__head-label">
-						<h3 class="kt-portlet__head-title">
-							Les missions
-						</h3>
-					</div>
-					<div class="kt-portlet__head-toolbar">
-						<ul class="nav nav-pills nav-pills-sm nav-pills-label nav-pills-bold" role="tablist">
-							<li class="nav-item">
-								<a class="nav-link active" data-toggle="tab" href="#kt_widget5_tab1_content" role="tab" aria-selected="true">
-									Plus récentes
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" data-toggle="tab" href="#kt_widget5_tab2_content" role="tab" aria-selected="false">
-									Mois
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" data-toggle="tab" href="#kt_widget5_tab3_content" role="tab" aria-selected="false">
-									Toutes
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-				<div class="kt-portlet__body">
-					<div class="tab-content">
-						<div class="tab-pane active" id="kt_widget5_tab1_content" aria-expanded="true">
-							<div class="kt-widget5">
-								{% if list_mission_week.count != 0 %}
-									{% for mission in list_mission_week %}
-									<div class="kt-widget5__item">
-										<div class="kt-widget5__content">
-											<div class="kt-widget5__pic">
-												{% if mission.client != Null %}
-												<img class="kt-widget7__img" src="{{mission.client.avatar.url}}" alt="" style="max-width: 4rem;">
-												{% endif %}
-											</div>
-											<div class="kt-widget5__section">
-												<a href="#" class="kt-widget5__title">
-													{{mission.mission_type}}
-												</a>
-												<p class="kt-widget5__desc">
-													{{mission.jour_de_mission}}
-												</p>
-												<div class="kt-widget5__info">
-													<span>Client :</span>
-													<span class="kt-font-info">{{mission.client}}</span>
-													<span>Statut :</span>
-													<span class="kt-font-info">{{mission.statut}}</span>
-												</div>
-											</div>
-										</div>						
-										<div class="kt-widget5__content">
-											<div class="kt-widget5__stats">
-												<span class="kt-widget5__number">19,200</span>
-												<span class="kt-widget5__sales">sales</span>
-											</div>
-											<div class="kt-widget5__stats">
-												<span class="kt-widget5__number">1046</span>
-												<span class="kt-widget5__votes">votes</span>
-											</div>
-										</div>	
-									</div>
-									{% endfor %}
-								{% else %}
-									<div style="height: 300px;width: 100%;display: flex;align-items: center;justify-content: center;color: #777676;">
-										Rien à afficher..
-									</div>
-								{% endif %}
 							</div>
-						</div>
-						<div class="tab-pane" id="kt_widget5_tab2_content">
-							<div class="kt-widget5">
-								{% if list_mission_month.count != 0 %}
-									{% for mission in list_mission_month %}
-									<div class="kt-widget5__item">
-										<div class="kt-widget5__content">
-											<div class="kt-widget5__pic">
-												{% if mission.client != Null %}
-												<img class="kt-widget7__img" src="{{mission.client.avatar.url}}" alt="" style="max-width: 4rem;">
-												{% endif %}
-											</div>
-											<div class="kt-widget5__section">
-												<a href="#" class="kt-widget5__title">
-													{{mission.mission_type}}
-												</a>
-												<p class="kt-widget5__desc">
-													{{mission.jour_de_mission}}
-												</p>
-												<div class="kt-widget5__info">
-													<span>Client :</span>
-													<span class="kt-font-info">{{mission.client}}</span>
-													<span>Statut :</span>
-													<span class="kt-font-info">{{mission.statut}}</span>
-												</div>
-											</div>
-										</div>						
-										<div class="kt-widget5__content">
-											<div class="kt-widget5__stats">
-												<span class="kt-widget5__number">19,200</span>
-												<span class="kt-widget5__sales">sales</span>
-											</div>
-											<div class="kt-widget5__stats">
-												<span class="kt-widget5__number">1046</span>
-												<span class="kt-widget5__votes">votes</span>
-											</div>
-										</div>	
-									</div>
-									{% endfor %}
-								{% else %}
-									<div style="height: 300px;width: 100%;display: flex;align-items: center;justify-content: center;color: #777676;">
-										Rien à afficher..
-									</div>
-								{% endif %}
-							</div>
-						</div>
-						<div class="tab-pane" id="kt_widget5_tab3_content">
-							<div class="kt-widget5">
-								{% if list_mission_all.count != 0 %}
-									{% for mission in list_mission_all %}
-									<div class="kt-widget5__item">
-										<div class="kt-widget5__content">
-											<div class="kt-widget5__pic">
-												{% if mission.client != Null %}
-												<img class="kt-widget7__img" src="{{mission.client.avatar.url}}" alt="" style="max-width: 4rem;">
-												{% endif %}
-											</div>
-											<div class="kt-widget5__section">
-												<a href="#" class="kt-widget5__title">
-													{{mission.mission_type}}
-												</a>
-												<p class="kt-widget5__desc">
-													{{mission.jour_de_mission}}
-												</p>
-												<div class="kt-widget5__info">
-													<span>Client :</span>
-													<span class="kt-font-info">{{mission.client}}</span>
-													<span>Statut :</span>
-													<span class="kt-font-info">{{mission.statut}}</span>
-												</div>
-											</div>
-										</div>						
-										<div class="kt-widget5__content">
-											<div class="kt-widget5__stats">
-												<span class="kt-widget5__number">19,200</span>
-												<span class="kt-widget5__sales">sales</span>
-											</div>
-											<div class="kt-widget5__stats">
-												<span class="kt-widget5__number">1046</span>
-												<span class="kt-widget5__votes">votes</span>
-											</div>
-										</div>	
-									</div>
-									{% endfor %}	
-								{% else %}
-									<div style="height: 300px;width: 100%;display: flex;align-items: center;justify-content: center;color: #777676;">
-										Rien à afficher..
-									</div>
-								{% endif %}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		    <!-- Fin compétences -->
-		</div>
-	</div>
-</div>
+			                {% endif %}
 
+							{% if perms.planning.view_mission %}
+							<div class="tab-pane" id="kt_apps_contacts_view_tab_3" role="tabpanel">
+									<!-- Compétences -->
+							    <div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="kt_todo_content3">
+							    	<div class="kt-portlet kt-portlet--height-fluid">
+									<div class="kt-portlet__head">
+										<div class="kt-portlet__head-label">
+											<h3 class="kt-portlet__head-title">
+												Les missions
+											</h3>
+										</div>
+										<div class="kt-portlet__head-toolbar">
+											<ul class="nav nav-pills nav-pills-sm nav-pills-label nav-pills-bold" role="tablist">
+												<li class="nav-item">
+													<a class="nav-link active" data-toggle="tab" href="#kt_widget5_tab1_content" role="tab" aria-selected="true">
+														Plus récentes
+													</a>
+												</li>
+												<li class="nav-item">
+													<a class="nav-link" data-toggle="tab" href="#kt_widget5_tab2_content" role="tab" aria-selected="false">
+														Mois
+													</a>
+												</li>
+												<li class="nav-item">
+													<a class="nav-link" data-toggle="tab" href="#kt_widget5_tab3_content" role="tab" aria-selected="false">
+														Toutes
+													</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+									<div class="kt-portlet__body">
+										<div class="tab-content">
+											<div class="tab-pane active" id="kt_widget5_tab1_content" aria-expanded="true">
+												<div class="kt-widget5">
+													{% if list_mission_week.count != 0 %}
+														{% for mission in list_mission_week %}
+														<div class="kt-widget5__item">
+															<div class="kt-widget5__content">
+																<div class="kt-widget5__pic">
+																	{% if mission.client != Null %}
+																	<img class="kt-widget7__img" src="{{mission.client.avatar.url}}" alt="" style="max-width: 4rem;">
+																	{% endif %}
+																</div>
+																<div class="kt-widget5__section">
+																	<a href="#" class="kt-widget5__title">
+																		{{mission.mission_type}}
+																	</a>
+																	<p class="kt-widget5__desc">
+																		{{mission.jour_de_mission}}
+																	</p>
+																	<div class="kt-widget5__info">
+																		<span>Client :</span>
+																		<span class="kt-font-info">{{mission.client}}</span>
+																		<span>Statut :</span>
+																		<span class="kt-font-info">{{mission.statut}}</span>
+																	</div>
+																</div>
+															</div>						
+															<div class="kt-widget5__content">
+																<div class="kt-widget5__stats">
+																	<span class="kt-widget5__number">19,200</span>
+																	<span class="kt-widget5__sales">sales</span>
+																</div>
+																<div class="kt-widget5__stats">
+																	<span class="kt-widget5__number">1046</span>
+																	<span class="kt-widget5__votes">votes</span>
+																</div>
+															</div>	
+														</div>
+														{% endfor %}
+													{% else %}
+														<div style="height: 300px;width: 100%;display: flex;align-items: center;justify-content: center;color: #777676;">
+															Rien à afficher..
+														</div>
+													{% endif %}
+												</div>
+											</div>
+											<div class="tab-pane" id="kt_widget5_tab2_content">
+												<div class="kt-widget5">
+													{% if list_mission_month.count != 0 %}
+														{% for mission in list_mission_month %}
+														<div class="kt-widget5__item">
+															<div class="kt-widget5__content">
+																<div class="kt-widget5__pic">
+																	{% if mission.client != Null %}
+																	<img class="kt-widget7__img" src="{{mission.client.avatar.url}}" alt="" style="max-width: 4rem;">
+																	{% endif %}
+																</div>
+																<div class="kt-widget5__section">
+																	<a href="#" class="kt-widget5__title">
+																		{{mission.mission_type}}
+																	</a>
+																	<p class="kt-widget5__desc">
+																		{{mission.jour_de_mission}}
+																	</p>
+																	<div class="kt-widget5__info">
+																		<span>Client :</span>
+																		<span class="kt-font-info">{{mission.client}}</span>
+																		<span>Statut :</span>
+																		<span class="kt-font-info">{{mission.statut}}</span>
+																	</div>
+																</div>
+															</div>						
+															<div class="kt-widget5__content">
+																<div class="kt-widget5__stats">
+																	<span class="kt-widget5__number">19,200</span>
+																	<span class="kt-widget5__sales">sales</span>
+																</div>
+																<div class="kt-widget5__stats">
+																	<span class="kt-widget5__number">1046</span>
+																	<span class="kt-widget5__votes">votes</span>
+																</div>
+															</div>	
+														</div>
+														{% endfor %}
+													{% else %}
+														<div style="height: 300px;width: 100%;display: flex;align-items: center;justify-content: center;color: #777676;">
+															Rien à afficher..
+														</div>
+													{% endif %}
+												</div>
+											</div>
+											<div class="tab-pane" id="kt_widget5_tab3_content">
+												<div class="kt-widget5">
+													{% if list_mission_all.count != 0 %}
+														{% for mission in list_mission_all %}
+														<div class="kt-widget5__item">
+															<div class="kt-widget5__content">
+																<div class="kt-widget5__pic">
+																	{% if mission.client != Null %}
+																	<img class="kt-widget7__img" src="{{mission.client.avatar.url}}" alt="" style="max-width: 4rem;">
+																	{% endif %}
+																</div>
+																<div class="kt-widget5__section">
+																	<a href="#" class="kt-widget5__title">
+																		{{mission.mission_type}}
+																	</a>
+																	<p class="kt-widget5__desc">
+																		{{mission.jour_de_mission}}
+																	</p>
+																	<div class="kt-widget5__info">
+																		<span>Client :</span>
+																		<span class="kt-font-info">{{mission.client}}</span>
+																		<span>Statut :</span>
+																		<span class="kt-font-info">{{mission.statut}}</span>
+																	</div>
+																</div>
+															</div>						
+															<div class="kt-widget5__content">
+																<div class="kt-widget5__stats">
+																	<span class="kt-widget5__number">19,200</span>
+																	<span class="kt-widget5__sales">sales</span>
+																</div>
+																<div class="kt-widget5__stats">
+																	<span class="kt-widget5__number">1046</span>
+																	<span class="kt-widget5__votes">votes</span>
+																</div>
+															</div>	
+														</div>
+														{% endfor %}	
+													{% else %}
+														<div style="height: 300px;width: 100%;display: flex;align-items: center;justify-content: center;color: #777676;">
+															Rien à afficher..
+														</div>
+													{% endif %}
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+	                        </div>
+	                    </div>
+	                    {% endif %}
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</div>	
+		    
 <div id="add_competence" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -854,9 +1099,21 @@ function select_image_modif_competence(nbr_etoile)
             	{
             		img_note = `{% static 'planning/img/3stars.png' %}`;
             	}
+            	var icn_modif = "";
+            	var icn_delete = "";
+            	{% if perms.planning.change_competence %}
+            	icn_modif = (`<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit(` + json.id_competence + `)" style="padding: 0.06rem .25rem;display: none;" title="Modifier la compétence.">
+                            <i class="icon-note"></i>
+                        </a>`);
+            	{% endif %}
+            	{% if perms.planning.delete_competence %}
+            	icn_delete = (`<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_competence_` + json.id_competence + `" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer la compétence." onclick="openModalDelete(` + json.id_competence + `)">
+                            <i class="icon-trash"></i>
+                        </a>`);
+            	{% endif %}
             	$("#list_competence").prepend(`
             		<div class="kt-notification-v2__item display_icon_competence">
-						<div class="kt-notification-v2__item-icon">
+						<div class="kt-notification-v2__item-icon" style="background-color: transparent!important;">
 							<img id="photo_competence_` + json.id_competence + `" src="` + img_note + `">
 						</div>
 						<div class="kt-notification-v2__itek-wrapper">
@@ -867,12 +1124,7 @@ function select_image_modif_competence(nbr_etoile)
 								` + json.date_competence + `
 							</div>
 						</div>
-						<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit(` + json.id_competence + `)" style="padding: 0.06rem .25rem;display: none;" title="Modifier la compétence.">
-                            <i class="icon-note"></i>
-                        </a>
-                        <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_competence_` + json.id_competence + `" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer la compétence." onclick="openModalDelete(` + json.id_competence + `)">
-                            <i class="icon-trash"></i>
-                        </a>
+						` + icn_modif + icn_delete +`
 					</div>
             		`);
             	$("#option_" + json.id_theme).remove()

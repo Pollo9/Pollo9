@@ -91,6 +91,7 @@
 				                            </span>
 				                        </span>
 				                    </div>
+				                    {% if perms.planning.view_adresse_client %}   
 				                    <div onclick="display_onglet('onglet2');" id="onglet2" class="kt-widget__item kt-widget__item onglet">
 				                    	<span class="kt-widget__section">
 				                            <span class="kt-widget__icon">
@@ -106,6 +107,8 @@
 				                            </span>
 				                        </span>
 				                    </div>
+				                    {% endif %}
+				                    {% if perms.planning.view_piece_jointe_client %}   
 				                    <div onclick="display_onglet('onglet3');" id="onglet3" class="kt-widget__item kt-widget__item onglet">
 				                    	<span class="kt-widget__section">
 				                            <span class="kt-widget__icon">
@@ -122,6 +125,8 @@
 				                            </span>
 				                        </span>
 				                    </div>
+				                    {% endif %}
+				                    {% if perms.planning.view_mission_type_client %}   
 				                    <div onclick="display_onglet('onglet4');" id="onglet4" class="kt-widget__item kt-widget__item onglet">
 				                    	<span class="kt-widget__section">
 				                            <span class="kt-widget__icon">
@@ -137,6 +142,8 @@
 				                            </span>
 				                        </span>
 				                    </div>
+				                    {% endif %}
+				                    {% if perms.planning.view_mission %}   
 				                    <div onclick="display_onglet('onglet5');" id="onglet5" class="kt-widget__item kt-widget__item onglet">
 				                    	<span class="kt-widget__section">
 				                            <span class="kt-widget__icon">
@@ -155,6 +162,8 @@
 				                            </span>
 				                        </span>
 				                    </div>
+				                    {% endif %}
+
 				                    <div onclick="display_onglet('onglet6');" id="onglet6" class="kt-widget__item kt-widget__item onglet">
 				                    	<span class="kt-widget__section">
 				                            <span class="kt-widget__icon">
@@ -171,6 +180,8 @@
 				                            </span>
 				                        </span>
 				                    </div>
+
+				                    {% if perms.auth.view_logentry %}   
 				                    <div onclick="display_onglet('onglet7');" id="onglet7" class="kt-widget__item kt-widget__item onglet">
 				                    	<span class="kt-widget__section">
 				                            <span class="kt-widget__icon">
@@ -187,6 +198,7 @@
 				                            </span>
 				                        </span>
 				                    </div>
+				                    {% endif %}
 				                    <a href="{% url 'client' %}" class="kt-widget__item kt-widget__item">
 				                    	<span class="kt-widget__section">
 				                            <span class="kt-widget__icon">
@@ -210,6 +222,7 @@
 				</div>
 		    </div>
 
+	 	{% if perms.planning.change_client %}    
 	    <div class="kt-grid__item kt-grid__item--fluid kt-app__content onglet_content" id="kt_todo_content_onglet1">
 	        <div class="row">
 	            <div class="col-xl-12">
@@ -334,7 +347,116 @@
 	            </div>
 	        </div>
 	    </div>
+	    {% else %}
+	    <div class="kt-grid__item kt-grid__item--fluid kt-app__content onglet_content" id="kt_todo_content_onglet1">
+	        <div class="row">
+	            <div class="col-xl-12">
+	                <div class="kt-portlet">
+	                    <div class="kt-portlet__head">
+	                        <div class="kt-portlet__head-label">
+	                            <h3 class="kt-portlet__head-title">Client </h3>
+	                        </div>
+	                    </div>
+	                    <form class="kt-form kt-form--label-right" method="POST" id="edit_client" enctype="multipart/form-data">{% csrf_token %}
+	                        <div class="kt-portlet__body">
+	                            <div class="kt-section kt-section--first">
+	                                <div class="kt-section__body">
+	                                    <div class="row">
+	                                        <label class="col-xl-3"></label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <h3 class="kt-section__title kt-section__title-sm">Information client :</h3>
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label class="col-xl-3 col-lg-3 col-form-label">Avatar</label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                        	{% if client.avatar.url != None %}
+	                                        	<div class="kt-avatar kt-avatar--outline" id="kt_user_avatar">
+	                                                <div id="imgaaaa" class="kt-avatar__holder" style="background-image: url('{{ client.avatar.url }}')"></div>
+	                                                <span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="" data-original-title="Cancel avatar">
+	                                                    <i class="fa fa-times"></i>
+	                                                </span>
+	                                            </div>
+								                {% else %}
+								                <div class="kt-widget__media" style="background-color:{{client.couleur_rdm}}30;">
+				                                    <span class="kt-widget__img kt-hidden-" style="color:{{client.couleur_rdm}};font-weight:bold;">{{client.diminutif}}</span>
+				                                </div>
+				                				{% endif %}
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label class="col-xl-3 col-lg-3 col-form-label">Nom</label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <input disabled="" class="form-control" type="text" name="client_nom" id="client_nom" value="{{client.nom}}" autocomplete="off">
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label class="col-xl-3 col-lg-3 col-form-label">Code couleur</label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <input disabled="" class="form-control" type="color" name="client_couleur" id="client_couleur" value="{{client.code_couleur}}" autocomplete="off">
+	                                        </div>
+	                                    </div>
+	                                    <div class="row">
+	                                        <label class="col-xl-3"></label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <h3 class="kt-section__title kt-section__title-sm">Contact :</h3>
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label class="col-xl-3 col-lg-3 col-form-label">Téléphone</label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <div class="input-group">
+	                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-call-end"></i></span></div>
+	                                                <input disabled="" id="client_telephone" type="text" name="client_telephone" class="form-control" value="{{client.telephone}}" placeholder="Phone" aria-describedby="basic-addon1" autocomplete="off">
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label class="col-xl-3 col-lg-3 col-form-label">Email</label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <div class="input-group">
+	                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-envelope-open"></i></span></div>
+	                                                <input disabled="" id="client_email" type="text" name="client_email" class="form-control" value="{{client.email}}" placeholder="Email" aria-describedby="basic-addon1" autocomplete="off">
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <div class="form-group row">
+	                                        <label class="col-xl-3 col-lg-3 col-form-label">Site web</label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <div class="input-group">
+	                                                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-globe"></i></span></div>
+	                                                <input disabled="" id="client_site_web" type="text" name="client_site_web" class="form-control" value="{{client.site_web}}" placeholder="Site web" aria-describedby="basic-addon1" autocomplete="off">
+	                                            </div>
+	                                        </div>
+	                                    </div>
+                                    	<div class="form-group row">
+	                                        <label class="col-xl-3 col-lg-3 col-form-label">Activer</label>
+	                                        <div class="col-lg-9 col-xl-6">
+	                                            <div class="input-group">
+	                                                <div class="input-group-prepend">
+	                                                	<span class="input-group-text">
+	                                                		<input disabled="" onclick="if_check(this)" id="client_activer" name="client_activer" type="checkbox" {% if client.archive == False %} checked {% endif %}>
+	                                                	</span>
+	                                                </div>
+	                                                {% if client.archive == False %}
+	                                                <div class="form-control" id="value_checkbox">Actif</div>
+	                                                {% else %}
+	                                                <div class="form-control" id="value_checkbox">Archive</div>
+	                                                {% endif %}
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </form>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    {% endif %}
 
+	    {% if perms.planning.view_adresse_client %}
 	    <!-- Adresse ! -->
 	    <div class="kt-grid__item kt-grid__item--fluid kt-app__content onglet_content" id="kt_todo_content_onglet2" style="display:none;">
 	    	<div class="kt-portlet">
@@ -350,8 +472,13 @@
 						{% for adresse in list_adresse_client %}
 							<div class="kt-notification-v2__item display_icon_competence">
 								<div class="kt-notification-v2__item-icon" style="background-color: inherit;">
+									{% if perms.planning.change_adresse_client %}
 									<svg onclick="add_reset_favori_adresse({{adresse.id}})" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon" style="cursor: pointer;">
-									    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" class="hover_icon_star">
+									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" class="hover_icon_star">
+									{% else %}
+									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon" style="cursor: pointer;">
+									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+									{% endif %}
 									        <rect x="0" y="0" width="24" height="24"/>
 									        <path  class="simple_icon_star" id="simple_icon_star_{{adresse.id}}" d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z" fill="#000000" fill-rule="nonzero"{% if adresse.favori == True %} style="fill: #fbd058" {% else %} style="fill:#2c77f445;"{% endif %}/>
 									    </g>
@@ -375,22 +502,30 @@
 									<div class="kt-notification-v2__item-desc">
 									</div>
 								</div>
+								{% if perms.planning.change_adresse_client %}
 								<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit({{adresse.id}})" style="padding: 0.06rem .25rem;display: none;" title="Modifier l'adresse.">
 	                                <i class="icon-note"></i>
 	                            </a>
+	                            {% endif %}
+	                            {% if perms.planning.delete_adresse_client %}
 	                            <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_adresse_{{adresse.id}}" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer l'adresse." onclick="openModalDelete({{adresse.id}})">
 	                                <i class="icon-trash"></i>
 	                            </a>
+	                            {% endif %}
 							</div>
 						{% endfor %}
 					</div>
+					{% if perms.planning.add_adresse_client %}
 					<div class="kt-separator kt-separator--space-lg kt-separator--border-dashed">
 					</div>
 					<button type="button" class="btn btn-primary btn-wide" data-toggle="modal" data-target="#add_adresse">Ajouter une adresse</button>
+					{% endif %}
 				</div>
 			</div>
 		</div>
+		{% endif %}
 
+		{% if perms.planning.view_piece_jointe_client %}
 		<!-- Piece jointe ! -->
 	    <div class="kt-grid__item kt-grid__item--fluid kt-app__content onglet_content" id="kt_todo_content_onglet3" style="display:none;">
 	    	<div class="kt-portlet">
@@ -406,8 +541,13 @@
 						{% for piece_jointe in list_piece_jointe %}
 							<div class="kt-notification-v2__item display_icon_competence">
 								<div class="kt-notification-v2__item-icon" style="background-color: inherit;">
+									{% if perms.planning.change_piece_jointe_client %}
 									<svg onclick="add_reset_favori_piece_jointe({{piece_jointe.id}})" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
 									    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" class="hover_icon_star">
+									{% else %}
+									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+									    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+									{% endif %}
 									        <polygon points="0 0 24 0 24 24 0 24"/>
 									        <path class="simple_icon_star" id="simple_icon_star_pj_{{piece_jointe.id}}" 
 									        d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" {% if piece_jointe.favori == True %} style="fill: #fbd058" {% else %} style="fill:#2c77f445;"{% endif %}/>
@@ -426,22 +566,30 @@
 										{{piece_jointe.date_upload}}
 									</div>
 								</div>
+								{% if perms.planning.change_piece_jointe_client %}
 								<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit_piece_jointe({{piece_jointe.id}})" style="padding: 0.06rem .25rem;display: none;" title="Modifier l'piece_jointe.">
 	                                <i class="icon-note"></i>
 	                            </a>
+	                            {% endif %}
+	                            {% if perms.planning.delete_piece_jointe_client %}
 	                            <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_piece_jointe_{{piece_jointe.id}}" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer l'piece_jointe." onclick="openModalDelete_piece_jointe({{piece_jointe.id}})">
 	                                <i class="icon-trash"></i>
 	                            </a>
+	                            {% endif %}
 							</div>
 						{% endfor %}
 					</div>
+					{% if perms.planning.add_piece_jointe_client %}
 					<div class="kt-separator kt-separator--space-lg kt-separator--border-dashed">
 					</div>
 					<button type="button" class="btn btn-primary btn-wide" data-toggle="modal" data-target="#add_piece_jointe">Ajouter une pièce jointe</button>
+					{% endif %}
 				</div>
 			</div>
 		</div>
+		{% endif %}
 
+		{% if perms.planning.view_mission_type_client %}
 		 <!-- Mission type ! -->
 	    <div class="kt-grid__item kt-grid__item--fluid kt-app__content onglet_content" id="kt_todo_content_onglet4" style="display:none;">
 	    	<div class="kt-portlet">
@@ -457,8 +605,13 @@
 						{% for mission_type in list_mission_type %}
 							<div class="kt-notification-v2__item display_icon_competence">
 								<div class="kt-notification-v2__item-icon" style="background-color: inherit;">
+									{% if perms.planning.change_mission_type_client %}
 									<svg onclick="add_reset_favori_mission_type({{mission_type.id}})" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon" style="cursor: pointer;">
+									    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" class="hover_icon_star">
+									{% else %}
+									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon" style="cursor: pointer;">
 									    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+									{% endif %}
 									        <rect x="0" y="0" width="24" height="24"/>
 									        <path class="simple_icon_star" id="simple_icon_star_mt_{{mission_type.id}}"  d="M4.5,3 L19.5,3 C20.3284271,3 21,3.67157288 21,4.5 L21,19.5 C21,20.3284271 20.3284271,21 19.5,21 L4.5,21 C3.67157288,21 3,20.3284271 3,19.5 L3,4.5 C3,3.67157288 3.67157288,3 4.5,3 Z M8,5 C7.44771525,5 7,5.44771525 7,6 C7,6.55228475 7.44771525,7 8,7 L16,7 C16.5522847,7 17,6.55228475 17,6 C17,5.44771525 16.5522847,5 16,5 L8,5 Z" fill="#000000" {% if mission_type.favori == True %} style="fill: #fbd058" {% else %} style="fill:#2c77f445;"{% endif %}/>
 									        <path d="M11.9999651,17.2276651 L9.80187391,18.4352848 C9.53879239,18.5798204 9.21340017,18.4741205 9.07509004,18.1991974 C9.02001422,18.0897216 9.00100892,17.9643258 9.02101638,17.8424227 L9.44081443,15.2846431 L7.66252134,13.4732136 C7.44968392,13.2564102 7.44532889,12.9003514 7.65279409,12.677934 C7.73540782,12.5893662 7.84365664,12.5317281 7.96078237,12.5139426 L10.418323,12.1407676 L11.5173686,9.81362288 C11.6489093,9.53509542 11.97161,9.42073887 12.2381407,9.5582004 C12.3442746,9.6129383 12.4301813,9.70271178 12.4825615,9.81362288 L13.5816071,12.1407676 L16.0391477,12.5139426 C16.3332818,12.5586066 16.5370768,12.8439892 16.4943366,13.1513625 C16.4773173,13.2737601 16.4221618,13.3868813 16.3374088,13.4732136 L14.5591157,15.2846431 L14.9789137,17.8424227 C15.0291578,18.148554 14.8324094,18.4392867 14.5394638,18.4917923 C14.4228114,18.5127004 14.3028166,18.4928396 14.1980562,18.4352848 L11.9999651,17.2276651 Z" fill="white" style="fill:white;cursor: pointer;" />
@@ -480,22 +633,30 @@
 									<div class="kt-notification-v2__item-desc">
 									</div>
 								</div>
+								{% if perms.planning.change_mission_type_client %}
 								<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit_mission_type({{mission_type.id}})" style="padding: 0.06rem .25rem;display: none;" title="Modifier l'mission_type.">
 	                                <i class="icon-note"></i>
 	                            </a>
+	                            {% endif %}
+	                            {% if perms.planning.delete_mission_type_client %}
 	                            <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_mission_type_{{mission_type.id}}" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Supprimer la mission type." onclick="openModalDelete_mission_type({{mission_type.id}})">
 	                                <i class="icon-trash"></i>
 	                            </a>
+	                            {% endif %}
 							</div>
 						{% endfor %}
 					</div>
+					{% if perms.planning.add_mission_type_client %}
 					<div class="kt-separator kt-separator--space-lg kt-separator--border-dashed">
 					</div>
 					<button type="button" class="btn btn-primary btn-wide" data-toggle="modal" data-target="#add_mission_type">Ajouter une mission type</button>
+					{% endif %}
 				</div>
 			</div>
 		</div>
+		{% endif %}
 
+		{% if perms.planning.view_mission %}
 		 <!-- Les missions ! -->
 	    <div class="kt-grid__item kt-grid__item--fluid kt-app__content onglet_content" id="kt_todo_content_onglet5" style="display:none;">
 	    	<div class="row">
@@ -509,6 +670,7 @@
 	    		</div>
 	    	</div>
 		</div>
+		{% endif %}
 
 		 <!-- Consultant ! -->
 	    <div class="kt-grid__item kt-grid__item--fluid kt-app__content onglet_content" id="kt_todo_content_onglet6" style="display:none;">
@@ -524,6 +686,7 @@
 	    	</div>
 		</div>
 
+		{% if perms.auth.view_logentry %}
 		 <!-- Logs ! -->
 	    <div class="kt-grid__item kt-grid__item--fluid kt-app__content onglet_content" id="kt_todo_content_onglet7" style="display:none;">
 	    	<div class="kt-portlet">
@@ -570,6 +733,7 @@
 				</div>
 			</div>		   
 		</div>
+		{% endif %}
 	</div>
 </div>
 
@@ -799,7 +963,8 @@
 {% block script %}
 <script src="{% static 'planning/js/throw_modal.js' %}"></script>
 <script>
-	function readURL(input) {
+	function readURL(input)
+	{
 	    if (input.files && input.files[0]) {
 	        var reader = new FileReader();
 
@@ -921,11 +1086,30 @@
             success:function(json)
             {
             	$("#close_modal").click();
+            	var icn_modif = "";
+            	var icn_delete = "";
+            	var icn_fav = `
+            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon" style="cursor: pointer;">
+			    	<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">`
+            	{% if perms.planning.change_adresse_client %}
+            	icn_fav = `
+            	<svg onclick="add_reset_favori_adresse(` + json.ajout_id_adresse + `)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon" style="cursor: pointer;">
+				    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" class="hover_icon_star">`
+            	icn_modif = `
+            		<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit(` + json.ajout_id_adresse + `)" style="padding: 0.06rem .25rem;display: none;" title="Modifier l'adresse.">
+                        <i class="icon-note"></i>
+                    </a>`
+            	{% endif %}
+            	{% if perms.planning.delete_adresse_client %}
+            	icn_delete = `
+            		<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_adresse_` + json.ajout_id_adresse + `" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer l'adresse." onclick="openModalDelete(` + json.ajout_id_adresse + `)">
+                        <i class="icon-trash"></i>
+                    </a>`
+            	{% endif %}
             	$('#list_adresse').prepend(`
             		<div class="kt-notification-v2__item display_icon_competence">
 	            		<div class="kt-notification-v2__item-icon" style="background-color: inherit;">
-							<svg onclick="add_reset_favori_adresse(` + json.ajout_id_adresse + `)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon" style="cursor: pointer;">
-							    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" class="hover_icon_star">
+							` + icn_fav + `
 							        <rect x="0" y="0" width="24" height="24"/>
 							        <path  class="simple_icon_star" id="simple_icon_star_` + json.ajout_id_adresse + `" d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z" fill="#000000" fill-rule="nonzero"{% if adresse.favori == True %} style="fill: #fbd058" {% else %} style="fill:#2c77f445;"{% endif %}/>
 							    </g>
@@ -949,12 +1133,7 @@
 							<div class="kt-notification-v2__item-desc">
 							</div>
 						</div>
-						<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit(` + json.ajout_id_adresse + `)" style="padding: 0.06rem .25rem;display: none;" title="Modifier l'adresse.">
-                            <i class="icon-note"></i>
-                        </a>
-                        <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_adresse_` + json.ajout_id_adresse + `" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer l'adresse." onclick="openModalDelete(` + json.ajout_id_adresse + `)">
-                            <i class="icon-trash"></i>
-                        </a>
+						` + icn_modif + icn_delete +`
 					</div>`);
             	toastr.options = {
 	                "closeButton": false,
@@ -1185,11 +1364,32 @@
             success:function(json)
             {
             	$("#close_modal_piece_jointe").click();
+            	var icn_fav = `
+            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					        <polygon points="0 0 24 0 24 24 0 24"/>`;
+				var icn_modif = "";
+				var icn_delete = "";
+            	{% if perms.planning.change_piece_jointe_client %}
+            	icn_fav = `
+            	<svg onclick="add_reset_favori_piece_jointe(`+ json.ajout_id_piece_jointe+`)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" class="hover_icon_star">
+					        <polygon points="0 0 24 0 24 24 0 24"/>`;
+            	icn_modif = `
+            		<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit_piece_jointe(`+ json.ajout_id_piece_jointe+`)" style="padding: 0.06rem .25rem;display: none;" title="Modifier la pièce jointe.">
+                        <i class="icon-note"></i>
+                    </a>`;
+            	{% endif %}
+            	{% if perms.planning.delete_piece_jointe_client %}
+            	icn_delete = `
+            		<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_piece_jointe_`+ json.ajout_id_piece_jointe+`" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer la pièce jointe." onclick="openModalDelete_piece_jointe(`+ json.ajout_id_piece_jointe+`)">
+                        <i class="icon-trash"></i>
+                    </a>`;
+            	{% endif %}
             	$('#list_piece_jointe').prepend(`
             		<div class="kt-notification-v2__item display_icon_competence">
             			<div class="kt-notification-v2__item-icon" style="background-color: inherit;">
-							<svg onclick="add_reset_favori_piece_jointe(`+ json.ajout_id_piece_jointe+`)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-							    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" class="hover_icon_star">
+							` + icn_fav + `
 							        <polygon points="0 0 24 0 24 24 0 24"/>
 							        <path class="simple_icon_star" id="simple_icon_star_pj_`+ json.ajout_id_piece_jointe+`" 
 							        d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" {% if piece_jointe.favori == True %} style="fill: #fbd058" {% else %} style="fill:#2c77f445;"{% endif %}/>
@@ -1208,12 +1408,7 @@
 								` + json.ajout_date_upload_piece_jointe + `
 							</div>
 						</div>
-						<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit_piece_jointe(`+ json.ajout_id_piece_jointe+`)" style="padding: 0.06rem .25rem;display: none;" title="Modifier l'piece_jointe.">
-                            <i class="icon-note"></i>
-                        </a>
-                        <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_piece_jointe_`+ json.ajout_id_piece_jointe+`" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Retirer l'piece_jointe." onclick="openModalDelete_piece_jointe(`+ json.ajout_id_piece_jointe+`)">
-                            <i class="icon-trash"></i>
-                        </a>
+						` + icn_modif + icn_delete +`
 					</div>`);
             	toastr.options = {
 	                "closeButton": false,
@@ -1463,11 +1658,30 @@
             		str_list_theme = "Aucun thème."
             	}
             	$("#close_modal_mission_type").click();
+            	var icn_fav = `
+            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon" style="cursor: pointer;">
+				    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">`;
+				var icn_modif = "";
+				var icn_delete = "";
+            	{% if perms.planning.change_mission_type_client %}
+            	icn_fav = `
+            	<svg onclick="add_reset_favori_mission_type(`+json.ajout_id_mission_type+`)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon" style="cursor: pointer;">
+					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" class="hover_icon_star">`;
+            	icn_modif = `
+            		<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit_mission_type(`+json.ajout_id_mission_type+`)" style="padding: 0.06rem .25rem;display: none;" title="Modifier l'mission_type.">
+                        <i class="icon-note"></i>
+                    </a>`;
+            	{% endif %}
+            	{% if perms.planning.delete_mission_type_client %}
+            	icn_delete = `
+            		<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_mission_type_`+json.ajout_id_mission_type+`" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Supprimer la mission type." onclick="openModalDelete_mission_type(`+json.ajout_id_mission_type+`)">
+                        <i class="icon-trash"></i>
+                    </a>`;
+            	{% endif %}
             	$('#list_mission_type').prepend(`
             		<div class="kt-notification-v2__item display_icon_competence">
 						<div class="kt-notification-v2__item-icon" style="background-color: inherit;">
-							<svg onclick="add_reset_favori_mission_type(`+json.ajout_id_mission_type+`)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon" style="cursor: pointer;">
-							    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+							`+ icn_fav +`
 							        <rect x="0" y="0" width="24" height="24"/>
 							        <path class="simple_icon_star" id="simple_icon_star_mt_`+json.ajout_id_mission_type+`"  d="M4.5,3 L19.5,3 C20.3284271,3 21,3.67157288 21,4.5 L21,19.5 C21,20.3284271 20.3284271,21 19.5,21 L4.5,21 C3.67157288,21 3,20.3284271 3,19.5 L3,4.5 C3,3.67157288 3.67157288,3 4.5,3 Z M8,5 C7.44771525,5 7,5.44771525 7,6 C7,6.55228475 7.44771525,7 8,7 L16,7 C16.5522847,7 17,6.55228475 17,6 C17,5.44771525 16.5522847,5 16,5 L8,5 Z" fill="#000000" {% if mission_type.favori == True %} style="fill: #fbd058" {% else %} style="fill:#2c77f445;"{% endif %}/>
 							        <path d="M11.9999651,17.2276651 L9.80187391,18.4352848 C9.53879239,18.5798204 9.21340017,18.4741205 9.07509004,18.1991974 C9.02001422,18.0897216 9.00100892,17.9643258 9.02101638,17.8424227 L9.44081443,15.2846431 L7.66252134,13.4732136 C7.44968392,13.2564102 7.44532889,12.9003514 7.65279409,12.677934 C7.73540782,12.5893662 7.84365664,12.5317281 7.96078237,12.5139426 L10.418323,12.1407676 L11.5173686,9.81362288 C11.6489093,9.53509542 11.97161,9.42073887 12.2381407,9.5582004 C12.3442746,9.6129383 12.4301813,9.70271178 12.4825615,9.81362288 L13.5816071,12.1407676 L16.0391477,12.5139426 C16.3332818,12.5586066 16.5370768,12.8439892 16.4943366,13.1513625 C16.4773173,13.2737601 16.4221618,13.3868813 16.3374088,13.4732136 L14.5591157,15.2846431 L14.9789137,17.8424227 C15.0291578,18.148554 14.8324094,18.4392867 14.5394638,18.4917923 C14.4228114,18.5127004 14.3028166,18.4928396 14.1980562,18.4352848 L11.9999651,17.2276651 Z" fill="white" style="fill:white;cursor: pointer;" />
@@ -1489,12 +1703,7 @@
 							<div class="kt-notification-v2__item-desc">
 							</div>
 						</div>
-						<a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" onclick="openModalEdit_mission_type(`+json.ajout_id_mission_type+`)" style="padding: 0.06rem .25rem;display: none;" title="Modifier l'mission_type.">
-	                        <i class="icon-note"></i>
-	                    </a>
-	                    <a class="btn btn-sm btn-clean btn-icon btn-icon-md icon_competence" id="to_remove_mission_type_`+json.ajout_id_mission_type+`" style="padding: 0.06rem .25rem;display: none;" alt="Retirer" title="Supprimer la mission type." onclick="openModalDelete_mission_type(`+json.ajout_id_mission_type+`)">
-	                        <i class="icon-trash"></i>
-	                    </a>
+						` + icn_modif + icn_delete +`
 					</div>`);
             	toastr.options = {
 	                "closeButton": false,

@@ -47814,7 +47814,7 @@ th>.kt-radio.kt-radio--single {
 }
 
 .kt-widget.kt-widget--user-profile-3 .kt-widget__top .kt-widget__media img {
-    width: 110px;
+    width: 60px;
     border-radius: 8px
 }
 
@@ -48801,9 +48801,9 @@ body {
         transition: all .3s ease
     }
     .kt-header--fixed.kt-subheader--fixed .kt-subheader {
-        position: fixed;
+        position: relative;
         height: 54px;
-        top: 80px;
+        top: 0;
         left: 0;
         right: 0;
         -webkit-transition: all .3s ease;
@@ -48820,7 +48820,7 @@ body {
         transition: top .3s ease
     }
     .kt-aside--enabled.kt-subheader--fixed .kt-subheader {
-        left: 140px
+        left: 0px
     }
     .kt-subheader--fixed.kt-aside--minimize .kt-subheader,
     .kt-subheader--fixed.kt-aside--minimize-hover .kt-subheader {
