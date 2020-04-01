@@ -948,7 +948,7 @@ def edit_mission_type_modal(request):
 
 def ajax_utilisateurs(request):
 	
-	queryset = User.objects.all().order_by("-is_active")
+	queryset = User.objects.all().order_by("-is_active").exclude(username = request.user.username)
 	list = []
 
 	for objects in queryset:

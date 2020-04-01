@@ -16,6 +16,13 @@
 	{
 		display: flex!important;
 	}
+	.fill_white_on_hover:hover .fill_white_hover
+	{
+		fill: white;
+	}
+	.kt-switch.kt-switch--icon input:checked~span:after {
+	    content: '\2713'!important;
+	}
 </style>
 <div class="kt-subheader  kt-grid__item">
     <div class="kt-container  kt-container--fluid ">
@@ -43,8 +50,12 @@
 			                <div class="kt-widget__media">
 			                	<img id="avatar_left" src="{{ utilisateur.profile.avatar.url }}">
 			                </div>
+			                <div id="diminutif_left" style="display: none;"></div>
 			                {% else %}
-			                <div class="kt-widget__media" style="background-color:{{utilisateur.profile.couleur_rdm}}30;width: 90px;max-width: 100%;border-radius: 8px;height: 90px;display: flex;align-items: center;justify-content: center;">
+			                <div class="kt-widget__media">
+			                	<img id="avatar_left" style="display: none;" src="">
+			                </div>
+			                <div class="kt-widget__media" id="diminutif_left" style="background-color:{{utilisateur.profile.couleur_rdm}}30;width: 90px;max-width: 100%;border-radius: 8px;height: 90px;display: flex;align-items: center;justify-content: center;">
                                 <span class="kt-widget__img kt-hidden-" id="diminutif_consultant_left" style="color:{{utilisateur.profile.couleur_rdm}};font-size: 25px;font-weight:bold;">{{utilisateur.profile.diminutif}}</span>
                             </div>
 			                {% endif %}
@@ -57,12 +68,12 @@
 	                            </a>
 	                            </div>
 	                            <div class="kt-widget__action">
-	                                <a class="btn btn-label-brand btn-sm btn-upper" href="{% url 'messagerie_administrateur' %}">
+	                                <a class="btn btn-label-brand btn-sm btn-upper fill_white_on_hover" href="{% url 'messagerie_administrateur' %}">
 	                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
 										    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 										        <rect x="0" y="0" width="24" height="24"/>
-										        <path d="M21,12.0829584 C20.6747915,12.0283988 20.3407122,12 20,12 C16.6862915,12 14,14.6862915 14,18 C14,18.3407122 14.0283988,18.6747915 14.0829584,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,12.0829584 Z M18.1444251,7.83964668 L12,11.1481833 L5.85557487,7.83964668 C5.4908718,7.6432681 5.03602525,7.77972206 4.83964668,8.14442513 C4.6432681,8.5091282 4.77972206,8.96397475 5.14442513,9.16035332 L11.6444251,12.6603533 C11.8664074,12.7798822 12.1335926,12.7798822 12.3555749,12.6603533 L18.8555749,9.16035332 C19.2202779,8.96397475 19.3567319,8.5091282 19.1603533,8.14442513 C18.9639747,7.77972206 18.5091282,7.6432681 18.1444251,7.83964668 Z" fill="#000000"/>
-										        <circle fill="#000000" opacity="0.3" cx="19.5" cy="17.5" r="2.5"/>
+										        <path class="fill_white_hover" d="M21,12.0829584 C20.6747915,12.0283988 20.3407122,12 20,12 C16.6862915,12 14,14.6862915 14,18 C14,18.3407122 14.0283988,18.6747915 14.0829584,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,12.0829584 Z M18.1444251,7.83964668 L12,11.1481833 L5.85557487,7.83964668 C5.4908718,7.6432681 5.03602525,7.77972206 4.83964668,8.14442513 C4.6432681,8.5091282 4.77972206,8.96397475 5.14442513,9.16035332 L11.6444251,12.6603533 C11.8664074,12.7798822 12.1335926,12.7798822 12.3555749,12.6603533 L18.8555749,9.16035332 C19.2202779,8.96397475 19.3567319,8.5091282 19.1603533,8.14442513 C18.9639747,7.77972206 18.5091282,7.6432681 18.1444251,7.83964668 Z" fill="#000000"/>
+										        <circle class="fill_white_hover" fill="#000000" opacity="0.3" cx="19.5" cy="17.5" r="2.5"/>
 										    </g>
 										</svg>
 										Messagerie
@@ -71,8 +82,8 @@
 	                        </div>
 
 	                        <div class="kt-widget__subhead">
-	                            <a id="left_email"><i class="icon-envelope-open"></i>{{utilisateur.email}}</a>
-	                            <a id="left_tel"><i class="icon-call-end"></i>{{utilisateur.profile.telephone}}</a>
+	                            <a href="mailto:{{utilisateur.email}}"id="left_email"><i class="icon-envelope-open"></i>{{utilisateur.email}}</a>
+	                            <a href="tel:{{utilisateur.profile.telephone}}"id="left_tel"><i class="icon-call-end"></i>{{utilisateur.profile.telephone}}</a>
 	                        </div>
 	                    </div>
 	                </div>
@@ -288,7 +299,10 @@
 				                                        		{% if utilisateur.profile.avatar.url != None %}
 				                                                <div id="imgaaaa" class="kt-avatar__holder" style="background-image: url('{{ utilisateur.profile.avatar.url }}')"></div>
 				                                                {% else %}
-				                                                <div id="imgaaaa" class="kt-avatar__holder" style=""></div>
+				                                                <div id="imgaaaa" class="kt-avatar__holder" style="display: none;"></div>
+				                                                <div class="kt-widget__media" id="image_diminutif" style="background-color:{{utilisateur.profile.couleur_rdm}}30;width: 120px;max-width: 100%;border-radius: 8px;height: 120px;display: flex;align-items: center;justify-content: center;">
+									                                <span class="kt-widget__img kt-hidden-" id="diminutif_consultant_left" style="color:{{utilisateur.profile.couleur_rdm}};font-size: 25px;font-weight:bold;">{{utilisateur.profile.diminutif}}</span>
+									                            </div>
 								                				{% endif %}
 				                                                <label class="kt-avatar__upload" data-toggle="kt-tooltip" title="" data-original-title="Change avatar">
 				                                                    <i class="icon-pencil"></i>
@@ -368,16 +382,12 @@
 			                                        <label class="col-xl-3 col-lg-3 col-form-label">Activer</label>
 			                                        <div class="col-lg-9 col-xl-6">
 			                                            <div class="input-group">
-			                                                <div class="input-group-prepend">
-			                                                	<span class="input-group-text">
-			                                                		<input onclick="if_check(this)" id="utilisateur_activer" name="utilisateur_activer" type="checkbox" {% if utilisateur.is_active %} checked="" {% endif %}>
-			                                                	</span>
-			                                                </div>
-			                                                {% if utilisateur.is_active %}
-			                                                <div class="form-control" id="value_checkbox">Actif</div>
-			                                                {% else %}
-			                                                <div class="form-control" id="value_checkbox">Inactif</div>
-			                                                {% endif %}
+			                                                <span class="kt-switch kt-switch--icon">
+				                                                <label>
+				                                                    <input type="checkbox" name="" id="utilisateur_activer" name="utilisateur_activer" type="checkbox" {% if utilisateur.is_active %} checked="" {% endif %}>
+				                                                    <span></span>
+				                                                </label>
+				                                            </span>
 			                                            </div>
 			                                        </div>
 			                                    </div>
@@ -418,7 +428,10 @@
 				                                        		{% if utilisateur.profile.avatar.url != None %}
 				                                                <div id="imgaaaa" class="kt-avatar__holder" style="background-image: url('{{ utilisateur.profile.avatar.url }}')"></div>
 				                                                {% else %}
-				                                                <div id="imgaaaa" class="kt-avatar__holder" style=""></div>
+				                                                <div id="imgaaaa" class="kt-avatar__holder" style="display: none;"></div>
+				                                                <div class="kt-widget__media" style="background-color:{{utilisateur.profile.couleur_rdm}}30;width: 120px;max-width: 100%;border-radius: 8px;height: 120px;display: flex;align-items: center;justify-content: center;">
+									                                <span class="kt-widget__img kt-hidden-" id="diminutif_consultant_left" style="color:{{utilisateur.profile.couleur_rdm}};font-size: 25px;font-weight:bold;">{{utilisateur.profile.diminutif}}</span>
+									                            </div>
 								                				{% endif %}
 				                                                <span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="" data-original-title="Cancel avatar">
 				                                                    <i class="fa fa-times"></i>
@@ -492,30 +505,14 @@
 			                                        <label class="col-xl-3 col-lg-3 col-form-label">Activer</label>
 			                                        <div class="col-lg-9 col-xl-6">
 			                                            <div class="input-group">
-			                                                <div class="input-group-prepend">
-			                                                	<span class="input-group-text">
-			                                                		<input disabled="" onclick="if_check(this)" id="utilisateur_activer" name="utilisateur_activer" type="checkbox" {% if utilisateur.is_active %} checked="" {% endif %}>
-			                                                	</span>
-			                                                </div>
-			                                                {% if utilisateur.is_active %}
-			                                                <div class="form-control" id="value_checkbox">Actif</div>
-			                                                {% else %}
-			                                                <div class="form-control" id="value_checkbox">Inactif</div>
-			                                                {% endif %}
+			                                            	<span class="kt-switch kt-switch--icon">
+				                                                <label>
+				                                                    <input disabled="" type="checkbox" name="" id="utilisateur_activer" name="utilisateur_activer" type="checkbox" {% if utilisateur.is_active %} checked="" {% endif %}>
+				                                                    <span></span>
+				                                                </label>
+				                                            </span>
 			                                            </div>
 			                                        </div>
-			                                    </div>
-			                                </div>
-			                            </div>
-			                        </div>
-			                        <div class="kt-portlet__foot">
-			                            <div class="kt-form__actions">
-			                                <div class="row">
-			                                    <div class="col-lg-3 col-xl-3">
-			                                    </div>
-			                                    <div class="col-lg-9 col-xl-9">
-			                                        <button type="submit" name="modifier_utilisateur" value="modifier_utilisateur" class="btn btn-success">Modifier</button>&nbsp;
-			                                        <button type="reset" class="btn btn-secondary">Annuler</button>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -840,7 +837,8 @@
 </div>
 {% endblock %}
 {% block script %}
-<script src="{% static 'planning/js/throw_modal.js' %}"></script><script>
+<script src="{% static 'planning/js/throw_modal.js' %}"></script>
+<script>
 function select_image_ajout_competence(nbr_etoile)
 {
 	if (nbr_etoile == 1)
@@ -896,6 +894,8 @@ function select_image_modif_competence(nbr_etoile)
 	        	x = e.target.result
 	            var img = document.getElementById("imgaaaa");
 				img.style.backgroundImage = "url(" + x + ")";
+				img.style.display = "block";
+				document.getElementById("image_diminutif").style.display = "none";
 	        };
 
 	        reader.readAsDataURL(input.files[0]);
@@ -1034,7 +1034,13 @@ function select_image_modif_competence(nbr_etoile)
             	{
             		document.getElementById("diminutif_consultant_left").innerHTML = json.utilisateur_diminutif;
             	}
-            	
+            	else
+            	{
+            		document.getElementById("avatar_left").src = json.avatar_utilisateur;
+            		document.getElementById("avatar_left").style.display = "block";
+					document.getElementById("diminutif_left").style.display = "none";
+
+            	}
             	$("#utilisateur_activer").prop('checked',json.utilisateur_activer)
             	toastr.options = {
 	                "closeButton": false,
