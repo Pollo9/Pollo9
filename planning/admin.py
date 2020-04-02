@@ -98,18 +98,14 @@ class Document_supplementaireInline(admin.TabularInline):
     model = Document_supplementaire
     extra = 0
 
-class Jour_missionInline(admin.TabularInline):
-    model = Jour_mission
-    extra = 0
-
 class MissionAdmin(admin.ModelAdmin):
 
     model = Mission
     fieldsets = [
-        ('INFORMATIONS',               {'fields': ['utilisateur','contrat','mission_type','adresse','document','statut']}),
+        ('INFORMATIONS',               {'fields': ['contrat','mission_type','adresse','document','statut']}),
     ]
 
-    inlines = [Document_renduInline,Document_supplementaireInline,Jour_missionInline]
+    inlines = [Document_renduInline,Document_supplementaireInline]
 
     
     list_display = ('contrat', 'utilisateur', 'mission_type')

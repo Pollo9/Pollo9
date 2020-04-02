@@ -221,28 +221,18 @@ class Contrat(models.Model):
 class Mission(models.Model):
 	nom_bdd = 'Mission'
 
+	jour_de_mission = models.DateField(auto_now = False, auto_now_add = False,blank=True)
+	heure_debut = models.TimeField(auto_now=False, auto_now_add=False)
+	heure_fin = models.TimeField(auto_now=False, auto_now_add=False)
+
+	adresse = models.ForeignKey(Adresse_client,blank=True,null=True,on_delete=models.SET_NULL)
+	statut = models.ForeignKey(Statut_mission,blank=True,null=True,on_delete=models.SET_NULL)
 	utilisateur = models.ForeignKey(User,blank=True,null=True,on_delete=models.SET_NULL)
 	contrat = models.ForeignKey(Contrat,blank=True,null=True,on_delete=models.CASCADE)
 
 	mission_type = models.ForeignKey(Mission_type_client,blank=True,null=True,on_delete=models.SET_NULL)
-	adresse = models.ForeignKey(Adresse_client,blank=True,null=True,on_delete=models.SET_NULL)
+
 	document = models.ManyToManyField(Piece_jointe_client,related_name='piece_jointe',blank=True)
-
-	statut = models.ForeignKey(Statut_mission,blank=True,null=True,on_delete=models.SET_NULL)
-
-	class Meta:
-		verbose_name = "Mission"
-		ordering = ['contrat']
-
-	def __str__(self):
-		return self.nom_bdd
-
-class Jour_mission(models.Model):
-	nom_bdd = 'Jour mission'
-	jour_de_mission = models.DateField(auto_now = False, auto_now_add = False,blank=True)
-	heure_debut = models.TimeField(auto_now=False, auto_now_add=False)
-	heure_fin = models.TimeField(auto_now=False, auto_now_add=False)
-	mission = models.ForeignKey(Mission,blank=True,null=True,on_delete=models.CASCADE)
 
 	class Meta:
 		verbose_name = "Missions jour"

@@ -66,18 +66,174 @@ def reglages(request):
 
 @login_required
 def reglage_statut_missions(request):
+
+	missions = Statut_mission.objects.all()
+
+	response_data = {}
+
+	if (request.POST.get('action') == 'ajouter_mission'):
+		nom = request.POST.get("nom_mission")
+		couleur = request.POST.get("couleur_mission")
+		missions_creer = Statut_mission.objects.create(nom=nom,code_couleur=couleur)		
+
+		response_data['nom'] = nom
+		response_data['couleur'] = couleur
+		response_data['id'] = missions_creer.id
+
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get('action') == 'edit_mission'):
+		id_mission = request.POST.get("id_mission")
+		le_missions = Statut_mission.objects.get(id=id_mission)
+		nom = le_missions.nom
+		couleur = le_missions.code_couleur
+		if couleur == '':
+			couleur = "#0c7ff1"
+
+		response_data['nom'] = nom
+		response_data['couleur'] = couleur
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get('action') == 'supprimer_mission'):
+		id_missions = request.POST.get("id_mission")
+		Statut_mission.objects.get(id=id_missions).delete()
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get('action') == 'modifier_mission'):
+		id_missions = request.POST.get("id_mission")
+		nom = request.POST.get("nom_mission")
+		couleur = request.POST.get("couleur_mission")
+		modif_mission = Statut_mission.objects.get(id=id_missions)
+		modif_mission.nom = nom
+		modif_mission.code_couleur = couleur
+		modif_mission.save()
+
+		response_data['nom'] = nom
+		response_data['couleur'] = couleur
+		response_data['id'] = modif_mission.id
+
+
+		return JsonResponse(response_data)
+
 	context = locals()
 	template = 'reglages_app/reglage_statut_missions.html'
 	return render(request,template,context)
 
 @login_required
 def reglage_statut_jours(request):
+
+	jours = Statut_journee.objects.all()
+
+	response_data = {}
+
+	if (request.POST.get('action') == 'ajouter_jour'):
+		nom = request.POST.get("nom_jour")
+		couleur = request.POST.get("couleur_jour")
+		jours_creer = Statut_journee.objects.create(nom=nom,code_couleur=couleur)		
+
+		response_data['nom'] = nom
+		response_data['couleur'] = couleur
+		response_data['id'] = jours_creer.id
+
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get('action') == 'edit_jour'):
+		id_jour = request.POST.get("id_jour")
+		le_jours = Statut_journee.objects.get(id=id_jour)
+		nom = le_jours.nom
+		couleur = le_jours.code_couleur
+		if couleur == '':
+			couleur = "#0c7ff1"
+
+		response_data['nom'] = nom
+		response_data['couleur'] = couleur
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get('action') == 'supprimer_jour'):
+		id_jours = request.POST.get("id_jour")
+		Statut_journee.objects.get(id=id_jours).delete()
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get('action') == 'modifier_jour'):
+		id_jours = request.POST.get("id_jour")
+		nom = request.POST.get("nom_jour")
+		couleur = request.POST.get("couleur_jour")
+		modif_jour = Statut_journee.objects.get(id=id_jours)
+		modif_jour.nom = nom
+		modif_jour.code_couleur = couleur
+		modif_jour.save()
+
+		response_data['nom'] = nom
+		response_data['couleur'] = couleur
+		response_data['id'] = modif_jour.id
+
+
+		return JsonResponse(response_data)
+
 	context = locals()
 	template = 'reglages_app/reglage_statut_jours.html'
 	return render(request,template,context)
 
 @login_required
 def reglage_statut_contrats(request):
+
+	contrats = Statut_contrat.objects.all()
+
+	response_data = {}
+
+	if (request.POST.get('action') == 'ajouter_contrat'):
+		nom = request.POST.get("nom_contrat")
+		couleur = request.POST.get("couleur_contrat")
+		contrats_creer = Statut_contrat.objects.create(nom=nom,code_couleur=couleur)		
+
+		response_data['nom'] = nom
+		response_data['couleur'] = couleur
+		response_data['id'] = contrats_creer.id
+
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get('action') == 'edit_contrat'):
+		id_contrat = request.POST.get("id_contrat")
+		le_contrats = Statut_contrat.objects.get(id=id_contrat)
+		nom = le_contrats.nom
+		couleur = le_contrats.code_couleur
+		if couleur == '':
+			couleur = "#0c7ff1"
+
+		response_data['nom'] = nom
+		response_data['couleur'] = couleur
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get('action') == 'supprimer_contrat'):
+		id_contrats = request.POST.get("id_contrat")
+		Statut_contrat.objects.get(id=id_contrats).delete()
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get('action') == 'modifier_contrat'):
+		id_contrats = request.POST.get("id_contrat")
+		nom = request.POST.get("nom_contrat")
+		couleur = request.POST.get("couleur_contrat")
+		modif_contrat = Statut_contrat.objects.get(id=id_contrats)
+		modif_contrat.nom = nom
+		modif_contrat.code_couleur = couleur
+		modif_contrat.save()
+
+		response_data['nom'] = nom
+		response_data['couleur'] = couleur
+		response_data['id'] = modif_contrat.id
+
+
+		return JsonResponse(response_data)
+
 	context = locals()
 	template = 'reglages_app/reglage_statut_contrats.html'
 	return render(request,template,context)
@@ -210,8 +366,6 @@ def reglage_themes(request):
 	template = 'reglages_app/themes.html'
 	return render(request,template,context)
 
-
-
 @login_required
 def index (request):
 
@@ -235,12 +389,6 @@ def generate_mdp():
 		compteur += 1 #On incrémente le compteur de lettres
 
 	return mdp
-
-@login_required
-def reglages(request):
-	context = locals()
-	template = 'reglages.html'
-	return render(request,template,context)
 
 #### Partie administrateur
 @login_required

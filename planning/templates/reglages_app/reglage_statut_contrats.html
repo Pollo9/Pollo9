@@ -12,7 +12,7 @@
             <h3 class="kt-subheader__title">Statuts contrats</h3>
             <span class="kt-subheader__separator kt-subheader__separator--v"></span>
             <div class="kt-subheader__group" id="kt_subheader_search">
-                <span class="kt-subheader__desc" id="kt_subheader_total">{{themes.count}}</span>
+                <span class="kt-subheader__desc" id="kt_subheader_total">{{contrats.count}}</span>
             </div>
         </div>        
         <div class="kt-subheader__toolbar">
@@ -26,7 +26,7 @@
 						<div class="kt-portlet">
                             <div class="kt-portlet__head">
                                 <div class="kt-portlet__head-label">
-                                    <h3 class="kt-portlet__head-title">Contrats <small>mettez à jour les statuts de contrats</small></h3>
+                                    <h3 class="kt-portlet__head-title">contrats <small>mettez à jour les contrats</small></h3>
                                 </div>
                             </div>
                             <form class="kt-form kt-form--label-right" id="form_delete_edit" method="POST" enctype="multipart/form-data">{% csrf_token %}
@@ -34,27 +34,29 @@
                                     <div class="kt-section kt-section--first">
                                         <div class="kt-section__body">
                                         	<div class="kt-notification kt-notification--fit">
-                                        	{% for theme in themes %}
-					                            <a href="#" class="kt-notification__item" id="theme_{{theme.id}}" >
+                                        	{% for contrat in contrats %}
+					                            <a href="#" class="kt-notification__item" id="contrat_{{contrat.id}}" >
 					                                <div class="kt-notification__item-icon">
 					                                    <span class="kt-list-timeline__badge kt-list-timeline__badge--success">
 					                                    	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
 															    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-															        <rect x="0" y="0" width="24" height="24"/>
-															        <path d="M4.5,3 L19.5,3 C20.3284271,3 21,3.67157288 21,4.5 L21,19.5 C21,20.3284271 20.3284271,21 19.5,21 L4.5,21 C3.67157288,21 3,20.3284271 3,19.5 L3,4.5 C3,3.67157288 3.67157288,3 4.5,3 Z M8,5 C7.44771525,5 7,5.44771525 7,6 C7,6.55228475 7.44771525,7 8,7 L16,7 C16.5522847,7 17,6.55228475 17,6 C17,5.44771525 16.5522847,5 16,5 L8,5 Z" fill="#000000"/>
+															        <polygon points="0 0 24 0 24 24 0 24"/>
+															        <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+															        <rect fill="#000000" x="6" y="11" width="9" height="2" rx="1"/>
+															        <rect fill="#000000" x="6" y="15" width="5" height="2" rx="1"/>
 															    </g>
 															</svg>
 														</span>
 					                                </div>
-					                                <div class="kt-notification__item-details" id="div_theme_{{theme.id}}">
+					                                <div class="kt-notification__item-details" id="div_contrat_{{contrat.id}}">
 					                                    <div class="row">
 					                                        <div class="col-md-10">
-					                                            <div class="kt-notification__item" style="color: #595d6e" id="nom_theme_{{theme.id}}" onclick="edit_theme({{theme.id}})">
-					                                                Nom du contrat : &nbsp;<strong>{{theme.nom}}</strong>
+					                                            <div class="kt-notification__item" style="color: #595d6e" onclick="edit_contrat({{contrat.id}})">
+					                                                Statut de la contrat : &nbsp;<span class="kt-badge kt-badge--inline" id="nom_contrat_{{contrat.id}}" style="color:white;background-color: {{contrat.code_couleur}}">{{contrat.nom}}</span>
 					                                            </div>
 					                                        </div>
 					                                        <div class="col-md-2" style="text-align: right;margin-top: 7.5px;color: #595d6e">
-					                                        	<span onclick="supp({{theme.id}})">
+					                                        	<span onclick="supp({{contrat.id}})">
 						                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
 																	    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 																	        <rect x="0" y="0" width="24" height="24"/>
@@ -82,7 +84,7 @@
 			                        <div class="kt-portlet">
 			                            <div class="kt-portlet__head">
 			                                <div class="kt-portlet__head-label">
-			                                    <h3 class="kt-portlet__head-title">Ajouter/Modifier un contrat <small>mettez à jour les informations</small></h3>
+			                                    <h3 class="kt-portlet__head-title">Ajouter/Modifier une contrat <small>mettez à jour les informations</small></h3>
 			                                </div>
 			                            </div>
 			                            <form class="kt-form kt-form--label-right" id="form_group" method="POST" enctype="multipart/form-data">{% csrf_token %}
@@ -92,15 +94,22 @@
 			                                            <div class="row">
 			                                                <label class="col-xl-3"></label>
 			                                                <div class="col-lg-9 col-xl-6">
-			                                                    <h3 class="kt-section__title kt-section__title-sm">Information du contrat</h3>
+			                                                    <h3 class="kt-section__title kt-section__title-sm">Information de la contrat</h3>
 			                                                </div>
 			                                            </div>                                            
 			                                            <div class="form-group row">
 			                                                <label class="col-xl-3 col-lg-3 col-form-label">Nom</label>
 			                                                <div class="col-lg-9 col-xl-6">
-			                                                    <input class="form-control" name="name" id="nom_theme" type="text" value="" autocomplete="off">
+			                                                    <input class="form-control" name="name" id="nom_contrat" type="text" value="" autocomplete="off">
 			                                                </div>
 			                                            </div>
+			                                            <div class="form-group row">
+			                                                <label class="col-xl-3 col-lg-3 col-form-label">Couleur</label>
+			                                                <div class="col-lg-9 col-xl-6">
+			                                                    <input class="form-control" type="color" value="#563d7c" id="example-color-input">
+			                                                </div>
+			                                            </div>
+			                                            
 			                                        </div>
 			                                    </div>
 			                                </div>
@@ -110,8 +119,8 @@
 			                                            <div class="col-lg-3 col-xl-3">
 			                                            </div>
 			                                            <div class="col-lg-9 col-xl-9">
-			                                            	 <button type="submit" id="btn-edit" name="modifier_theme" value="modifier_theme" class="btn btn-brand submitbutton" style="display: none;">Modifier</button>
-			                                                <button type="submit" id="btn-add" name="ajouter_theme" value="ajouter_theme" class="btn btn-info submitbutton">Ajouter</button>&nbsp;
+			                                            	 <button type="submit" id="btn-edit" name="modifier_contrat" value="modifier_contrat" class="btn btn-brand submitbutton" style="display: none;">Modifier</button>
+			                                                <button type="submit" id="btn-add" name="ajouter_contrat" value="ajouter_contrat" class="btn btn-info submitbutton">Ajouter</button>&nbsp;
 			                                                <span onclick="reset()">
 			                                                	<button type="reset" value="reset" id="reset_form" class="btn btn-secondary">Annuler</button>
 			                                                </span>
@@ -134,23 +143,26 @@ function reset(){
 	document.getElementById('btn-edit').style.display = 'none';
     document.getElementById('btn-add').style.display = 'initial';
 }
-function edit_theme(id){
+function edit_contrat(id){
 	$.ajax(
         {
             type:'POST',
-            url:'{% url "reglage_themes" %}',
+            url:'{% url "reglage_statut_contrats" %}',
             data:
             {
-                id_theme: id,
+                id_contrat: id,
+                couleur_contrat:$('#example-color-input').val(),
                 csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-                action: 'edit_theme'
+                action: 'edit_contrat'
             },
             success:function(json)
             {
             	document.getElementById("form_group").reset();
             	document.getElementById('btn-edit').style.display = 'initial';
         		document.getElementById('btn-add').style.display = 'none';
-            	document.getElementById('nom_theme').value = json.nom;
+            	document.getElementById('nom_contrat').value = json.nom;
+            	console.log(json.couleur)
+            	document.getElementById('example-color-input').value = json.couleur;
             	document.getElementById("btn-edit").value = id;
           	
             },
@@ -185,32 +197,30 @@ $('.submitbutton').click(function() {
 	$(document).on('submit', '#form_group',function(e)
 	{
 		var id = $('#btn-edit').val();
-		var selectedValues = [];    
-		$("#select_permissions :selected").each(function(){
-			selectedValues.push($(this).val()); 
-		});
 		e.preventDefault();
 		$.ajax(
 		{
 			type:'POST',
-			url:'{% url "reglage_themes" %}',
+			url:'{% url "reglage_statut_contrats" %}',
 			data:
 			{
-				nom_theme:$('#nom_theme').val(),
+				nom_contrat:$('#nom_contrat').val(),
+				couleur_contrat:$('#example-color-input').val(),
 				cache: false,
-				id_theme:id,
-				select_permissions:selectedValues,
+				id_contrat:id,
 				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
 				action: buttonpressed
 			},
 			success:function(json)
 			{
 				document.getElementById("form_group").reset();
-				if (buttonpressed == 'modifier_theme') {
-					document.getElementById("nom_theme_"+id).innerHTML = "Nom du theme : &nbsp;<strong>"+json.nom+"</strong>";
+				if (buttonpressed == 'modifier_contrat') {
+					console.log(json.nom)
+					document.getElementById("nom_contrat_"+id).innerHTML = json.nom;
+					document.getElementById("nom_contrat_"+id).style.backgroundColor = json.couleur;
 				}
 				else{
-					$('#prepend_group').prepend('<a href="#" class="kt-notification__item" id="theme_'+json.id+'" ><div class="kt-notification__item-icon"><span class="kt-list-timeline__badge kt-list-timeline__badge--success"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><path d="M4.5,3 L19.5,3 C20.3284271,3 21,3.67157288 21,4.5 L21,19.5 C21,20.3284271 20.3284271,21 19.5,21 L4.5,21 C3.67157288,21 3,20.3284271 3,19.5 L3,4.5 C3,3.67157288 3.67157288,3 4.5,3 Z M8,5 C7.44771525,5 7,5.44771525 7,6 C7,6.55228475 7.44771525,7 8,7 L16,7 C16.5522847,7 17,6.55228475 17,6 C17,5.44771525 16.5522847,5 16,5 L8,5 Z" fill="#000000"/></g></svg></span></div><div class="kt-notification__item-details" id="div_theme_'+json.id+'"><div class="row"><div class="col-md-10"><div class="kt-notification__item" style="color: #595d6e" id="nom_theme_'+json.id+'" onclick="edit_theme('+json.id+')">Nom du theme : &nbsp;<strong>'+json.nom+'</strong></div></div><div class="col-md-2" style="text-align: right;margin-top: 7.5px;color: #595d6e"><span onclick="supp('+json.id+')"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><path d="M6,8 L18,8 L17.106535,19.6150447 C17.04642,20.3965405 16.3947578,21 15.6109533,21 L8.38904671,21 C7.60524225,21 6.95358004,20.3965405 6.89346498,19.6150447 L6,8 Z M8,10 L8.45438229,14.0894406 L15.5517885,14.0339036 L16,10 L8,10 Z" fill="#000000" fill-rule="nonzero"/><path d="M14,4.5 L14,3.5 C14,3.22385763 13.7761424,3 13.5,3 L10.5,3 C10.2238576,3 10,3.22385763 10,3.5 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/></g></svg></span></div></div></div></a>');
+					$('#prepend_group').prepend('<a href="#" class="kt-notification__item" id="contrat_'+json.id+'" ><div class="kt-notification__item-icon"><span class="kt-list-timeline__badge kt-list-timeline__badge--success"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><polygon points="0 0 24 0 24 24 0 24"/><path d="M6,18 L9,18 C9.66666667,18.1143819 10,18.4477153 10,19 C10,19.5522847 9.66666667,19.8856181 9,20 L4,20 L4,15 C4,14.3333333 4.33333333,14 5,14 C5.66666667,14 6,14.3333333 6,15 L6,18 Z M18,18 L18,15 C18.1143819,14.3333333 18.4477153,14 19,14 C19.5522847,14 19.8856181,14.3333333 20,15 L20,20 L15,20 C14.3333333,20 14,19.6666667 14,19 C14,18.3333333 14.3333333,18 15,18 L18,18 Z M18,6 L15,6 C14.3333333,5.88561808 14,5.55228475 14,5 C14,4.44771525 14.3333333,4.11438192 15,4 L20,4 L20,9 C20,9.66666667 19.6666667,10 19,10 C18.3333333,10 18,9.66666667 18,9 L18,6 Z M6,6 L6,9 C5.88561808,9.66666667 5.55228475,10 5,10 C4.44771525,10 4.11438192,9.66666667 4,9 L4,4 L9,4 C9.66666667,4 10,4.33333333 10,5 C10,5.66666667 9.66666667,6 9,6 L6,6 Z" fill="#000000" fill-rule="nonzero"/></g></svg></span></div><div class="kt-notification__item-details" id="div_contrat_'+json.id+'"><div class="row"><div class="col-md-10"><div class="kt-notification__item" style="color: #595d6e" onclick="edit_contrat('+json.id+')">Statut de la contrat : &nbsp;<span class="kt-badge kt-badge--inline" id="nom_contrat_'+json.id+'" style="color:white;background-color: '+json.couleur+'">'+json.nom+'</span></div></div><div class="col-md-2" style="text-align: right;margin-top: 7.5px;color: #595d6e"><span onclick="supp('+json.id+')"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><polygon points="0 0 24 0 24 24 0 24"/><path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/><rect fill="#000000" x="6" y="11" width="9" height="2" rx="1"/><rect fill="#000000" x="6" y="15" width="5" height="2" rx="1"/></g></svg></span></div></div></div></a>');
 				}
 				document.getElementById('btn-edit').style.display = 'none';
 				document.getElementById('btn-add').style.display = 'initial';
@@ -228,7 +238,7 @@ $('.submitbutton').click(function() {
 
 				Toast.fire({
 				  type: 'success',
-				  title: 'Thème ajouté avec succès.'
+				  title: 'contrat ajouté avec succès.'
 				})
 				
 			},
@@ -248,7 +258,7 @@ $('.submitbutton').click(function() {
 
 						Toast.fire({
 						  type: 'error',
-						  title: 'Le thème n\'as pas été ajouté'
+						  title: 'Le contrat n\'as pas été ajouté'
 						})
 			}
 		})
@@ -257,7 +267,7 @@ $('.submitbutton').click(function() {
 function supp(id){
 		swal.fire({
 				  title: "Êtes-vous sûr ?",
-				  text: "Vous ne pourrez pas récupérer ce theme une fois supprimer!",
+				  text: "Vous ne pourrez pas récupérer ce contrat une fois supprimer!",
 				  icon: "question",
 				  showCancelButton: true,
 				  confirmButtonText: "Oui, le supprimer!",
@@ -266,7 +276,7 @@ function supp(id){
 					  if (result.value) {
 						swal.fire({
 						  title: 'Supprimer!',
-						  text: 'Le theme a été supprimé.',
+						  text: 'Le contrat a été supprimé.',
 						  type: 'success',
 						  buttonsStyling: !1,
 						  showConfirmButton: false,
@@ -276,16 +286,16 @@ function supp(id){
 						);
 						   $.ajax({
 								type:'POST',
-								url:'{% url "reglage_themes" %}',
+								url:'{% url "reglage_statut_contrats" %}',
 								data:{
 									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-									action: "supprimer_theme",
-									id_theme: id
+									action: "supprimer_contrat",
+									id_contrat: id
 								},
 								success: function (json) {
 									console.log('success')
 									console.log(json)
-									var input = document.getElementById("theme_"+ id +"").remove();
+									var input = document.getElementById("contrat_"+ id +"").remove();
 
 								},
 								error: function(data) {
@@ -297,7 +307,7 @@ function supp(id){
 					  {
 						swal.fire({
 							title: "Annuler",
-							text: "Le theme est sécurisé.",
+							text: "Le contrat est sécurisé.",
 							type: "error",
 							buttonsStyling: !1,
 							showConfirmButton: false,
