@@ -24,6 +24,9 @@
 	{
 		content: "Parcourir";
 	}
+	.kt-switch.kt-switch--icon input:checked~span:after {
+	    content: '\2713'!important;
+	}
 </style>
 <input type="hidden" name="client_id" id="client_id" value="{{client.id}}">
 <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" style="margin-top: 25px;">			
@@ -71,7 +74,7 @@
 				                    <hr>
 				                    <div class="kt-widget__info">
 				                        <span class="kt-widget__label">Site web:</span>
-				                        <a href="{{client.site_web}}" id="left_web" class="kt-widget__data">{{client.site_web}}</a>
+				                        <a href="{{client.site_web}}" id="left_web" class="kt-widget__data" target="blank">{{client.site_web}}</a>
 				                    </div>
 				                </div>
 				                <div class="kt-widget__items">
@@ -315,15 +318,13 @@
 	                                        <div class="col-lg-9 col-xl-6">
 	                                            <div class="input-group">
 	                                                <div class="input-group-prepend">
-	                                                	<span class="input-group-text">
-	                                                		<input onclick="if_check(this)" id="client_activer" name="client_activer" type="checkbox" {% if client.archive == False %} checked {% endif %}>
-	                                                	</span>
-	                                                </div>
-	                                                {% if client.archive == False %}
-	                                                <div class="form-control" id="value_checkbox">Actif</div>
-	                                                {% else %}
-	                                                <div class="form-control" id="value_checkbox">Archive</div>
-	                                                {% endif %}
+	                                                	<span class="kt-switch kt-switch--icon">
+			                                                <label>
+			                                                    <input type="checkbox" name="" id="client_activer" name="client_activer" type="checkbox" {% if client.archive == False %} checked {% endif %}>
+			                                                    <span></span>
+			                                                </label>
+			                                            </span>
+                                                	</div>
 	                                            </div>
 	                                        </div>
 	                                    </div>
@@ -336,7 +337,7 @@
 	                                    <div class="col-lg-3 col-xl-3">
 	                                    </div>
 	                                    <div class="col-lg-9 col-xl-9">
-	                                        <button type="submit" name="edit_client" value="edit_client" class="btn btn-success">Soumettre</button>&nbsp;
+	                                        <button type="submit" name="edit_client" value="edit_client" class="btn btn-info">Soumettre</button>&nbsp;
 	                                        <button type="reset" class="btn btn-secondary">Annuler</button>
 	                                    </div>
 	                                </div>
@@ -758,7 +759,7 @@
                                 <div class="form-group row">
 		                            <label class="col-xl-3 col-lg-3 col-form-label">Nom : </label>
 									<div class="col-lg-9 col-xl-6">
-										<input class="form-control" id="ajout_nom_adresse" name="nom_adresse">
+										<input class="form-control" id="ajout_nom_adresse" name="nom_adresse" required="">
 									</div>
 		                        </div>  
 		                        <div class="form-group row">
@@ -842,7 +843,7 @@
                                 <div class="form-group row">
 		                            <label class="col-xl-3 col-lg-3 col-form-label">Nom : </label>
 									<div class="col-lg-9 col-xl-6">
-										<input class="form-control" id="ajout_nom_piece_jointe" name="nom_piece_jointe">
+										<input class="form-control" id="ajout_nom_piece_jointe" name="nom_piece_jointe" required="">
 									</div>
 		                        </div>  
 		                        <div class="form-group row">
@@ -909,7 +910,7 @@
                                 <div class="form-group row">
 		                            <label class="col-xl-3 col-lg-3 col-form-label">Nom : </label>
 									<div class="col-lg-9 col-xl-6">
-		                                <input class="form-control" id="ajout_nom_mission_type" name="nom_mission_type">
+		                                <input class="form-control" id="ajout_nom_mission_type" name="nom_mission_type" required="">
 									</div>
 		                        </div>
 		                        <div class="form-group row">
@@ -1030,6 +1031,7 @@
             	document.getElementById("left_email").innerHTML = json.client_email;
             	document.getElementById("client_site_web").value = json.client_site_web;
             	document.getElementById("left_web").innerHTML = json.client_site_web;
+            	document.getElementById("left_web").href = json.client_site_web;
             	document.getElementById("nom_client_left").innerHTML = json.client_nom;
             	document.getElementById("client_couleur").value = json.client_couleur;
             	document.getElementById("avatar_left").src = json.avatar_consultant;

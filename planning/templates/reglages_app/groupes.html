@@ -1,0 +1,371 @@
+{% extends 'base_planning.html' %} {% load staticfiles %}
+
+{% block link %}
+
+{% endblock %}
+
+
+{% block content %}
+<div class="kt-subheader   kt-grid__item" id="kt_subheader" style="position: inherit;">
+	<div class="kt-container  kt-container--fluid ">
+		<div class="kt-subheader__main">
+			<h3 class="kt-subheader__title">groupes</h3>
+			<span class="kt-subheader__separator kt-subheader__separator--v"></span>
+			<div class="kt-subheader__group" id="kt_subheader_search">
+				<span class="kt-subheader__desc" id="kt_subheader_total">{{groupes.count}}</span>
+			</div>
+		</div>        
+		<div class="kt-subheader__toolbar">
+			<a class="btn btn-default btn-bold" onClick="history.back()">Retour</a>
+		</div>
+	</div>
+</div>
+<div class="kt-grid__item kt-grid__item--fluid kt-app__content" style="padding: 30px">
+					<div class="row">
+					<div class="col-md-6">
+						<div class="kt-portlet">
+							<div class="kt-portlet__head">
+								<div class="kt-portlet__head-label">
+									<h3 class="kt-portlet__head-title">Groupes <small>mettez à jour les groupes</small></h3>
+								</div>
+							</div>
+							<form class="kt-form kt-form--label-right" id="form_delete_edit" method="POST" enctype="multipart/form-data">{% csrf_token %}
+								<div class="kt-portlet__body">
+									<div class="kt-section kt-section--first">
+										<div class="kt-section__body">
+											<div class="kt-notification kt-notification--fit"> 
+											{% for groupe in groupes %}             
+												<a href="#" class="kt-notification__item" id="groupe_{{groupe.id}}" >
+													<div class="kt-notification__item-icon">
+														<span class="kt-list-timeline__badge kt-list-timeline__badge--success">
+															<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+																<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+																	<polygon points="0 0 24 0 24 24 0 24"/>
+																	<path d="M18,14 C16.3431458,14 15,12.6568542 15,11 C15,9.34314575 16.3431458,8 18,8 C19.6568542,8 21,9.34314575 21,11 C21,12.6568542 19.6568542,14 18,14 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+																	<path d="M17.6011961,15.0006174 C21.0077043,15.0378534 23.7891749,16.7601418 23.9984937,20.4 C24.0069246,20.5466056 23.9984937,21 23.4559499,21 L19.6,21 C19.6,18.7490654 18.8562935,16.6718327 17.6011961,15.0006174 Z M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
+																</g>
+															</svg>
+														</span>
+													</div>
+													<div class="kt-notification__item-details" id="div_groupe_{{groupe.id}}">
+														<div class="row">
+															<div class="col-md-10">
+																<div class="kt-notification__item-title" id="nom_groupe_{{groupe.id}}" onclick="edit_groupe({{groupe.id}})">
+																	Nom du groupe : &nbsp;<strong>{{groupe.name}}</strong>
+																</div>
+																<div class="kt-notification__item-time" id="permissions_groupe_{{groupe.id}}">
+																	Permission : &nbsp;<span style="font-style: italic;">
+																		{% for permission in groupe.permissions.all %}
+																			{{permission.name}},  
+																		{% endfor %}
+																	</span>
+																</div>
+															</div>
+															<div class="col-md-2" style="text-align: right;margin-top: 7.5px;color: #595d6e">
+																<span onclick="supp({{groupe.id}})">
+																	 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+																		<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+																			<rect x="0" y="0" width="24" height="24"/>
+																			<path d="M6,8 L18,8 L17.106535,19.6150447 C17.04642,20.3965405 16.3947578,21 15.6109533,21 L8.38904671,21 C7.60524225,21 6.95358004,20.3965405 6.89346498,19.6150447 L6,8 Z M8,10 L8.45438229,14.0894406 L15.5517885,14.0339036 L16,10 L8,10 Z" fill="#000000" fill-rule="nonzero"/>
+																			<path d="M14,4.5 L14,3.5 C14,3.22385763 13.7761424,3 13.5,3 L10.5,3 C10.2238576,3 10,3.22385763 10,3.5 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/>
+																		</g>
+																	</svg>
+																</span>
+															</div>
+														</div>
+													</div>
+												</a>
+											   {% endfor %}
+											   <span id="prepend_group"></span>
+											</div>
+										</div>
+									</div>
+								</form>
+						   </div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="information_content">
+							<div class="row">
+									<div class="kt-portlet">
+										<div class="kt-portlet__head">
+											<div class="kt-portlet__head-label">
+												<h3 class="kt-portlet__head-title">Ajouter/Modifier un groupe <small>mettez à jour les permissions</small></h3>
+											</div>
+										</div>
+										<form class="kt-form kt-form--label-right" id="form_group" method="POST" enctype="multipart/form-data">{% csrf_token %}
+											<div class="kt-portlet__body">
+												<div class="kt-section kt-section--first">
+													<div class="kt-section__body">
+														<div class="row">
+															<label class="col-xl-3"></label>
+															<div class="col-lg-9 col-xl-6">
+																<h3 class="kt-section__title kt-section__title-sm">Information du groupe</h3>
+															</div>
+														</div>                                            
+														<div class="form-group row">
+															<label class="col-xl-3 col-lg-3 col-form-label">Nom</label>
+															<div class="col-lg-9 col-xl-6">
+																<input class="form-control" name="name" id="nom_groupe" type="text" value="" autocomplete="off">
+															</div>
+														</div>
+														<div class="row">
+															<label class="col-xl-3"></label>
+															<div class="col-lg-9 col-xl-6">
+																<h3 class="kt-section__title kt-section__title-sm">Permissions:</h3>
+															</div>
+														</div>
+													   <div class="form-group row">
+															<label class="col-xl-3 col-lg-3 col-form-label">Permission(s) : </label>
+															<div class="col-lg-9 col-xl-6">
+																<select class="selectpicker" name="select_permissions" id="select_permissions" multiple data-selected-text-format="count > 3" data-live-search="true">
+																	{% for perm in perms %}
+																		<option value="{{perm.id}}">{{perm.name}}</option>
+																	{% endfor %}
+																</select>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="kt-portlet__foot">
+												<div class="kt-form__actions">
+													<div class="row">
+														<div class="col-lg-3 col-xl-3">
+														</div>
+														<div class="col-lg-9 col-xl-9">
+															 <button type="submit" id="btn-edit" name="modifier_groupe" value="modifier_groupe" class="btn btn-brand submitbutton" style="display: none;">Modifier</button>
+															<button type="submit" id="btn-add" name="ajouter_groupe" value="ajouter_groupe" class="btn btn-info submitbutton">Ajouter</button>&nbsp;
+															<span onclick="reset()">
+																<button type="reset" value="reset" id="reset_form" class="btn btn-secondary">Annuler</button>
+															</span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+<script src="{% static 'planning/js/jquery.min.js' %}"></script>
+
+<script>
+
+function reset(){
+	document.getElementById('btn-edit').style.display = 'none';
+	document.getElementById('btn-add').style.display = 'initial';
+}
+function edit_groupe(id){
+	$.ajax(
+		{
+			type:'POST',
+			url:'{% url "reglage_groupes" %}',
+			data:
+			{
+				id_groupe: id,
+				cache: false,
+				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+				action: 'edit_groupe'
+			},
+			success:function(json)
+			{
+				document.getElementById("form_group").reset();
+				document.getElementById('btn-edit').style.display = 'initial';
+				document.getElementById('btn-add').style.display = 'none';
+				document.getElementById('nom_groupe').value = json.nom;
+				document.getElementById("btn-edit").value = id;
+				console.log(json.list_perm_id)
+				$.each(json.list_perm_id, function(i,e){
+					$("#select_permissions option[value='" + e + "']").prop("selected", true);
+				});            	
+			},
+			error : function(xhr,errmsg,err)
+			{
+				const Toast = Swal.mixin({
+				  toast: true,
+				  position: 'top-end',
+				  showConfirmButton: false,
+				  timer: 4000,
+				  timerProgressBar: true,
+				  onOpen: (toast) => {
+					toast.addEventListener('mouseenter', Swal.stopTimer)
+					toast.addEventListener('mouseleave', Swal.resumeTimer)
+				  }
+				})
+
+				Toast.fire({
+				  type: 'error',
+				  title: 'Une erreur est survenue veillez essayer plus tard.'
+				})
+			}
+		});
+};
+
+
+var buttonpressed;
+$('.submitbutton').click(function() {
+		  buttonpressed = $(this).attr('name')
+})
+
+	console.log("btn")
+	$(document).on('submit', '#form_group',function(e)
+	{
+		var id = $('#btn-edit').val();
+		var selectedValues = [];    
+		$("#select_permissions :selected").each(function(){
+			selectedValues.push($(this).val()); 
+		});
+		e.preventDefault();
+		$.ajax(
+		{
+			type:'POST',
+			url:'{% url "reglage_groupes" %}',
+			data:
+			{
+				nom_groupe:$('#nom_groupe').val(),
+				cache: false,
+				id_groupe:id,
+				select_permissions:selectedValues,
+				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+				action: buttonpressed
+			},
+			success:function(json)
+			{
+				document.getElementById("form_group").reset();
+				var str_list_perm = "";
+				if (json.list_perm.length !=0)
+				{
+					for(var i = 0;i < json.list_perm.length; i++)
+					{
+						if(i == 0)
+						{
+							str_list_perm += json.list_perm[i];
+						}
+						else
+						{
+							str_list_perm += ", " + json.list_perm[i];
+						}
+					}
+					str_list_perm += "."
+				}
+				else
+				{
+					str_list_perm = "Aucune Permissions."
+				}
+				if (buttonpressed == 'modifier_groupe') {
+					document.getElementById("nom_groupe_"+id).innerHTML = "Nom du groupe : <strong>"+json.nom+"</strong>";
+					document.getElementById("permissions_groupe_"+id).innerHTML = "Permissions : "+str_list_perm;
+				}
+				else{
+					$('#prepend_group').prepend('<a href="#" class="kt-notification__item" id="groupe_'+json.id+'"><div class="kt-notification__item-icon"><span class="kt-list-timeline__badge kt-list-timeline__badge--success"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><polygon points="0 0 24 0 24 24 0 24"/><path d="M18,14 C16.3431458,14 15,12.6568542 15,11 C15,9.34314575 16.3431458,8 18,8 C19.6568542,8 21,9.34314575 21,11 C21,12.6568542 19.6568542,14 18,14 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/><path d="M17.6011961,15.0006174 C21.0077043,15.0378534 23.7891749,16.7601418 23.9984937,20.4 C24.0069246,20.5466056 23.9984937,21 23.4559499,21 L19.6,21 C19.6,18.7490654 18.8562935,16.6718327 17.6011961,15.0006174 Z M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z" fill="#000000" fill-rule="nonzero"/></g></svg></span></div><div class="kt-notification__item-details"><div class="row"><div class="col-md-10"><div class="kt-notification__item-title" id="nom_groupe_'+json.id+'" onclick="edit_groupe('+json.id+')">Nom du groupe : &nbsp;<strong>'+json.nom+'</strong></div><div class="kt-notification__item-time" id="permissions_groupe_'+json.id+'">Permission : &nbsp;<span style="font-style: italic;">'+ str_list_perm +'</span></div></div><div class="col-md-2" style="text-align: right;margin-top: 7.5px;color: #595d6e"><span onclick="supp('+json.id+')"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><path d="M6,8 L18,8 L17.106535,19.6150447 C17.04642,20.3965405 16.3947578,21 15.6109533,21 L8.38904671,21 C7.60524225,21 6.95358004,20.3965405 6.89346498,19.6150447 L6,8 Z M8,10 L8.45438229,14.0894406 L15.5517885,14.0339036 L16,10 L8,10 Z" fill="#000000" fill-rule="nonzero"/><path d="M14,4.5 L14,3.5 C14,3.22385763 13.7761424,3 13.5,3 L10.5,3 C10.2238576,3 10,3.22385763 10,3.5 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/></g></svg></span></div></div></div></a>');
+				}
+				document.getElementById('btn-edit').style.display = 'none';
+				document.getElementById('btn-add').style.display = 'initial';
+				const Toast = Swal.mixin({
+				  toast: true,
+				  position: 'top-end',
+				  showConfirmButton: false,
+				  timer: 4000,
+				  timerProgressBar: true,
+				  onOpen: (toast) => {
+					toast.addEventListener('mouseenter', Swal.stopTimer)
+					toast.addEventListener('mouseleave', Swal.resumeTimer)
+				  }
+				})
+
+				Toast.fire({
+				  type: 'success',
+				  title: 'Groupe ajouté avec succès.'
+				})
+				
+			},
+			error : function(xhr,errmsg,err)
+			{
+			   const Toast = Swal.mixin({
+						  toast: true,
+						  position: 'top-end',
+						  showConfirmButton: false,
+						  timer: 4000,
+						  timerProgressBar: true,
+						  onOpen: (toast) => {
+							toast.addEventListener('mouseenter', Swal.stopTimer)
+							toast.addEventListener('mouseleave', Swal.resumeTimer)
+						  }
+						})
+
+						Toast.fire({
+						  type: 'error',
+						  title: 'Le Groupe n\'as pas été ajouté'
+						})
+			}
+		})
+	})
+
+function supp(id){
+		swal.fire({
+				  title: "Êtes-vous sûr ?",
+				  text: "Vous ne pourrez pas récupérer ce groupe une fois supprimer!",
+				  icon: "question",
+				  showCancelButton: true,
+				  confirmButtonText: "Oui, le supprimer!",
+				  cancelButtonText: 'Non, Annuler!',
+				}).then((result) => {
+					  if (result.value) {
+						swal.fire({
+						  title: 'Supprimer!',
+						  text: 'Le groupe a été supprimé.',
+						  type: 'success',
+						  buttonsStyling: !1,
+						  showConfirmButton: false,
+						  timer: 800,
+						  confirmButtonClass: "btn btn-sm btn-bold btn-brand"
+						}
+						);
+						   $.ajax({
+								type:'POST',
+								cache: false,
+								url:'{% url "reglage_groupes" %}',
+								data:{
+									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+									action: "supprimer_groupe",
+									id_groupe: id
+								},
+								success: function (json) {
+									console.log('success')
+									console.log(json)
+									var input = document.getElementById("groupe_"+ id +"").remove();
+
+								},
+								error: function(data) {
+									console.log('error')
+								}
+							});
+						;
+					  } else if (result.dismiss === Swal.DismissReason.cancel)
+					  {
+/*					  	var check = $('input[name="validation_telepro"]:checked')
+						var elementArray = document.getElementsByClassName("selected");
+						while (elementArray.length) {
+							elementArray[0].classList.remove("selected");
+							check[0].removeAttr('ckecked');
+						}*/
+						swal.fire({
+							title: "Annuler",
+							text: "Le groupe est sécurisé.",
+							type: "error",
+							buttonsStyling: !1,
+							showConfirmButton: false,
+							timer: 800,
+							confirmButtonClass: "btn btn-sm btn-bold btn-brand"
+						   }
+						)
+					  }
+
+				})
+};
+</script>
+
+{% endblock %}

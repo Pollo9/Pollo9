@@ -13,13 +13,20 @@ urlpatterns = [
     ##### administrateur
     url(r'^utilisateurs/', views.utilisateurs, name='utilisateurs'),
 
+    ##### reglages
+    url(r'^reglage/utilisateurs/groupes', views.reglage_groupes, name='reglage_groupes'),
+    url(r'^reglage/themes', views.reglage_themes, name='reglage_themes'),
+    url(r'^reglage/statuts/missions', views.reglage_statut_missions, name='reglage_statut_missions'),
+    url(r'^reglage/statuts/jours', views.reglage_statut_jours, name='reglage_statut_jours'),
+    url(r'^reglage/statuts/contrats', views.reglage_statut_contrats, name='reglage_statut_contrats'),
+
 
     url(r'^profil_utilisateur/(?P<datapk>\w+)/', views.profil_utilisateur, name='profil_utilisateur'),
 
     url(r'^client/', views.client, name='client'),
     url(r'^profil_client/(?P<datapk>\w+)/', views.profil_client, name='profil_client'),
 
-
+    url(r'^contrats/', views.contrats, name='contrats'),
 
 
     url(r'^mission', views.mission, name='mission'),
@@ -32,6 +39,7 @@ urlpatterns = [
     url(r'^ajax_utilisateurs', views.ajax_utilisateurs, name='ajax_utilisateurs'),
     url(r'^ajax_clients', views.ajax_clients, name='ajax_clients'),
     url(r'^ajax_missions$', views.ajax_missions, name='ajax_missions'),
+    url(r'^ajax_contrats$', views.ajax_contrats, name='ajax_contrats'),
     url(r'^ajax_mission_consultant$', views.ajax_mission_consultant, name='ajax_mission_consultant'),
 
 

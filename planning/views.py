@@ -5,7 +5,7 @@ from django.contrib.auth import login, authenticate, update_session_auth_hash
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound,Http404, JsonResponse
 from django.contrib.auth.hashers import *
 from django.core.mail import send_mail
-from django.contrib.auth.models import Group,User
+from django.contrib.auth.models import Group,User,Permission
 import random
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
@@ -57,6 +57,160 @@ def erreur_403(request):
 	context = locals()
 	template = 'permission.html'
 	return render(request,template,context)
+
+@login_required
+def reglages(request):
+	context = locals()
+	template = 'reglages.html'
+	return render(request,template,context)
+
+@login_required
+def reglage_statut_missions(request):
+	context = locals()
+	template = 'reglages_app/reglage_statut_missions.html'
+	return render(request,template,context)
+
+@login_required
+def reglage_statut_jours(request):
+	context = locals()
+	template = 'reglages_app/reglage_statut_jours.html'
+	return render(request,template,context)
+
+@login_required
+def reglage_statut_contrats(request):
+	context = locals()
+	template = 'reglages_app/reglage_statut_contrats.html'
+	return render(request,template,context)
+
+@login_required
+def reglage_groupes(request):
+
+	perms = Permission.objects.all()
+	groupes = Group.objects.all()
+	response_data = {}
+
+	if (request.POST.get('action') == 'ajouter_groupe'):
+		print("add")
+		list_perm = request.POST.getlist("select_permissions[]")
+		nom = request.POST.get("nom_groupe")
+		groupe_creer, created = Group.objects.get_or_create(name=nom)
+		list_permission = []
+		for ob in list_perm:
+			permission = Permission.objects.get(id=ob)
+			groupe_creer.permissions.add(permission)
+			list_permission.append(permission.name)
+
+
+		response_data['list_perm'] = list_permission
+		response_data['nom'] = nom
+		response_data['id'] = groupe_creer.id
+
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get('action') == 'edit_groupe'):
+		print("edit_goupe")
+		id_groupe = request.POST.get("id_groupe")
+		print(id_groupe)
+		le_groupe = Group.objects.get(id=id_groupe)
+		nom = le_groupe.name
+		list_permission_name = []
+		list_permission_id = []
+		for perm in le_groupe.permissions.all():
+			list_permission_name.append(perm.name)
+			list_permission_id.append(perm.id)
+
+		response_data['list_perm_name'] = list_permission_name
+		response_data['list_perm_id'] = list_permission_id
+		response_data['nom'] = nom
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get('action') == 'supprimer_groupe'):
+		print("supp")
+		id_groupe = request.POST.get("id_groupe")
+		Group.objects.get(id=id_groupe).delete()
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get('action') == 'modifier_groupe'):
+		print("modifier_groupe")
+		id_groupe = request.POST.get("id_groupe")
+		nom = request.POST.get("nom_groupe")
+		list_perm = request.POST.getlist("select_permissions[]")
+		modif_group = Group.objects.get(id=id_groupe)
+		modif_group.name = nom
+		modif_group.save()
+		modif_group.permissions.clear()
+		list_permission = []
+		for ob in list_perm:
+			permission = Permission.objects.get(id=ob)
+			modif_group.permissions.add(permission)
+			list_permission.append(permission.name)
+
+
+		response_data['list_perm'] = list_permission
+		response_data['nom'] = nom
+
+
+		return JsonResponse(response_data)
+
+
+	context = locals()
+	template = 'reglages_app/groupes.html'
+	return render(request,template,context)
+
+@login_required
+def reglage_themes(request):
+
+	themes = Theme.objects.all()
+
+	response_data = {}
+
+	if (request.POST.get('action') == 'ajouter_theme'):
+		nom = request.POST.get("nom_theme")
+		themes_creer = Theme.objects.create(nom=nom)		
+
+		response_data['nom'] = nom
+		response_data['id'] = themes_creer.id
+
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get('action') == 'edit_theme'):
+		id_theme = request.POST.get("id_theme")
+		print(id_theme)
+		le_themes = Theme.objects.get(id=id_theme)
+		nom = le_themes.nom
+
+		response_data['nom'] = nom
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get('action') == 'supprimer_theme'):
+		id_themes = request.POST.get("id_theme")
+		Theme.objects.get(id=id_themes).delete()
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get('action') == 'modifier_theme'):
+		id_themes = request.POST.get("id_theme")
+		nom = request.POST.get("nom_theme")
+		modif_theme = Theme.objects.get(id=id_themes)
+		modif_theme.nom = nom
+		modif_theme.save()
+
+		response_data['nom'] = nom
+		response_data['id'] = modif_theme.id
+
+
+		return JsonResponse(response_data)
+
+	context = locals()
+	template = 'reglages_app/themes.html'
+	return render(request,template,context)
+
+
 
 @login_required
 def index (request):
@@ -193,9 +347,6 @@ def profil_utilisateur(request,datapk):
 	utilisateur = User.objects.get(id=datapk)
 	themes = Theme.objects.all()
 	list_competence = utilisateur.competence_set.all().order_by("-note")
-	list_mission_week = utilisateur.mission_set.filter(jour_de_mission__gte = past)
-	list_mission_month = utilisateur.mission_set.filter(jour_de_mission__gte = mois)
-	list_mission_all = utilisateur.mission_set.all()
 
 	for i in list_competence:
 		if (i.nom in themes):
@@ -753,6 +904,69 @@ def profil_mission(request,datapk):
 	template = 'profil_mission.html'
 	return render(request,template,context)
 
+@login_required
+def contrats(request):
+	
+	response_data={}
+
+	if (request.POST.get("action") == 'supprimer_contrat'):
+		to_del_contrat = Contrat.objects.get(id=request.POST.get('id'))
+		response_data['id_contrat'] = to_del_contrat.id
+		to_del_contrat.delete()
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get("action")== "ajouter_contrat"):
+		nom_contrat = request.POST.get("nom_contrat")
+		client_contrat = Client.objects.get(id=request.POST.get("client_contrat"))
+		date_debut_contrat = request.POST.get("date_debut_contrat")
+		date_fin_contrat = request.POST.get("date_fin_contrat")
+		statut_contrat = Statut_contrat.objects.get(id=request.POST.get("statut_contrat"))
+
+		contrat = Contrat.objects.create(nom=nom_contrat,date_debut=date_debut_contrat,date_fin=date_fin_contrat,client=client_contrat,statut=statut_contrat)
+		contrat.save()
+
+		response_data['id_contrat'] = contrat.id
+		response_data['nom_contrat'] = nom_contrat
+		response_data['avatar_client'] = client_contrat.avatar.url
+		response_data['nom_client'] = client_contrat.nom
+		response_data['id_client'] = client_contrat.id
+		response_data['date_debut_contrat'] = date_debut_contrat
+		response_data['date_fin_contrat'] = date_fin_contrat
+		response_data['statut_contrat'] = statut_contrat.nom
+		response_data['code_couleur_statut_contrat'] = statut_contrat.code_couleur
+
+		return JsonResponse(response_data)
+
+	if (request.POST.get("action") == "supprimer_element_select"):
+		liste_contrat = request.POST.getlist('contrat_selectionne[]')
+		for id_contrat in liste_contrat:
+			rem = Contrat.objects.get(id=id_contrat)
+			rem.delete()
+		message = 'Supprimer'
+		return JsonResponse(response_data)
+
+	if (request.POST.get("action") == "mettre_a_jour_status"):
+		liste_contrat = request.POST.getlist('contrat_selectionne[]')
+		for id_contrat in liste_contrat:
+			to_change = Contrat.objects.get(id=id_contrat)
+			to_change.statut = Statut_contrat.objects.get(id=request.POST.get("id_statut"))
+			to_change.save()
+		
+		response_data["id_statut"] = to_change.statut.id
+		response_data["nom_statut"] = to_change.statut.nom
+		response_data["code_couleur_statut"] = to_change.statut.code_couleur
+
+		message = 'Modifier'
+		return JsonResponse(response_data)
+
+	liste_client = Client.objects.filter(archive=False)
+	liste_statut = Statut_contrat.objects.all()
+	liste_contrat = Contrat.objects.all()
+	context = locals()
+	template = 'contrats.html'
+	return render(request,template,context)
+
 def mission_consultant(request):
 
 	missions = Mission.objects.filter(consultant = request.user.profile)
@@ -1029,6 +1243,35 @@ def ajax_missions(request):
 			'client_nom'  	   :client_nom,
 			'statut'  	       :objects.statut.nom,
 			'type'             :objects.mission_type.nom}})
+
+	list_json = json.dumps(list)
+	return HttpResponse(list_json, 'application/javascript')
+
+def ajax_contrats(request):
+	
+	queryset = Contrat.objects.all()
+	
+	list = []
+	for objects in queryset:
+		liste_avatar = []
+		liste_mission = objects.mission_set.all()
+		for obj in liste_mission:
+			if obj.utilisateur:
+				try:
+					liste_avatar.append((True,obj.utilisateur.profile.avatar.url))
+				except:
+					liste_avatar.append((obj.utilisateur.profile.diminutif,obj.utilisateur.profile.couleur_rdm))
+
+		list.append({'pk':objects.id,'fields':
+			{'nom'  				:objects.nom,
+			'date_debut' 			:str(objects.date_debut),
+			'date_fin'  			:str(objects.date_fin),
+			'client'  	 			:objects.client.nom,
+			'avatar'				:liste_avatar,
+			'id_client'  	 		:objects.client.id,
+			'logo_client'  			:objects.client.avatar.url,
+			'statut'      			:objects.statut.nom,
+			'code_couleur_statut'	:objects.statut.code_couleur}})
 
 	list_json = json.dumps(list)
 	return HttpResponse(list_json, 'application/javascript')

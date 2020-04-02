@@ -36,5 +36,5 @@ class ProfileClientAddPieceJointeForm(forms.ModelForm):
 		model = Piece_jointe_client
 		fields = ('document',)
 		widgets = {
-            'document': forms.FileInput(attrs={'class':'custom-file-input','id': 'id_add_document'}),
+            'document': forms.FileInput(attrs={'class':'custom-file-input','id': 'id_add_document','required':""}),
             }

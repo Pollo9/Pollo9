@@ -15294,30 +15294,7 @@ code {
     }
 }
 
-.btn.dropdown-toggle:after,
-.nav-link.dropdown-toggle:after {
-    text-align: center;
-    display: inline;
-    border: 0;
-    font-size: .6rem;
-    line-height: 0;
-    vertical-align: middle;
-    position: relative;
-    margin-left: .5rem;
-    opacity: .7;
-    font-family: Flaticon2;
-    font-style: normal;
-    font-weight: 400;
-    font-variant: normal;
-    line-height: 1;
-    text-decoration: inherit;
-    text-rendering: optimizeLegibility;
-    text-transform: none;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    font-smoothing: antialiased;
-    content: "ï†£"
-}
+
 
 .btn.dropdown-toggle.dropdown-toggle-split:after,
 .nav-link.dropdown-toggle.dropdown-toggle-split:after {
@@ -15328,63 +15305,20 @@ code {
     display: inline-block
 }
 
-.dropup .btn.dropdown-toggle:after,
-.dropup .nav-link.dropdown-toggle:after {
-    font-family: Flaticon2;
-    font-style: normal;
-    font-weight: 400;
-    font-variant: normal;
-    line-height: 1;
-    text-decoration: inherit;
-    text-rendering: optimizeLegibility;
-    text-transform: none;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    font-smoothing: antialiased;
-    content: "ï†¥"
-}
 
 .btn-group.dropright .btn.dropdown-toggle:before,
 .btn-group.dropright .nav-link.dropdown-toggle:before {
     display: none
 }
 
-.btn-group.dropright .btn.dropdown-toggle:after,
-.btn-group.dropright .nav-link.dropdown-toggle:after {
-    font-family: Flaticon2;
-    font-style: normal;
-    font-weight: 400;
-    font-variant: normal;
-    line-height: 1;
-    text-decoration: inherit;
-    text-rendering: optimizeLegibility;
-    text-transform: none;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    font-smoothing: antialiased;
-    content: "ï†"
-}
+
 
 .btn-group.dropleft .btn.dropdown-toggle:before,
 .btn-group.dropleft .nav-link.dropdown-toggle:before {
     display: none
 }
 
-.btn-group.dropleft .btn.dropdown-toggle:after,
-.btn-group.dropleft .nav-link.dropdown-toggle:after {
-    font-family: Flaticon2;
-    font-style: normal;
-    font-weight: 400;
-    font-variant: normal;
-    line-height: 1;
-    text-decoration: inherit;
-    text-rendering: optimizeLegibility;
-    text-transform: none;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    font-smoothing: antialiased;
-    content: "ï†¤"
-}
+
 
 @-webkit-keyframes dropdown-menu-fade-in {
     from {
@@ -18933,25 +18867,6 @@ code {
     outline: 0!important
 }
 
-.bootstrap-select>.dropdown-toggle:after {
-    border: 0;
-    margin-right: -2px;
-    font-size: .6rem;
-    display: inline-block;
-    font-family: Flaticon2;
-    font-style: normal;
-    font-weight: 400;
-    font-variant: normal;
-    line-height: 1;
-    text-decoration: inherit;
-    text-rendering: optimizeLegibility;
-    text-transform: none;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    font-smoothing: antialiased;
-    content: "ï†£"
-}
-
 .bootstrap-select>.dropdown-toggle:before {
     width: auto
 }
@@ -19010,7 +18925,7 @@ code {
 }
 
 .bootstrap-select .dropdown-menu.inner>li.selected>a span.check-mark:before {
-    content: "ï…»"
+    content: "•"
 }
 
 .bootstrap-select .dropdown-menu.inner>li.selected>a span.check-mark:after {
@@ -38429,29 +38344,6 @@ th>.kt-radio.kt-radio--single {
     opacity: .5
 }
 
-.kt-notification .kt-notification__item:after {
-    border: 0;
-    font-family: LineAwesome;
-    text-decoration: inherit;
-    text-rendering: optimizeLegibility;
-    text-transform: none;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    font-smoothing: antialiased;
-    content: "ï„‘";
-    font-family: LineAwesome;
-    text-decoration: inherit;
-    text-rendering: optimizeLegibility;
-    text-transform: none;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    font-smoothing: antialiased;
-    content: "ï„’";
-    font-size: .8rem;
-    line-height: 0;
-    position: relative;
-    color: #74788d
-}
 
 .kt-notification .kt-notification__custom {
     display: -webkit-box;

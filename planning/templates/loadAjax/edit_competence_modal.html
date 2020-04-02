@@ -15,8 +15,12 @@
                                     <img id="modif_image_competence" src="{% static 'planning/img/1stars.png' %}">
                                 {% elif competence.note == 2 %}
                                     <img id="modif_image_competence" src="{% static 'planning/img/2stars.png' %}">
-                                {% else %}
+                                {% elif competence.note == 3 %}
                                     <img id="modif_image_competence" src="{% static 'planning/img/3stars.png' %}">
+                                {% elif competence.note == 4 %}
+                                    <img id="modif_image_competence" src="{% static 'planning/img/4stars.png' %}">
+                                {% else %}
+                                    <img id="modif_image_competence" src="{% static 'planning/img/5stars.png' %}">
                                 {% endif %}
                             </div>
                         </div>
@@ -33,6 +37,8 @@
 									<option {% if competence.note == 1 %} selected="" {% endif %} value="1">1</option>
 									<option {% if competence.note == 2 %} selected="" {% endif %} value="2">2</option>
 									<option {% if competence.note == 3 %} selected="" {% endif %} value="3">3</option>
+                                    <option {% if competence.note == 4 %} selected="" {% endif %} value="4">4</option>
+                                    <option {% if competence.note == 5 %} selected="" {% endif %} value="5">5</option>
 								</select>
 							</div>
 						</div>

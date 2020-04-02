@@ -400,7 +400,7 @@
 			                                    <div class="col-lg-3 col-xl-3">
 			                                    </div>
 			                                    <div class="col-lg-9 col-xl-9">
-			                                        <button type="submit" name="modifier_utilisateur" value="modifier_utilisateur" class="btn btn-success">Modifier</button>&nbsp;
+			                                        <button type="submit" name="modifier_utilisateur" value="modifier_utilisateur" class="btn btn-info">Modifier</button>&nbsp;
 			                                        <button type="reset" class="btn btn-secondary">Annuler</button>
 			                                    </div>
 			                                </div>
@@ -526,15 +526,8 @@
 	                        {% if perms.planning.view_competence %}
 	                        <div class="tab-pane" id="kt_apps_contacts_view_tab_2" role="tabpanel">
 	                        	<div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="kt_todo_content2">
-							    	<div class="kt-portlet">
-										<div class="kt-portlet__head">
-											<div class="kt-portlet__head-label">
-												<h3 class="kt-portlet__head-title">
-													Les compétences
-												</h3>
-											</div>
-										</div>
-										<div class="kt-portlet__body">
+							    	<div class="">
+										<div class="kt-portlet__body" style="padding-top:0;">
 											<div class="kt-notification-v2" id="list_competence">
 												{% for competence in list_competence %}
 													<div class="kt-notification-v2__item display_icon_competence">
@@ -543,8 +536,12 @@
 															<img id="photo_competence_{{competence.id}}" src="{% static 'planning/img/1stars.png' %}">
 															{% elif competence.note == 2 %}
 															<img id="photo_competence_{{competence.id}}" src="{% static 'planning/img/2stars.png' %}">
-															{% else %}
+															{% elif competence.note == 3 %}
 															<img id="photo_competence_{{competence.id}}" src="{% static 'planning/img/3stars.png' %}">
+															{% elif competence.note == 4 %}
+															<img id="photo_competence_{{competence.id}}" src="{% static 'planning/img/4stars.png' %}">
+															{% else %}
+															<img id="photo_competence_{{competence.id}}" src="{% static 'planning/img/5stars.png' %}">
 															{% endif %}
 														</div>
 														<div class="kt-notification-v2__itek-wrapper">
@@ -581,13 +578,8 @@
 							<div class="tab-pane" id="kt_apps_contacts_view_tab_3" role="tabpanel">
 									<!-- Compétences -->
 							    <div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="kt_todo_content3">
-							    	<div class="kt-portlet kt-portlet--height-fluid">
-									<div class="kt-portlet__head">
-										<div class="kt-portlet__head-label">
-											<h3 class="kt-portlet__head-title">
-												Les missions
-											</h3>
-										</div>
+							    	<div class="kt-portlet--height-fluid">
+									<div class="kt-portlet__head" style="justify-content: flex-end;">
 										<div class="kt-portlet__head-toolbar">
 											<ul class="nav nav-pills nav-pills-sm nav-pills-label nav-pills-bold" role="tablist">
 												<li class="nav-item">
@@ -792,6 +784,8 @@
 											<option value="1">1</option>
 											<option value="2">2</option>
 											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
 										</select>
 									</div>
 								</div>
@@ -853,6 +847,14 @@ function select_image_ajout_competence(nbr_etoile)
 	{
 		src_image = "{% static 'planning/img/3stars.png' %}"
 	}
+	if (nbr_etoile == 4)
+	{
+		src_image = "{% static 'planning/img/4stars.png' %}"
+	}
+	if (nbr_etoile == 5)
+	{
+		src_image = "{% static 'planning/img/5stars.png' %}"
+	}
 	document.getElementById('ajout_image_competence').src = src_image;
 }
 function select_image_modif_competence(nbr_etoile)
@@ -868,6 +870,14 @@ function select_image_modif_competence(nbr_etoile)
 	if (nbr_etoile == 3)
 	{
 		src_image = "{% static 'planning/img/3stars.png' %}"
+	}
+	if (nbr_etoile == 4)
+	{
+		src_image = "{% static 'planning/img/4stars.png' %}"
+	}
+	if (nbr_etoile == 5)
+	{
+		src_image = "{% static 'planning/img/5stars.png' %}"
 	}
 	document.getElementById('modif_image_competence').src = src_image;
 }
@@ -941,9 +951,17 @@ function select_image_modif_competence(nbr_etoile)
             	{
             		url_photo = "{% static 'planning/img/2stars.png' %}";
             	}
+            	else if (json.edit_note_competence == "3")
+            	{
+            		url_photo = "{% static 'planning/img/3stars.png' %}";
+            	}
+            	else if (json.edit_note_competence == "4")
+            	{
+            		url_photo = "{% static 'planning/img/4stars.png' %}";
+            	}
             	else
             	{
-            		url_photo = "{% static 'planning/img/3stars.png' %}"
+            		url_photo = "{% static 'planning/img/5stars.png' %}"
             	}
             	$("#photo_competence_" + json.edit_id_competence).attr("src", url_photo);
             	toastr.options = {
@@ -1101,9 +1119,17 @@ function select_image_modif_competence(nbr_etoile)
             	{
             		img_note = `{% static 'planning/img/2stars.png' %}`;
             	}
-            	else
+            	else if (json.note_competence == "3")
             	{
             		img_note = `{% static 'planning/img/3stars.png' %}`;
+            	}
+            	else if (json.note_competence == "4")
+            	{
+            		img_note = `{% static 'planning/img/4stars.png' %}`;
+            	}
+            	else
+            	{
+            		img_note = `{% static 'planning/img/5stars.png' %}`;
             	}
             	var icn_modif = "";
             	var icn_delete = "";

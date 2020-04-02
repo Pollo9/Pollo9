@@ -1,0 +1,314 @@
+{% extends 'base_planning.html' %} {% load staticfiles %}
+
+{% block link %}
+
+{% endblock %}
+
+
+{% block content %}
+<div class="kt-subheader   kt-grid__item" id="kt_subheader" style="position: inherit;">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">Statuts jours</h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <div class="kt-subheader__group" id="kt_subheader_search">
+                <span class="kt-subheader__desc" id="kt_subheader_total">{{themes.count}}</span>
+            </div>
+        </div>        
+        <div class="kt-subheader__toolbar">
+            <a class="btn btn-default btn-bold" onClick="history.back()">Retour</a>
+        </div>
+    </div>
+</div>
+<div class="kt-grid__item kt-grid__item--fluid kt-app__content" style="padding: 30px">
+					<div class="row">
+					<div class="col-md-6">
+						<div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">Jours <small>mettez à jour les thèmes</small></h3>
+                                </div>
+                            </div>
+                            <form class="kt-form kt-form--label-right" id="form_delete_edit" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                                <div class="kt-portlet__body">
+                                    <div class="kt-section kt-section--first">
+                                        <div class="kt-section__body">
+                                        	<div class="kt-notification kt-notification--fit">
+                                        	{% for theme in themes %}
+					                            <a href="#" class="kt-notification__item" id="theme_{{theme.id}}" >
+					                                <div class="kt-notification__item-icon">
+					                                    <span class="kt-list-timeline__badge kt-list-timeline__badge--success">
+					                                    	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+															    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+															        <rect x="0" y="0" width="24" height="24"/>
+															        <path d="M4.5,3 L19.5,3 C20.3284271,3 21,3.67157288 21,4.5 L21,19.5 C21,20.3284271 20.3284271,21 19.5,21 L4.5,21 C3.67157288,21 3,20.3284271 3,19.5 L3,4.5 C3,3.67157288 3.67157288,3 4.5,3 Z M8,5 C7.44771525,5 7,5.44771525 7,6 C7,6.55228475 7.44771525,7 8,7 L16,7 C16.5522847,7 17,6.55228475 17,6 C17,5.44771525 16.5522847,5 16,5 L8,5 Z" fill="#000000"/>
+															    </g>
+															</svg>
+														</span>
+					                                </div>
+					                                <div class="kt-notification__item-details" id="div_theme_{{theme.id}}">
+					                                    <div class="row">
+					                                        <div class="col-md-10">
+					                                            <div class="kt-notification__item" style="color: #595d6e" id="nom_theme_{{theme.id}}" onclick="edit_theme({{theme.id}})">
+					                                                Nom du jour : &nbsp;<strong>{{theme.nom}}</strong>
+					                                            </div>
+					                                        </div>
+					                                        <div class="col-md-2" style="text-align: right;margin-top: 7.5px;color: #595d6e">
+					                                        	<span onclick="supp({{theme.id}})">
+						                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+																	    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+																	        <rect x="0" y="0" width="24" height="24"/>
+																	        <path d="M6,8 L18,8 L17.106535,19.6150447 C17.04642,20.3965405 16.3947578,21 15.6109533,21 L8.38904671,21 C7.60524225,21 6.95358004,20.3965405 6.89346498,19.6150447 L6,8 Z M8,10 L8.45438229,14.0894406 L15.5517885,14.0339036 L16,10 L8,10 Z" fill="#000000" fill-rule="nonzero"/>
+																	        <path d="M14,4.5 L14,3.5 C14,3.22385763 13.7761424,3 13.5,3 L10.5,3 C10.2238576,3 10,3.22385763 10,3.5 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/>
+																	    </g>
+																	</svg>
+																</span>
+					                                        </div>
+					                                    </div>
+					                                </div>
+					                            </a>
+					                           {% endfor %}
+					                           <span id="prepend_group"></span>
+					                    	</div>
+	                                    </div>
+	                                </div>
+	                            </form>
+	                       </div>
+	                    </div>
+					</div>
+					<div class="col-md-6">
+						<div class="kt-grid__item kt-grid__item--fluid kt-app__content" id="information_content">
+			                <div class="row">
+			                        <div class="kt-portlet">
+			                            <div class="kt-portlet__head">
+			                                <div class="kt-portlet__head-label">
+			                                    <h3 class="kt-portlet__head-title">Ajouter/Modifier un jour <small>mettez à jour les informations</small></h3>
+			                                </div>
+			                            </div>
+			                            <form class="kt-form kt-form--label-right" id="form_group" method="POST" enctype="multipart/form-data">{% csrf_token %}
+			                                <div class="kt-portlet__body">
+			                                    <div class="kt-section kt-section--first">
+			                                        <div class="kt-section__body">
+			                                            <div class="row">
+			                                                <label class="col-xl-3"></label>
+			                                                <div class="col-lg-9 col-xl-6">
+			                                                    <h3 class="kt-section__title kt-section__title-sm">Information du jour</h3>
+			                                                </div>
+			                                            </div>                                            
+			                                            <div class="form-group row">
+			                                                <label class="col-xl-3 col-lg-3 col-form-label">Nom</label>
+			                                                <div class="col-lg-9 col-xl-6">
+			                                                    <input class="form-control" name="name" id="nom_theme" type="text" value="" autocomplete="off">
+			                                                </div>
+			                                            </div>
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                                <div class="kt-portlet__foot">
+			                                    <div class="kt-form__actions">
+			                                        <div class="row">
+			                                            <div class="col-lg-3 col-xl-3">
+			                                            </div>
+			                                            <div class="col-lg-9 col-xl-9">
+			                                            	 <button type="submit" id="btn-edit" name="modifier_theme" value="modifier_theme" class="btn btn-brand submitbutton" style="display: none;">Modifier</button>
+			                                                <button type="submit" id="btn-add" name="ajouter_theme" value="ajouter_theme" class="btn btn-info submitbutton">Ajouter</button>&nbsp;
+			                                                <span onclick="reset()">
+			                                                	<button type="reset" value="reset" id="reset_form" class="btn btn-secondary">Annuler</button>
+			                                                </span>
+			                                            </div>
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </form>
+			                        </div>
+			                    </div>
+			                </div>
+			            </div>
+					</div>
+				</div>
+<script src="{% static 'planning/js/jquery.min.js' %}"></script>
+
+<script>
+
+function reset(){
+	document.getElementById('btn-edit').style.display = 'none';
+    document.getElementById('btn-add').style.display = 'initial';
+}
+function edit_theme(id){
+	$.ajax(
+        {
+            type:'POST',
+            url:'{% url "reglage_themes" %}',
+            data:
+            {
+                id_theme: id,
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'edit_theme'
+            },
+            success:function(json)
+            {
+            	document.getElementById("form_group").reset();
+            	document.getElementById('btn-edit').style.display = 'initial';
+        		document.getElementById('btn-add').style.display = 'none';
+            	document.getElementById('nom_theme').value = json.nom;
+            	document.getElementById("btn-edit").value = id;
+          	
+            },
+            error : function(xhr,errmsg,err)
+            {
+                const Toast = Swal.mixin({
+	              toast: true,
+	              position: 'top-end',
+	              showConfirmButton: false,
+	              timer: 4000,
+	              timerProgressBar: true,
+	              onOpen: (toast) => {
+	                toast.addEventListener('mouseenter', Swal.stopTimer)
+	                toast.addEventListener('mouseleave', Swal.resumeTimer)
+	              }
+	            })
+
+	            Toast.fire({
+	              type: 'error',
+	              title: 'Une erreur est survenue veillez essayer plus tard.'
+	            })
+            }
+        });
+};
+
+var buttonpressed;
+$('.submitbutton').click(function() {
+		  buttonpressed = $(this).attr('name')
+})
+
+	console.log("btn")
+	$(document).on('submit', '#form_group',function(e)
+	{
+		var id = $('#btn-edit').val();
+		var selectedValues = [];    
+		$("#select_permissions :selected").each(function(){
+			selectedValues.push($(this).val()); 
+		});
+		e.preventDefault();
+		$.ajax(
+		{
+			type:'POST',
+			url:'{% url "reglage_themes" %}',
+			data:
+			{
+				nom_theme:$('#nom_theme').val(),
+				cache: false,
+				id_theme:id,
+				select_permissions:selectedValues,
+				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+				action: buttonpressed
+			},
+			success:function(json)
+			{
+				document.getElementById("form_group").reset();
+				if (buttonpressed == 'modifier_theme') {
+					document.getElementById("nom_theme_"+id).innerHTML = "Nom du theme : &nbsp;<strong>"+json.nom+"</strong>";
+				}
+				else{
+					$('#prepend_group').prepend('<a href="#" class="kt-notification__item" id="theme_'+json.id+'" ><div class="kt-notification__item-icon"><span class="kt-list-timeline__badge kt-list-timeline__badge--success"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><path d="M4.5,3 L19.5,3 C20.3284271,3 21,3.67157288 21,4.5 L21,19.5 C21,20.3284271 20.3284271,21 19.5,21 L4.5,21 C3.67157288,21 3,20.3284271 3,19.5 L3,4.5 C3,3.67157288 3.67157288,3 4.5,3 Z M8,5 C7.44771525,5 7,5.44771525 7,6 C7,6.55228475 7.44771525,7 8,7 L16,7 C16.5522847,7 17,6.55228475 17,6 C17,5.44771525 16.5522847,5 16,5 L8,5 Z" fill="#000000"/></g></svg></span></div><div class="kt-notification__item-details" id="div_theme_'+json.id+'"><div class="row"><div class="col-md-10"><div class="kt-notification__item" style="color: #595d6e" id="nom_theme_'+json.id+'" onclick="edit_theme('+json.id+')">Nom du theme : &nbsp;<strong>'+json.nom+'</strong></div></div><div class="col-md-2" style="text-align: right;margin-top: 7.5px;color: #595d6e"><span onclick="supp('+json.id+')"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><path d="M6,8 L18,8 L17.106535,19.6150447 C17.04642,20.3965405 16.3947578,21 15.6109533,21 L8.38904671,21 C7.60524225,21 6.95358004,20.3965405 6.89346498,19.6150447 L6,8 Z M8,10 L8.45438229,14.0894406 L15.5517885,14.0339036 L16,10 L8,10 Z" fill="#000000" fill-rule="nonzero"/><path d="M14,4.5 L14,3.5 C14,3.22385763 13.7761424,3 13.5,3 L10.5,3 C10.2238576,3 10,3.22385763 10,3.5 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/></g></svg></span></div></div></div></a>');
+				}
+				document.getElementById('btn-edit').style.display = 'none';
+				document.getElementById('btn-add').style.display = 'initial';
+				const Toast = Swal.mixin({
+				  toast: true,
+				  position: 'top-end',
+				  showConfirmButton: false,
+				  timer: 4000,
+				  timerProgressBar: true,
+				  onOpen: (toast) => {
+					toast.addEventListener('mouseenter', Swal.stopTimer)
+					toast.addEventListener('mouseleave', Swal.resumeTimer)
+				  }
+				})
+
+				Toast.fire({
+				  type: 'success',
+				  title: 'Thème ajouté avec succès.'
+				})
+				
+			},
+			error : function(xhr,errmsg,err)
+			{
+			   const Toast = Swal.mixin({
+						  toast: true,
+						  position: 'top-end',
+						  showConfirmButton: false,
+						  timer: 4000,
+						  timerProgressBar: true,
+						  onOpen: (toast) => {
+							toast.addEventListener('mouseenter', Swal.stopTimer)
+							toast.addEventListener('mouseleave', Swal.resumeTimer)
+						  }
+						})
+
+						Toast.fire({
+						  type: 'error',
+						  title: 'Le thème n\'as pas été ajouté'
+						})
+			}
+		})
+	})
+
+function supp(id){
+		swal.fire({
+				  title: "Êtes-vous sûr ?",
+				  text: "Vous ne pourrez pas récupérer ce theme une fois supprimer!",
+				  icon: "question",
+				  showCancelButton: true,
+				  confirmButtonText: "Oui, le supprimer!",
+				  cancelButtonText: 'Non, Annuler!',
+				}).then((result) => {
+					  if (result.value) {
+						swal.fire({
+						  title: 'Supprimer!',
+						  text: 'Le theme a été supprimé.',
+						  type: 'success',
+						  buttonsStyling: !1,
+						  showConfirmButton: false,
+						  timer: 800,
+						  confirmButtonClass: "btn btn-sm btn-bold btn-brand"
+						}
+						);
+						   $.ajax({
+								type:'POST',
+								url:'{% url "reglage_themes" %}',
+								data:{
+									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+									action: "supprimer_theme",
+									id_theme: id
+								},
+								success: function (json) {
+									console.log('success')
+									console.log(json)
+									var input = document.getElementById("theme_"+ id +"").remove();
+
+								},
+								error: function(data) {
+									console.log('error')
+								}
+							});
+						;
+					  } else if (result.dismiss === Swal.DismissReason.cancel)
+					  {
+						swal.fire({
+							title: "Annuler",
+							text: "Le theme est sécurisé.",
+							type: "error",
+							buttonsStyling: !1,
+							showConfirmButton: false,
+							timer: 800,
+							confirmButtonClass: "btn btn-sm btn-bold btn-brand"
+						   }
+						)
+					  }
+
+				})
+};
+</script>
+
+{% endblock %}

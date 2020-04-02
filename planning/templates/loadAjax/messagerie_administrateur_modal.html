@@ -71,7 +71,7 @@
                 <div class="kt-chat__messages kt-chat__messages--solid messages">
                     {% for message in msg %}
                     {% if message.user.username == consultant_selectionne.username %}
-                    <div class="kt-chat__message kt-chat__message--success">
+                    <div class="kt-chat__message kt-chat__message--success" style="min-width: 51%;">
                         <div class="kt-chat__user">
                             <span class="kt-media kt-media--circle kt-media--sm">
                                 <img src="{{ message.user.profile.avatar.url }}" alt="image">
@@ -84,17 +84,17 @@
                         </div>
                     </div>
                     {% else %}
-                    <div class="kt-chat__message kt-chat__message--right kt-chat__message--brand">
+                    <div class="kt-chat__message kt-chat__message--right kt-chat__message--brand" style="min-width: 51%;">
                         <div class="kt-chat__user">
                             <span class="kt-chat__datetime">{{message.date}}</span>
                             <a href="#" class="kt-chat__username">Sherpa Consulting</a>
-                            {% if message.user.profil.avatar.url != None %}
+                            {% if message.user.profile.avatar.url != None %}
                             <span class="kt-media kt-media--circle kt-media--sm">
-                                <img src="{{ message.user.profil.avatar.url }}" alt="image">
+                                <img src="{{ message.user.profile.avatar.url }}" alt="image">
                             </span>
                             {% else %}
-                            <span class="kt-media kt-media--circle kt-media--sm" style="background-color:{{message.user.profil.couleur_rdm}}30;">
-                                <span style="color:{{message.user.profil.couleur_rdm}};font-weight:bold;">{{message.user.profil.diminutif}}</span>
+                            <span class="kt-media kt-media--circle kt-media--sm" style="background-color:{{message.user.profile.couleur_rdm}}30;">
+                                <span style="color:{{message.user.profile.couleur_rdm}};font-weight:bold;">{{message.user.profile.diminutif}}</span>
                             </span>
                             {% endif %}
                         </div>

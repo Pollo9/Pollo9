@@ -22,6 +22,7 @@ class Piece_jointe_clientInline(admin.TabularInline):
 
 class ClientAdmin(admin.ModelAdmin):
 
+    model = Client
     fieldsets = [
         ('INFORMATIONS',               {'fields': ['nom','telephone','email','site_web','code_couleur','date_joined','avatar','archive']}),
     ]
@@ -58,6 +59,10 @@ admin.site.register(bdd_messages, bdd_messagesAdmin)
 
 admin.site.register(Mission_type_client)
 
+admin.site.register(Jour_semaine)
+admin.site.register(Jour_bloque)
+admin.site.register(Statut_contrat)
+admin.site.register(Statut_journee)
 #LE PROFILE CONSULTANT
 class CompetenceInline(admin.TabularInline):
     model = Competence
@@ -85,18 +90,52 @@ admin.site.register(User, UserAdmin)
 admin.site.register(Permission)
 
 #LES MISSIONS
+class Document_renduInline(admin.TabularInline):
+    model = Document_rendu
+    extra = 0
+
+class Document_supplementaireInline(admin.TabularInline):
+    model = Document_supplementaire
+    extra = 0
+
+class Jour_missionInline(admin.TabularInline):
+    model = Jour_mission
+    extra = 0
+
 class MissionAdmin(admin.ModelAdmin):
 
+    model = Mission
     fieldsets = [
-        ('HORRAIRES DE MISSION',               {'fields': ['jour_de_mission','horaire_debut','horaire_fin']}),
-        ('LES LIAISONS',               {'fields': ['consultant','client','statut']}),
-        ('LES DOCUMENTS',               {'fields': ['adresse_de_mission','piece_jointe','mission_type']}),
-        ('VISISBILITE CONSULTANT',               {'fields': ['is_client_visible','is_adresse_visible','piece_jointe_visible','is_misson_type_visible']}),
+        ('INFORMATIONS',               {'fields': ['utilisateur','contrat','mission_type','adresse','document','statut']}),
     ]
 
-    list_display = ('mission_type', 'client','consultant','jour_de_mission')
-    list_filter = ['mission_type']
-    search_fields = ['client','mission_type','consultant','jour_de_mission']
+    inlines = [Document_renduInline,Document_supplementaireInline,Jour_missionInline]
 
+    
+    list_display = ('contrat', 'utilisateur', 'mission_type')
+    list_filter = ['mission_type']
+    search_fields = ['mission_type']
 
 admin.site.register(Mission, MissionAdmin)
+
+#LES CONTRATS
+class MissionInline(admin.TabularInline):
+    model = Mission
+    extra = 0
+
+class ContratAdmin(admin.ModelAdmin):
+
+    model = Contrat
+    fieldsets = [
+        ('INFORMATIONS',               {'fields': ['nom','client','date_debut','date_fin','statut']}),
+    ]
+
+    inlines = [MissionInline]
+
+    
+    list_display = ('nom', 'date_debut', 'date_fin')
+    list_filter = ['nom']
+    search_fields = ['nom']
+
+
+admin.site.register(Contrat, ContratAdmin)
